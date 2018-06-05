@@ -92,4 +92,5 @@ INSERT INTO civirule_trigger (name, label, object_name, op, cron, class_name, cr
 VALUES
   ('birthday', 'Individual has birthday', null, null, 1, 'CRM_CivirulesCronTrigger_Birthday',  CURDATE(), 1),
   ('groupmembership', 'Daily trigger for group members', null, null, 1, 'CRM_CivirulesCronTrigger_GroupMembership',  CURDATE(), 1),
-  ('activitydate', 'Activity Date reached', null, null, 1, 'CRM_CivirulesCronTrigger_ActivityDate',  CURDATE(), 1);
+  ('activitydate', 'Activity Date reached', null, null, 1, 'CRM_CivirulesCronTrigger_ActivityDate',  CURDATE(), 1),
+  ('caseactivity', 'Daily trigger for case activity', null, null, 1, 'CRM_CivirulesCronTrigger_CaseActivity',  CURDATE(), 1);

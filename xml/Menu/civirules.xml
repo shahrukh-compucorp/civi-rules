@@ -106,6 +106,13 @@
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
   <item>
+    <path>civicrm/civirule/form/condition/case/caseactivity</path>
+    <page_callback>CRM_CivirulesConditions_Form_Case_CaseActivity</page_callback>
+    <title>case activity</title>
+    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
     <path>civicrm/civirule/form/condition/membershiptype</path>
     <page_callback>CRM_CivirulesConditions_Form_Membership_Type</page_callback>
     <title>membership type</title>

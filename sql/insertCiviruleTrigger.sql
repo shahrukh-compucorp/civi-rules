@@ -63,9 +63,9 @@ VALUES
 
 INSERT INTO civirule_trigger (name, label, object_name, op, class_name, created_date, created_user_id)
 VALUES
-  ('new_participant', 'Event Participant is added', 'Participant', 'create', NULL,  CURDATE(), 1),
-  ('changed_participant', 'Event Participant is changed', 'Participant', 'edit', NULL, CURDATE(), 1),
-  ('deleted_participant', 'Event Participant is deleted', 'Participant', 'delete', NULL, CURDATE(), 1),
+  ('new_participant', 'Event Participant is added', 'Participant', 'create', 'CRM_CivirulesPostTrigger_Participant',  CURDATE(), 1),
+  ('changed_participant', 'Event Participant is changed', 'Participant', 'edit', 'CRM_CivirulesPostTrigger_Participant', CURDATE(), 1),
+  ('deleted_participant', 'Event Participant is deleted', 'Participant', 'delete', 'CRM_CivirulesPostTrigger_Participant', CURDATE(), 1),
   ('new_participant_payment', 'Event Participant Payment is added', 'ParticipantPayment', 'create', NULL,  CURDATE(), 1),
   ('changed_participant_payment', 'Event Participant Payment is changed', 'ParticipantPayment', 'edit', NULL, CURDATE(), 1),
   ('deleted_participant_payment', 'Event Participant is deleted', 'ParticipantPayment', 'delete', NULL, CURDATE(), 1),

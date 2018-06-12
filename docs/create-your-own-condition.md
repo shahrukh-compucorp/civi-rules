@@ -32,8 +32,8 @@ The file `/sql/createFirstDonation.sql` should have this statement:
 
 ```mysql
   
-INSERT INTO civirule_condition (name, label, class_name, is_active, created_date, created_user_id)
-VALUES("first_donation_of_contact", "First Donation of a Contact", "CRM_CivirulesConditions_Contribution_FirstDonation", 1, "2018-06-12", 1)
+INSERT INTO civirule_condition (name, label, class_name, is_active)
+VALUES("first_donation_of_contact", "First Donation of a Contact", "CRM_CivirulesConditions_Contribution_FirstDonation", 1)
 
 ```
 
@@ -184,8 +184,8 @@ The file `/sql/createMembershipType.sql` should have this statement:
 
 ```mysql
   
-INSERT INTO civirule_condition (name, label, class_name, is_active, created_date, created_user_id)
-VALUES("membership_is_of_type", "Membership is (not) of type(s)", "CRM_CivirulesConditions_Membership_Type", 1, "2018-06-12", 1)
+INSERT INTO civirule_condition (name, label, class_name, is_active)
+VALUES("membership_is_of_type", "Membership is (not) of type(s)", "CRM_CivirulesConditions_Membership_Type", 1)
 
 ```
 

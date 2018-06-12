@@ -24,6 +24,10 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     if (empty($ruleTagOptionGroup)) {
       CRM_Civirules_Utils_OptionGroup::create('civirule_rule_tag', 'Tags for CiviRules', 'Tags used to filter CiviRules on the CiviRules page');
     }
+    // now insert all Civirules Actions and Conditions
+    $this->executeSqlFile('sql/insertCivirulesActions.sql');
+    $this->executeSqlFile('sql/insertCivirulesConditions.sql');
+
   }
 
   public function uninstall() {
@@ -252,5 +256,25 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
 			WHERE object_name = 'Contribution'
 		");
 		return TRUE;
+	}
+
+  /**
+   * Upgrade 1023 (issue #189 - replace managed entities with inserts
+   *
+   * @return bool
+   */
+	public function upgrade_1023() {
+    $this->ctx->log->info('Applying update 1023 - remove unwanted managed entities');
+    $query = "DELETE FROM civicrm_managed WHERE module = %1 AND entity_type IN(%2, %3, %4)";
+    $params = array(
+      1 => array("org.civicoop.civirules", "String"),
+      2 => array("CiviRuleAction", "String"),
+      3 => array("CiviRuleCondition", "String"),
+      4 => array("CiviRuleTrigger", "String"),
+    );
+    if (CRM_Core_DAO::checkTableExists("civicrm_managed")) {
+      CRM_Core_DAO::executeQuery($query, $params);
+    }
+    return TRUE;
 	}
 }

@@ -28,8 +28,8 @@ The file `/sql/createSoftDelete.sql` should have this statement:
 
 ```mysql
          
-INSERT INTO civirule_action (name, label, class_name, is_active, created_date, created_user_id) 
-VALUES("contact_soft_delete", "Soft delete a contact", "CRM_CivirulesActions_Contact_SoftDelete", 1, '2018-06-12', 1)
+INSERT INTO civirule_action (name, label, class_name, is_active) 
+VALUES("contact_soft_delete", "Soft delete a contact", "CRM_CivirulesActions_Contact_SoftDelete", 1)
 
 ```
 
@@ -121,8 +121,8 @@ The file `/sql/createSubtype.sql` should have this statement:
 
 ```mysql
          
-INSERT INTO civirule_action (name, label, class_name, is_active, created_date, created_user_id) 
-VALUES("contact_sub_type", "Set subtype for a contact", "CRM_CivirulesActions_Contact_Subtype", 1, '2018-06-12', 1)
+INSERT INTO civirule_action (name, label, class_name, is_active) 
+VALUES("contact_sub_type", "Set subtype for a contact", "CRM_CivirulesActions_Contact_Subtype", 1)
 
 ```
 

@@ -46,9 +46,14 @@ class CRM_CivirulesConditions_Contribution_Status extends CRM_Civirules_Conditio
    *
    * @return string
    * @access public
+   * @throws \CiviCRM_API3_Exception
    */
   public function userFriendlyConditionParams() {
-    return 'Contribution status is '.CRM_Core_OptionGroup::getLabel('contribution_status', $this->conditionParams['contribution_status_id']);
+    $contributionStatus =  $status = civicrm_api3('OptionValue', 'getvalue', array(
+      'return' => 'label',
+      'option_group_id' => 'contribution_status',
+      'value' => $this->conditionParams['contribution_status_id']));
+    return 'Contribution status is '.$contributionStatus;
   }
 
   /**

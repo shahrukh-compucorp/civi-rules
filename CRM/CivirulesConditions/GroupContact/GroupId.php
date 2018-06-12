@@ -49,8 +49,15 @@ class CRM_CivirulesConditions_GroupContact_GroupId extends CRM_Civirules_Conditi
    */
   public function userFriendlyConditionParams() {
     if (!empty($this->conditionParams['group_id'])) {
-      $group = civicrm_api3('Group', 'getvalue', array('return' => 'title', 'id' => $this->conditionParams['group_id']));
-      return ts('Group is %1', array(1 => $group));
+      try {
+        $group = civicrm_api3('Group', 'getvalue', [
+          'return' => 'title',
+          'id' => $this->conditionParams['group_id']
+        ]);
+        return ts('Group is %1', [1 => $group]);
+      } catch (Exception $e) {
+        return '';
+      }
     }
     return '';
   }

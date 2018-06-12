@@ -55,6 +55,16 @@ class CRM_CivirulesActions_Activity_Add extends CRM_CivirulesActions_Generic_Api
         }
       }
     }
+
+    // Issue #152: when a rule is trigger from a public page then source contact id
+    // is empty and that in turn creates a fatal error.
+    // So the solution is to check whether we have a logged in user and if not use
+    // the contact from the trigger as the source contact.
+    if (CRM_Core_Session::getLoggedInContactID()) {
+      $params['source_contact_id'] = CRM_Core_Session::getLoggedInContactID();
+    } else {
+      $params['source_contact_id'] = $triggerData->getContactId();
+    }
     return $params;
   }
 

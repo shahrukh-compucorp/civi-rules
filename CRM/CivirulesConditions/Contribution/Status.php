@@ -46,7 +46,7 @@ class CRM_CivirulesConditions_Contribution_Status extends CRM_Civirules_Conditio
    *
    * @return string
    * @access public
-   * @throws /\CiviCRM_API3_Exception
+   * @throws \CiviCRM_API3_Exception
    */
   public function userFriendlyConditionParams() {
     $contributionStatus =  $status = civicrm_api3('OptionValue', 'getvalue', array(

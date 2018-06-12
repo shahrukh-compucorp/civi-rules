@@ -275,6 +275,16 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     if (CRM_Core_DAO::checkTableExists("civicrm_managed")) {
       CRM_Core_DAO::executeQuery($query, $params);
     }
+
+    // Update the participant trigger and add the event conditions
+    CRM_Core_DAO::executeQuery("UPDATE `civirule_trigger` SET `class_name` = 'CRM_CivirulesPostTrigger_Participant' WHERE `object_name` = 'Participant'");
+    CRM_Core_DAO::executeQuery("
+      INSERT INTO civirule_condition (name, label, class_name, is_active) VALUES 
+        ('event_type', 'Event Type is', 'CRM_CivirulesConditions_Event_EventType', 1),
+        ('participant_role', 'Participant has role', 'CRM_CivirulesConditions_Participant_ParticipantRole', 1),
+        ('participant_status', 'Participant status is', 'CRM_CivirulesConditions_Participant_ParticipantStatus', 1);
+    ");
+
     return TRUE;
 	}
 }

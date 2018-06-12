@@ -98,7 +98,12 @@ INSERT INTO civirule_condition (name, label, class_name, is_active)
   VALUES('relationship_relationship_type', 'Relationship is (not) one of Type(s)', 'CRM_CivirulesConditions_Relationship_RelationshipType', 1);
 INSERT INTO civirule_condition (name, label, class_name, is_active)
   VALUES('field_value_comparison', 'Field Value Comparison', 'CRM_CivirulesConditions_FieldValueComparison', 1);
-
+INSERT INTO civirule_condition (name, label, class_name, is_active)
+  VALUES('event_type', 'Event Type is', 'CRM_CivirulesConditions_Event_EventType', 1);
+INSERT INTO civirule_condition (name, label, class_name, is_active)
+  VALUES('participant_role', 'Participant has role', 'CRM_CivirulesConditions_Participant_ParticipantRole', 1);
+INSERT INTO civirule_condition (name, label, class_name, is_active)
+  VALUES('participant_status', 'Participant status is', 'CRM_CivirulesConditions_Participant_ParticipantStatus', 1);
 
 
 

@@ -77,13 +77,20 @@ class CRM_CivirulesActions_Activity_Add extends CRM_CivirulesActions_Generic_Api
    *
    * @return string
    * @access public
+   * @throws \CiviCRM_API3_Exception
    */
   public function userFriendlyConditionParams() {
     $return = '';
     $params = $this->getActionParameters();
-    $type = CRM_Core_OptionGroup::getLabel('activity_type', $params['activity_type_id']);
+    $type = civicrm_api3('OptionValue', 'getvalue', array(
+      'return' => 'label',
+      'option_group_id' => 'activity_type',
+      'value' => $params['activity_type_id']));
     $return .= ts("Type: %1", array(1 => $type));
-    $status = CRM_Core_OptionGroup::getLabel('activity_status', $params['status_id']);
+    $status = civicrm_api3('OptionValue', 'getvalue', array(
+      'return' => 'label',
+      'option_group_id' => 'activity_status',
+      'value' => $params['status_id']));
     $return .= "<br>";
     $return .= ts("Status: %1", array(1 => $status));
     $subject = $params['subject'];

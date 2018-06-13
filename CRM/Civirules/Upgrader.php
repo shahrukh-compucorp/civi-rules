@@ -264,7 +264,7 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
    * @return bool
    */
 	public function upgrade_1023() {
-    $this->ctx->log->info('Applying update 1023 - remove unwanted managed entities');
+    $this->ctx->log->info('Applying update 1023 - remove unwanted managedent ities');
     $query = "DELETE FROM civicrm_managed WHERE module = %1 AND entity_type IN(%2, %3, %4)";
     $params = array(
       1 => array("org.civicoop.civirules", "String"),
@@ -287,4 +287,15 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
 
     return TRUE;
 	}
+
+  /**
+   * Upgrade 1024 (issue #138 rules for trash en untrash)
+   *
+   * @return bool
+   */
+  public function upgrade_1024() {
+    CRM_Core_DAO::executeQuery("UPDATE `civirule_trigger` SET `class_name`='CRM_CivirulesPostTrigger_ContactTrashed', `op`='update' WHERE `name` in ('trashed_contact','trashed_individual','trashed_organization','trashed_household')");
+    CRM_Core_DAO::executeQuery("UPDATE `civirule_trigger` SET `class_name`='CRM_CivirulesPostTrigger_ContactRestored', `op`='update' WHERE `name` in ('restored_contact','restored_individual','restored_organization','restored_household')");
+    return TRUE;
+  }
 }

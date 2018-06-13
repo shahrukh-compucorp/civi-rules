@@ -12,23 +12,23 @@ VALUES
   ('new_contact', 'Contact of any type is added', 'Contact', 'create', 'CRM_CivirulesPostTrigger_Contact',  CURDATE(), 1),
   ('changed_contact', 'Contact of any type is changed', 'Contact', 'edit', 'CRM_CivirulesPostTrigger_Contact', CURDATE(), 1),
   ('deleted_contact', 'Contact of any type is deleted', 'Contact', 'delete', 'CRM_CivirulesPostTrigger_Contact', CURDATE(), 1),
-  ('trashed_contact', 'Contact of any type is trashed', 'Contact', 'delete', 'CRM_CivirulesPostTrigger_Contact', CURDATE(), 1),
-  ('restored_contact', 'Contact of any type is restored', 'Contact', 'delete', 'CRM_CivirulesPostTrigger_Contact', CURDATE(), 1),
+  ('trashed_contact', 'Contact of any type is trashed', 'Contact', 'update', 'CRM_CivirulesPostTrigger_ContactTrashed', CURDATE(), 1),
+  ('restored_contact', 'Contact of any type is restored', 'Contact', 'update', 'CRM_CivirulesPostTrigger_ContactRestored', CURDATE(), 1),
   ('new_individual', 'Individual is added', 'Individual', 'create', 'CRM_CivirulesPostTrigger_Contact',  CURDATE(), 1),
   ('changed_individual', 'Individual is changed', 'Individual', 'edit', 'CRM_CivirulesPostTrigger_Contact', CURDATE(), 1),
   ('deleted_individual', 'Individual is deleted', 'Individual', 'delete', 'CRM_CivirulesPostTrigger_Contact', CURDATE(), 1),
-  ('trashed_individual', 'Individual is trashed', 'Individual', 'delete', 'CRM_CivirulesPostTrigger_Contact', CURDATE(), 1),
-  ('restored_individual', 'Individual is restored', 'Individual', 'delete', 'CRM_CivirulesPostTrigger_Contact', CURDATE(), 1),
+  ('trashed_individual', 'Individual is trashed', 'Individual', 'update', 'CRM_CivirulesPostTrigger_ContactTrashed', CURDATE(), 1),
+  ('restored_individual', 'Individual is restored', 'Individual', 'update', 'CRM_CivirulesPostTrigger_ContactRestored', CURDATE(), 1),
   ('new_household', 'Household is added', 'Household', 'create', 'CRM_CivirulesPostTrigger_Contact',  CURDATE(), 1),
   ('changed_household', 'Household is changed', 'Household', 'edit', 'CRM_CivirulesPostTrigger_Contact', CURDATE(), 1),
   ('deleted_household', 'Household is deleted', 'Household', 'delete', 'CRM_CivirulesPostTrigger_Contact', CURDATE(), 1),
-  ('trashed_household', 'Household is trashed', 'Household', 'delete', 'CRM_CivirulesPostTrigger_Contact', CURDATE(), 1),
-  ('restored_household', 'Household is restored', 'Household', 'delete', 'CRM_CivirulesPostTrigger_Contact', CURDATE(), 1),
+  ('trashed_household', 'Household is trashed', 'Household', 'update', 'CRM_CivirulesPostTrigger_ContactTrashed', CURDATE(), 1),
+  ('restored_household', 'Household is restored', 'Household', 'update', 'CRM_CivirulesPostTrigger_ContactRestored', CURDATE(), 1),
   ('new_organization', 'Organization is added', 'Organization', 'create', 'CRM_CivirulesPostTrigger_Contact',  CURDATE(), 1),
   ('changed_organization', 'Organization is changed', 'Organization', 'edit', 'CRM_CivirulesPostTrigger_Contact', CURDATE(), 1),
   ('deleted_organization', 'Organization is deleted', 'Organization', 'delete', 'CRM_CivirulesPostTrigger_Contact', CURDATE(), 1),
-  ('trashed_organization', 'Organization is trashed', 'Organization', 'delete', 'CRM_CivirulesPostTrigger_Contact', CURDATE(), 1),
-  ('restored_organization', 'Organization is restored', 'Organization', 'delete', 'CRM_CivirulesPostTrigger_Contact', CURDATE(), 1);
+  ('trashed_organization', 'Organization is trashed', 'Organization', 'update', 'CRM_CivirulesPostTrigger_ContactTrashed', CURDATE(), 1),
+  ('restored_organization', 'Organization is restored', 'Organization', 'update', 'CRM_CivirulesPostTrigger_ContactRestored', CURDATE(), 1);
 
 INSERT INTO civirule_trigger (name, label, object_name, op, class_name, created_date, created_user_id)
 VALUES

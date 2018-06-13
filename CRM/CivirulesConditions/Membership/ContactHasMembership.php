@@ -83,7 +83,7 @@ class CRM_CivirulesConditions_Membership_ContactHasMembership extends CRM_Civiru
    * @access public
    */
   public function userFriendlyConditionParams() {
-    $userFriendlyConditionParams = '';  
+    $label = '';
     $operator_options = self::getOperatorOptions();
     
     try {
@@ -92,43 +92,47 @@ class CRM_CivirulesConditions_Membership_ContactHasMembership extends CRM_Civiru
         'options' => array('limit' => 0, 'sort' => "name ASC"),
       );
       $membershipTypes = civicrm_api3('MembershipType', 'Get', $params);
-      $operator = $operator_options[$this->conditionParams['type_operator']];
-      $values = '';
-      foreach($this->conditionParams['membership_type_id'] as $membershipTypeId) {
-        if (!isset($membershipTypes['values'][$membershipTypeId])) {
-          continue;
+      if (isset($this->conditionParams['membership_type_id']) && count($this->conditionParams['membership_type_id'])) {
+        $operator = $operator_options[$this->conditionParams['type_operator']];
+        $values = '';
+        foreach ($this->conditionParams['membership_type_id'] as $membershipTypeId) {
+          if (!isset($membershipTypes['values'][$membershipTypeId])) {
+            continue;
+          }
+          if (strlen($values)) {
+            $values .= ', ';
+          }
+          $values .= $membershipTypes['values'][$membershipTypeId]['name'];
         }
-        if (strlen($values)) {
-          $values .= ', ';
-        }
-        $values .= $membershipTypes['values'][$membershipTypeId]['name'];
+        $label .= ts('Membership type %1 %2', [
+          1 => $operator,
+          2 => $values,
+        ]);
       }
-      $label .= ts('Membership type %1 %2', array(
-        1 => $operator,
-        2 => $values,
-      ));
     } catch (CiviCRM_API3_Exception $ex) {}
     
     try {
-      $params = array(
-        'options' => array('limit' => 0),
-      );
-      $membershipStatus = civicrm_api3('MembershipStatus', 'Get', $params);
-      $operator = $operator_options[$this->conditionParams['status_operator']];
-      $values = '';
-      foreach($this->conditionParams['membership_status_id'] as $membershipStatusId) {
-        if (!isset($membershipStatus['values'][$membershipStatusId])) {
-          continue;
+      if (isset($this->conditionParams['membership_status_id']) && count($this->conditionParams['membership_status_id'])) {
+        $params = [
+          'options' => ['limit' => 0],
+        ];
+        $membershipStatus = civicrm_api3('MembershipStatus', 'Get', $params);
+        $operator = $operator_options[$this->conditionParams['status_operator']];
+        $values = '';
+        foreach ($this->conditionParams['membership_status_id'] as $membershipStatusId) {
+          if (!isset($membershipStatus['values'][$membershipStatusId])) {
+            continue;
+          }
+          if (strlen($values)) {
+            $values .= ', ';
+          }
+          $values .= $membershipStatus['values'][$membershipStatusId]['name'];
         }
-        if (strlen($values)) {
-          $values .= ', ';
-        }
-        $values .= $membershipStatus['values'][$membershipStatusId]['name'];
+        $label .= '<br> ' . ts('Membership status %1 %2', [
+            1 => $operator,
+            2 => $values,
+          ]);
       }
-      $label .= '<br> '. ts('Membership status %1 %2', array(
-        1 => $operator,
-        2 => $values,
-      ));
     } catch (CiviCRM_API3_Exception $ex) {}
     
     return trim($label);

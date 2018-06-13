@@ -264,7 +264,7 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
    * @return bool
    */
 	public function upgrade_1023() {
-    $this->ctx->log->info('Applying update 1023 - remove unwanted managedent ities');
+    $this->ctx->log->info('Applying update 1023 - remove unwanted managed entities');
     $query = "DELETE FROM civicrm_managed WHERE module = %1 AND entity_type IN(%2, %3, %4)";
     $params = array(
       1 => array("org.civicoop.civirules", "String"),

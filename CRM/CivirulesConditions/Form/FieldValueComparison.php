@@ -71,7 +71,7 @@ class CRM_CivirulesConditions_Form_FieldValueComparison extends CRM_CivirulesCon
     $return = array();
     $processedGroups = array();
     foreach($extends as $extend) {
-      $customGroups = civicrm_api3('CustomGroup', 'get', array('extends' => $extend));
+      $customGroups = civicrm_api3('CustomGroup', 'get', array('extends' => $extend, 'options' => array('limit' => 0)));
       foreach($customGroups['values'] as $customGroup) {
         if (in_array($customGroup['id'], $processedGroups)) {
           continue;
@@ -89,7 +89,7 @@ class CRM_CivirulesConditions_Form_FieldValueComparison extends CRM_CivirulesCon
   }
 
   protected function getCustomFieldPerGroup($group_id, $group_label) {
-    $fields = civicrm_api3('CustomField', 'get', array('custom_group_id' => $group_id));
+    $fields = civicrm_api3('CustomField', 'get', array('custom_group_id' => $group_id, 'options' => array('limit' => 0)));
     $return = array();
     foreach($fields['values'] as $field) {
       $key = 'custom_'.$field['id'];

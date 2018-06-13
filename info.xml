@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<extension key="civirules" type="module">
+<extension key="org.civicoop.civirules" type="module">
   <file>civirules</file>
   <name>CiviRules</name>
   <description>Native CiviCRM extension CiviRules</description>

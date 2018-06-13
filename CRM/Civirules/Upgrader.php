@@ -287,4 +287,15 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
 
     return TRUE;
 	}
+
+  /**
+   * Upgrade 1024 (issue #138 rules for trash en untrash)
+   *
+   * @return bool
+   */
+  public function upgrade_1024() {
+    CRM_Core_DAO::executeQuery("UPDATE `civirule_trigger` SET `class_name`='CRM_CivirulesPostTrigger_ContactTrashed', `op`='update' WHERE `name` in ('trashed_contact','trashed_individual','trashed_organization','trashed_household')");
+    CRM_Core_DAO::executeQuery("UPDATE `civirule_trigger` SET `class_name`='CRM_CivirulesPostTrigger_ContactRestored', `op`='update' WHERE `name` in ('restored_contact','restored_individual','restored_organization','restored_household')");
+    return TRUE;
+  }
 }

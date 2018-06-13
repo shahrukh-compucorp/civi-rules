@@ -18,8 +18,8 @@ class CRM_CivirulesConditions_Form_Contact_LivesInCountry extends CRM_CivirulesC
     $this->add('hidden', 'rule_condition_id');
     $this->add('select', 'country_id', ts('Country'), $this->getCountries(), TRUE,
       array('id' => 'country_ids', 'multiple' => 'multiple','class' => 'crm-select2'));
-    $this->add('select', 'location_type_id', ts('Location Type of the Address to Test'), $this->getLocationTypes(), TRUE);
-    $this->add('checkbox','no_address_found', ts('Use CiviCRM Default Country if no Country Found'));
+    $this->add('select', 'location_type_id', ts('Location Type of the Address to Test'), $this->getLocationTypes(), FALSE);
+    $this->add('checkbox','no_address_found', ts('Use CiviCRM Default Country if Contact has no Address'));
     $this->add('checkbox','no_country_found', ts('Use CiviCRM Default Country if Address has no Country'));
     $this->addButtons(array(
       array('type' => 'next', 'name' => ts('Save'), 'isDefault' => TRUE,),
@@ -46,13 +46,13 @@ class CRM_CivirulesConditions_Form_Contact_LivesInCountry extends CRM_CivirulesC
       $defaultValues['no_country_found'] = TRUE;
     }
     else {
-      if (isset($defaultValues['no_address_found']) && $defaultValues['no_address_found'] == 1) {
+      if (isset($data['no_address_found']) && $data['no_address_found'] == 1) {
         $defaultValues['no_address_found'] = TRUE;
       }
       else {
         $defaultValues['no_address_found'] = FALSE;
       }
-      if (isset($defaultValues['no_country_found']) && $defaultValues['no_country_found'] == 1) {
+      if (isset($data['no_country_found']) && $data['no_country_found'] == 1) {
         $defaultValues['no_country_found'] = TRUE;
       }
       else {
@@ -105,7 +105,7 @@ class CRM_CivirulesConditions_Form_Contact_LivesInCountry extends CRM_CivirulesC
    * @return array
    */
   private function getLocationTypes() {
-    $locationTypes = array();
+    $locationTypes = array(0 => '-- please select --');
     try {
       $apiLocationTypes = civicrm_api3('LocationType', 'get', array(
         'return' => array("id", "display_name"),

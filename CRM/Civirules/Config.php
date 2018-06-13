@@ -66,7 +66,8 @@ class CRM_Civirules_Config
       'edit',
       'delete',
       'restore',
-      'trash');
+      'trash',
+      'update');
 
     $this->validTriggerObjectNames = array(
       'Activity',

@@ -54,20 +54,38 @@ class CRM_CivirulesConditions_Contact_LivesInCountry extends CRM_Civirules_Condi
         $countryId = civicrm_api3('Address', 'getvalue', $countryParams);
         // if empty country setting determines if default country is to be used
         if (empty($countryId)) {
-          $return = $this->checkDefaultCountryUsed();
-        }
-        else {
-          if ($this->_conditionParams['country_id'] == $countryId) {
-            $return = TRUE;
-          }
+          $countryId = $this->checkDefaultCountryUsed();
         }
       }
       // if no address found setting determines if default country is to be used
       catch (CiviCRM_API3_Exception $ex) {
-        $return = $this->checkDefaultCountryUsed();
+        $countryId = $this->checkDefaultCountryUsed();
+      }
+      if ($countryId) {
+        if (in_array($countryId, $this->_conditionParams['country_id'])) {
+          $return = TRUE;
+        }
       }
     }
     return $return;
+  }
+
+  /**
+   * Method to return the default localization country
+   *
+   * @return array|bool
+   */
+  private function checkDefaultCountryUsed() {
+    if ($this->_conditionParams['no_address_found'] || $this->_conditionParams['no_address_found']) {
+      try {
+        return civicrm_api3('Setting', 'getvalue', array(
+          'name' => "defaultContactCountry",
+        ));
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+        return FALSE;
+      }
+    }
   }
 
   /**
@@ -109,42 +127,42 @@ class CRM_CivirulesConditions_Contact_LivesInCountry extends CRM_Civirules_Condi
    * @access public
    */
   public function userFriendlyConditionParams() {
-    $activityTypeLabels = array();
-    foreach ($this->_conditionParams['activity_type_id'] as $activityTypeId) {
+    $countryNames = array();
+    foreach ($this->_conditionParams['country_id'] as $countryId) {
       try {
-        $activityTypeLabels[] = civicrm_api3('OptionValue', 'getvalue', array(
-          'option_group_id' => 'activity_type',
-          'value' => $activityTypeId,
-          'return' => 'label',
+        $countryNames[] = civicrm_api3('Country', 'getvalue', array(
+          'country_id' => $countryId,
+          'return' => 'name',
         ));
       }
       catch (CiviCRM_API3_Exception $ex) {
       }
     }
-    if (!empty($activityTypeLabels)) {
-      $text = ts('has activities of type(s)') . ': ' . implode('; ', $activityTypeLabels);
+    if (!empty($countryNames)) {
+      $text = ts('lives in one of') . ': ' . implode('; ', $countryNames);
     }
     else {
-      $text = ts('has activities of type(s)') . ': ' . implode('; ', $this->_conditionParams['activity_type_id']);
+      $text = ts('lives in one of') . ': ' . implode('; ', $this->_conditionParams['country_id']);
 
     }
-    $campaignTitles = array();
-    foreach ($this->_conditionParams['campaign_id'] as $campaignId) {
+    if (isset($this->_conditionParams['location_type_id']) && !empty($this->_conditionParams['location_type_id'])) {
       try {
-        $campaignTitles[] = civicrm_api3('Campaign', 'getvalue', array(
-          'id' => $campaignId,
-          'return' => 'title',
-        ));
+        $text .= ' (checking address with location type ' . civicrm_api3('LocationType', 'getvalue', array(
+          'return' => 'display_name',
+          'id' => $this->_conditionParams['location_type_id'],
+        )) . ')';
       }
       catch (CiviCRM_API3_Exception $ex) {
       }
     }
-    if (!empty($campaignTitles)) {
-      $text .= ts(' in campaign(s)') . ': ' . implode('; ', $campaignTitles);
-    }
     else {
-      $text .= ts(' in campaign(s)') . ': ' . implode('; ', $this->_conditionParams['campaign_id']);
-
+      $text .= ' (checking primary address)';
+    }
+    if ($this->_conditionParams['no_address_found']) {
+      $text .= ', using default country if contact has no address';
+    }
+    if ($this->_conditionParams['no_address_found']) {
+      $text .= ', using default country if address has no country';
     }
     return $text;
   }

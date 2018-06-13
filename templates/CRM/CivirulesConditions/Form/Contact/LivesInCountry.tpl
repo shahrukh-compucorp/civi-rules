@@ -38,6 +38,7 @@
     </div>
     <div class="content crm-form-checkbox">
       {$form.no_address_found.html}
+      <div class="clear"></div>
     </div>
   </div>
   <div class="crm-section no_country_found-section">
@@ -46,6 +47,7 @@
     </div>
     <div class="content crm-form-checkbox">
       {$form.no_country_found.html}
+      <div class="clear"></div>
     </div>
   </div>
 </div>

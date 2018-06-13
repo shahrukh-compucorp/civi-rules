@@ -126,23 +126,48 @@ If I want to be absolutely sure the contribution I retrieve is the one that has 
 
 To do that I will use the `$eventData->_getEntityData` method to retrieve the data from the entity just created and then compare it. It is a bit superfluous here, but it serves to show how you can use the `$triggerData->getEntityData` method.
 
-### Step 4 - Linking the Condition to the Entity with method requiredEntities
+### Step 4 - Validating whether the condition works with a certain trigger
 
 If I use this condition, it only makes sense if I add this condition to Triggers that deal with some Entities like Individual or Contact. Adding the condition to check for the first contribution to a trigger that deals with GroupContact does not make sense.
 
-The user interface of CiviRules has the ability to check if you tell it what entity you need for your condition. In this example I need data from the entity Contribution, so I add Contribution with the method `requiredEntities` like this:
+The user interface of CiviRules has the ability to check whether your condition works with the given trigger. In this example I need data from the entity Contribution, so I add Contribution with the method `doesWorkWithTrigger` like this:
 
 ```php
 /**
- * Returns an array with required entity names
+ * This function validates whether this condition works with the selected trigger.
  *
- * @return array
- * @access public
+ * This function could be overriden in child classes to provide additional validation
+ * whether a condition is possible in the current setup. E.g. we could have a condition
+ * which works on contribution or on contributionRecur then this function could do
+ * this kind of validation and return false/true
+ *
+ * @param CRM_Civirules_Trigger $trigger
+ * @param CRM_Civirules_BAO_Rule $rule
+ * @return bool
  */
-public function requiredEntities() {
-  return array('Contribution');
+public function doesWorkWithTrigger(CRM_Civirules_Trigger $trigger, CRM_Civirules_BAO_Rule $rule) {
+  return $trigger->doesProvideEntity('Contribution');
 }
+
 ```
+
+Ofcourse you can check other things in the `doesWorkWithTrigger` function. Such as whether the `$trigger` is a certain subclass.
+For example the condition for Activity Status Changed checks whether the `$trigger` implements the interface `CRM_Civirules_TriggerData_Interface_OriginalData`:
+
+```php
+
+public function doesWorkWithTrigger(CRM_Civirules_Trigger $trigger, CRM_Civirules_BAO_Rule $rule) {
+  if ($trigger instanceof CRM_Civirules_TriggerData_Interface_OriginalData) {
+    return $trigger->doesProvideEntity('Activity');
+  }
+  return false;
+}
+
+```
+
+If you want to check whether the trigger provides multiple entities you can use the function `$trigger->doesProvideEntities`.
+
+
 ## Adding a Condition With Form Processing
 
 In this tutorial I will add a new condition that can be used in CiviRules. The new condition will be called **Membership Type is (not) ....** and will answer the question: _is the membership (not) of the type specified_? The related actions will only be executed if it is indeed a membership of the specified type (or not of the specified type).

@@ -234,6 +234,30 @@ function civirules_civicrm_validateForm($formName, &$fields, &$files, &$form, &$
 }
 
 function civirules_civicrm_custom($op, $groupID, $entityID, &$params) {
+  /**
+   * Fix/Hack for issue #208 (https://github.com/CiviCooP/org.civicoop.civirules/issues/208)
+   *
+   * To reproduce:
+   * - create a custom data set for contacts that supports multiple records
+   * - create a rule that triggers on custom data changing
+   * - add a record to that custom data set for a contact
+   * - delete the record
+   * - observe the logs
+   *
+   * This returns the error: "Expected one Contact but found 25"
+   * Traced to CRM/CivirulesPostTrigger/ContactCustomDataChanged.php where there is an api call to contacts getsingle. The issue is that when the custom data record is deleted, there is no remaining entity_id with which to retrieve the contact, and so no id is passed to the getsingle call.
+   *
+   * The fix is to check whether the $op is delete and whether $entityID is empty and then check
+   * whether the contactID is provided in the url.
+   */
+  if ($op == 'delete' && empty($entityID)) {
+    $contactId = CRM_Utils_Request::retrieve('contactId', 'Positive');
+    if (!empty($contactId)) {
+      $entityID = $contactId;
+    }
+  }
+  /** End ugly hack */
+
   CRM_CivirulesPostTrigger_CaseCustomDataChanged::custom($op, $groupID, $entityID, $params);
   CRM_CivirulesPostTrigger_ContactCustomDataChanged::custom($op, $groupID, $entityID, $params);
   CRM_CivirulesPostTrigger_IndividualCustomDataChanged::custom($op, $groupID, $entityID, $params);

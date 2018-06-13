@@ -47,6 +47,8 @@ INSERT INTO civirule_condition (name, label, class_name, is_active)
 INSERT INTO civirule_condition (name, label, class_name, is_active)
   VALUES('contact_sub_type_changed', 'Contact Subtypes Changed', 'CRM_CivirulesConditions_Contact_SubtypesChanged', 1);
 INSERT INTO civirule_condition (name, label, class_name, is_active)
+  VALUES('contact_in_country', 'Contact Lives in Country', 'CRM_CivirulesConditions_Contact_LivesInCountry', 1);
+INSERT INTO civirule_condition (name, label, class_name, is_active)
   VALUES('contribution_total_amount', 'Contribution Total Amount', 'CRM_CivirulesConditions_Contribution_Amount', 1);
 INSERT INTO civirule_condition (name, label, class_name, is_active)
   VALUES('contribution_campaign', 'Contribution is (not) in Campaign(s)', 'CRM_CivirulesConditions_Contribution_Campaign', 1);

@@ -22,7 +22,7 @@ class CRM_CivirulesConditions_Address_IsUnique extends CRM_Civirules_Condition {
   public function isConditionValid(CRM_Civirules_TriggerData_TriggerData $triggerData)
   {
     $uniqueAddressFields = array("street_address", "city", "state_province_id", "postal_code", "country_id");
-    $addressData = $triggerData->getEntityData('address');
+    $addressData = $triggerData->getEntityData('Address');
     $address = civicrm_api3('Address', 'getsingle', array(
       'return' => $uniqueAddressFields,
       'id' => $addressData['id'],
@@ -41,14 +41,18 @@ class CRM_CivirulesConditions_Address_IsUnique extends CRM_Civirules_Condition {
   }
 
   /**
-   * Returns an array with required entity names
+   * This function validates whether this condition works with the selected trigger.
    *
-   * @return array
-   * @access public
+   * This function could be overriden in child classes to provide additional validation
+   * whether a condition is possible in the current setup. E.g. we could have a condition
+   * which works on contribution or on contributionRecur then this function could do
+   * this kind of validation and return false/true
+   *
+   * @param CRM_Civirules_Trigger $trigger
+   * @param CRM_Civirules_BAO_Rule $rule
+   * @return bool
    */
-  public function requiredEntities() {
-    return array(
-      'Address',
-    );
+  public function doesWorkWithTrigger(CRM_Civirules_Trigger $trigger, CRM_Civirules_BAO_Rule $rule) {
+    return $trigger->doesProvideEntity('Address');
   }
 }

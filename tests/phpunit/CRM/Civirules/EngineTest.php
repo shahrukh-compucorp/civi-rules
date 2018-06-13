@@ -129,7 +129,7 @@ class CRM_Civirules_EngineTest extends CRM_Civirules_Test_TestCase {
    * Test the firing of the trigger for a changed contact (and ignore the create and the delete
    */
   public function testDeletedContact() {
-    $this->setUpContactRule('restored_contact');
+    $this->setUpContactRule('deleted_contact');
     $this->assertRuleNotFired('changed contact rule just set up, should not be fired');
 
     $result = civicrm_api3("Contact", "create", array(

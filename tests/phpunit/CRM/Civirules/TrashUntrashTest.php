@@ -26,6 +26,12 @@ class CRM_Civirules_TrashUntrashTest extends CRM_Civirules_Test_TestCase {
 
     $contactId = $result['id'];
 
+    // simulate delete with contact
+
+    civicrm_api3('Contact','create',['id' => $contactId, 'is_deleted' => 1]);
+
+    $this->assertRuleFired("After a simulated trash the rule must be fired");
+
     civicrm_api3('Contact','delete',['id' => $contactId]);
 
     $this->assertRuleFired("After the trash the rule should be fired");
@@ -62,6 +68,14 @@ class CRM_Civirules_TrashUntrashTest extends CRM_Civirules_Test_TestCase {
     CRM_Contact_BAO_Contact::deleteContact($contactId,TRUE);
 
     $this->assertRuleFired("After a restore the restore rule must be fired");
+
+    // now delete again and do a simulated restore
+
+    civicrm_api3('Contact','create',['id' => $contactId, 'is_deleted' => 1]);
+    $this->assertRuleNotFired("A simulated delete must not fire the rule");
+    civicrm_api3('Contact','create',['id' => $contactId, 'is_deleted' => 0]);
+    $this->assertRuleFired("A simulated restore must fire the rule");
+
   }
 
   /**
@@ -87,16 +101,16 @@ class CRM_Civirules_TrashUntrashTest extends CRM_Civirules_Test_TestCase {
      the rule is not fired a direct update on the is_deleted column
      (not sure if this is right
     */
-    $this->assertRuleNotFired('After an update on delete the rule is not fired');
+    $this->assertRuleFired('After the simulated trash of an individual a rule must fired');
 
     civicrm_api3('Contact','delete',['id' => $contactId]);
 
-    $this->assertRuleFired("After the trash the rule should be fired");
+    $this->assertRuleFired('After an update on delete the rule should be fired');
 
     // a delete with a second parameters as true is actually a restore
     CRM_Contact_BAO_Contact::deleteContact($contactId,TRUE);
 
-    $this->assertRuleNotFired("After a restore the trash rule must be skippded");
+    $this->assertRuleNotFired("After a restore the trash rule must be skipped");
   }
 
   /**
@@ -132,6 +146,11 @@ class CRM_Civirules_TrashUntrashTest extends CRM_Civirules_Test_TestCase {
     CRM_Contact_BAO_Contact::deleteContact($contactId,TRUE);
 
     $this->assertRuleFired("After a restore the trash rule must be executed");
+
+    civicrm_api3('Contact','create',['id' => $contactId, 'is_deleted' => 1]);
+    $this->assertRuleNotFired("A simulated delete must not fire the rule");
+    civicrm_api3('Contact','create',['id' => $contactId, 'is_deleted' => 0]);
+    $this->assertRuleFired("A simulated restore must not fire the rule");
   }
 
   /**
@@ -186,6 +205,11 @@ class CRM_Civirules_TrashUntrashTest extends CRM_Civirules_Test_TestCase {
 
     $this->assertRuleFired("After a restore the restore rule must be fired");
 
+    civicrm_api3('Contact','create',['id' => $contactId, 'is_deleted' => 1]);
+    $this->assertRuleNotFired("A simulated delete must not fire the rule");
+    civicrm_api3('Contact','create',['id' => $contactId, 'is_deleted' => 0]);
+    $this->assertRuleFired("A simulated restore must not fire the rule");
+
   }
 
   /**
@@ -233,6 +257,11 @@ class CRM_Civirules_TrashUntrashTest extends CRM_Civirules_Test_TestCase {
     CRM_Contact_BAO_Contact::deleteContact($contactId,TRUE);
 
     $this->assertRuleFired("After the restore of an organization the restore rule must be fired");
+
+    civicrm_api3('Contact','create',['id' => $contactId, 'is_deleted' => 1]);
+    $this->assertRuleNotFired("A simulated delete must not fire the rule");
+    civicrm_api3('Contact','create',['id' => $contactId, 'is_deleted' => 0]);
+    $this->assertRuleFired("A simulated restore must fire the rule");
   }
 
 }

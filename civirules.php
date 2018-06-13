@@ -299,3 +299,14 @@ function civirules_civicrm_entityTypes(&$entityTypes) {
     'table' => 'civirule_rule',
   );
 }
+
+/**
+ * Implements hook_civicrm_apiWrappers()
+ *
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_apiWrappers/
+ */
+function civirules_civicrm_apiWrappers(&$wrappers, $apiRequest) {
+  if ($apiRequest['entity'] == 'Contact' && $apiRequest['action'] == 'create') {
+    $wrappers[] = new CRM_Civirules_TrashRestoreApiWrapper();
+  }
+}

@@ -35,7 +35,7 @@ This guide has two parts each aimed at a different audience.
 
 ## CiviCRM versions
 
-CiviRules has been developed for CiviCRM 4.4 and has been tested with CiviCRM 4.6 (release 1.2), as this is the version our sponsors are on. If you want CiviRules updated to a newer version you can do so (check CiviRules on GitHub: https://github.com/CiviCooP/org.civicoop.civirules. Alternatively, if you want us to do it and have some funding, contact Jaap Jansma (jaap.jansma@civicoop.org) or Erik Hommel (erik.hommel@civicoop.org)
+CiviRules has been developed for CiviCRM 4.4 and has been tested with CiviCRM 4.6 (release 1.2), as this is the version our sponsors are on. If you want CiviRules updated to a newer version you can do so (check CiviRules on CiviCRM GitLab: https://lab.civicrm.org/extensions/civirules. Alternatively, if you want us to do it and have some funding, contact Jaap Jansma (jaap.jansma@civicoop.org) or Erik Hommel (erik.hommel@civicoop.org)
 
 ## History
 

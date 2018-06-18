@@ -19,7 +19,12 @@ class CRM_Civirules_Form_Search_Rules extends CRM_Contact_Form_Search_Custom_Bas
 
     // Set the user context
     $session = CRM_Core_Session::singleton();
-    $url = CRM_Utils_System::getUrlPath();
+    if ($this->_domainversion <= 4.6) {
+      // Backwards compatible with 4.6 systems
+      $url = CRM_Utils_System::currentPath();
+    } else {
+      $url = CRM_Utils_System::getUrlPath();
+    }
     $query['_qf_Custom_display'] = CRM_Utils_Request::retrieve('_qf_Custom_display', 'Boolean');
     $query['qfKey'] = CRM_Utils_Request::retrieve('qfKey', 'String');
     $userContext = CRM_Utils_System::url($url,$query);

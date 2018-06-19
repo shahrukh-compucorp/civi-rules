@@ -300,7 +300,7 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
   }
 
   /**
-   * Upgrade 1030 add Contact Lives in Country condition
+   * Upgrade 1025 add Contact Lives in Country condition
    */
 	public function upgrade_1025() {
     $this->ctx->log->info('Applying update 1030 - add LivesInCountry condition to CiviRules');
@@ -320,6 +320,21 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
       CRM_Core_DAO::executeQuery($insert, $insertParams);
     }
     return TRUE;
+  }
+
+  /**
+   * Upgrade 1026 add activity date conditions.
+   */
+  public function upgrade_1026() {
+    CRM_Core_DAO::executeQuery("
+    INSERT INTO civirule_condition (name, label, class_name, is_active)
+      VALUES('activity_is_future_date', 'Activity Date in the Future', 'CRM_CivirulesCondition_Activity_ActivityIsFuture', 1);
+    ");
+    CRM_Core_DAO::executeQuery("
+    INSERT INTO civirule_condition (name, label, class_name, is_active)
+      VALUES('activity_is_past_date', 'Activity Date in the Past', 'CRM_CivirulesCondition_Activity_ActivityIsPast', 1);
+    ");
+    return true;
   }
 
 }

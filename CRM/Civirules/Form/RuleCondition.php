@@ -87,13 +87,8 @@ class CRM_Civirules_Form_RuleCondition extends CRM_Core_Form {
   }
 
   protected function buildConditionList() {
-    $conditions = CRM_Civirules_Utils::buildConditionList();
-    if ($this->_domainVersion >= 4.7) {
-      return array_filter($conditions, array($this, 'doesConditionWorkWithTrigger'), ARRAY_FILTER_USE_KEY);
-    }
-    else {
-      return $conditions;
-    }
+    $conditions = CRM_Civirules_BAO_Condition::getValues(array());
+    return array_filter($conditions, array($this, 'doesConditionWorkWithTrigger'));
   }
 
   /**
@@ -102,9 +97,9 @@ class CRM_Civirules_Form_RuleCondition extends CRM_Core_Form {
    * @param $condition_id
    * @return bool
    */
-  protected function doesConditionWorkWithTrigger($condition_id) {
+  protected function doesConditionWorkWithTrigger($condition) {
     try {
-      $conditionClass = CRM_Civirules_BAO_Condition::getConditionObjectById($condition_id, FALSE);
+      $conditionClass = CRM_Civirules_BAO_Condition::getConditionObjectById($condition['id'], FALSE);
       if (!$conditionClass) {
         return FALSE;
       }

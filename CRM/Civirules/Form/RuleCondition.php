@@ -88,7 +88,13 @@ class CRM_Civirules_Form_RuleCondition extends CRM_Core_Form {
 
   protected function buildConditionList() {
     $conditions = CRM_Civirules_BAO_Condition::getValues(array());
-    return array_filter($conditions, array($this, 'doesConditionWorkWithTrigger'));
+    $conditionOptions = array();
+    foreach($conditions as $condition) {
+      if ($this->doesConditionWorkWithTrigger($condition)) {
+        $conditionOptions[$condition['id']] = $condition['label'];
+      }
+    }
+    return $conditionOptions;
   }
 
   /**

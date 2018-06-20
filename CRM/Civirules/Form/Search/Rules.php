@@ -19,7 +19,7 @@ class CRM_Civirules_Form_Search_Rules extends CRM_Contact_Form_Search_Custom_Bas
 
     // Set the user context
     $session = CRM_Core_Session::singleton();
-    if ($this->_domainversion <= 4.6) {
+    if ($this->_domainVersion <= 4.7) {
       // Backwards compatible with 4.6 systems
       $url = CRM_Utils_System::currentPath();
     } else {

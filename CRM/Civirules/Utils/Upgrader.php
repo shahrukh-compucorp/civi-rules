@@ -55,7 +55,7 @@ class CRM_Civirules_Utils_Upgrader {
         'name' => 'add_contact_group',
       ),
       'CRM_CivirulesActions_GroupContact_Remove' => array(
-        'label' => 'Remove Contact to a Group',
+        'label' => 'Remove Contact from a Group',
         'name' => 'remove_contact_group',
       ),
       'CRM_CivirulesActions_Tag_Add' => array(

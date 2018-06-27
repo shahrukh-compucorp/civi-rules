@@ -129,15 +129,17 @@ function civirules_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
  */
 function civirules_civicrm_navigationMenu( &$params ) {
-  //  Get the maximum key of $params
+  // Get the maximum key of $params
   $maxKey = CRM_Civirules_Utils::getMenuKeyMax($params);
   $newNavId = $maxKey + 1;
   // retrieve the custom search id of the find rules search
   $customSearchID = CRM_Civirules_Utils::getFindRulesCsId();
   // retrieve the option group id of the rule tags option group
   $optionGroup = CRM_Civirules_Utils_OptionGroup::getSingleWithName('civirule_rule_tag');
+  // retrieve the id of the "Administer" menu item
+  $administerID = CRM_Core_DAO::getFieldValue('CRM_Core_DAO_Navigation', 'Administer', 'id', 'name');
 
-  $params[$newNavId] = array(
+  $params[$administerID]['child'][$newNavId] = array(
     'attributes' => array(
       'label' => 'CiviRules',
       'name' => 'CiviRules',
@@ -145,7 +147,7 @@ function civirules_civicrm_navigationMenu( &$params ) {
       'permission' => 'administer CiviCRM',
       'operator' => null,
       'separator' => null,
-      'parentID' => null,
+      'parentID' => $administerID,
       'navID' => $newNavId,
       'active' => 1
     ));
@@ -153,7 +155,7 @@ function civirules_civicrm_navigationMenu( &$params ) {
 	$newNavId++;
   // add child menu for find rules if custom search id set
   if (!empty($customSearchID)) {
-    $params[$parentId]['child'][$newNavId] = array(
+    $params[$administerID]['child'][$parentId]['child'][$newNavId] = array(
       'attributes' => array(
         'label' => ts('Find Rules'),
         'name' => ts('Find Rules'),
@@ -169,7 +171,7 @@ function civirules_civicrm_navigationMenu( &$params ) {
     );
     $newNavId++;
   }
-  $params[$parentId]['child'][$newNavId] = array(
+  $params[$administerID]['child'][$parentId]['child'][$newNavId] = array(
     'attributes' => array(
       'label' => ts('New Rule'),
       'name' => ts('New Rule'),
@@ -198,7 +200,7 @@ function civirules_civicrm_navigationMenu( &$params ) {
       $ruleTagUrl = CRM_Utils_System::url('civicrm/admin/options', 'reset=1&gid='.$optionGroup['id'], true);
     }
 
-    $params[$parentId]['child'][$newNavId] = array(
+    $params[$administerID]['child'][$parentId]['child'][$newNavId] = array(
       'attributes' => array (
         'label'      => ts('CiviRule Tags'),
         'name'       => ts('CiviRules Tags'),

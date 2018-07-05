@@ -328,11 +328,11 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
   public function upgrade_1026() {
     CRM_Core_DAO::executeQuery("
     INSERT INTO civirule_condition (name, label, class_name, is_active)
-      VALUES('activity_is_future_date', 'Activity Date in the Future', 'CRM_CivirulesCondition_Activity_ActivityIsFuture', 1);
+      VALUES('activity_is_future_date', 'Activity Date in the Future', 'CRM_CivirulesConditions_Activity_ActivityIsFuture', 1);
     ");
     CRM_Core_DAO::executeQuery("
     INSERT INTO civirule_condition (name, label, class_name, is_active)
-      VALUES('activity_is_past_date', 'Activity Date in the Past', 'CRM_CivirulesCondition_Activity_ActivityIsPast', 1);
+      VALUES('activity_is_past_date', 'Activity Date in the Past', 'CRM_CivirulesConditions_Activity_ActivityIsPast', 1);
     ");
     return true;
   }

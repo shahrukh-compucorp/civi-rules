@@ -107,9 +107,9 @@ INSERT INTO civirule_condition (name, label, class_name, is_active)
 INSERT INTO civirule_condition (name, label, class_name, is_active)
   VALUES('participant_status', 'Participant status is', 'CRM_CivirulesConditions_Participant_ParticipantStatus', 1);
 INSERT INTO civirule_condition (name, label, class_name, is_active)
-  VALUES('activity_is_future_date', 'Activity Date in the Future', 'CRM_CivirulesCondition_Activity_ActivityIsFuture', 1);
+  VALUES('activity_is_future_date', 'Activity Date in the Future', 'CRM_CivirulesConditions_Activity_ActivityIsFuture', 1);
 INSERT INTO civirule_condition (name, label, class_name, is_active)
-  VALUES('activity_is_past_date', 'Activity Date in the Past', 'CRM_CivirulesCondition_Activity_ActivityIsPast', 1);
+  VALUES('activity_is_past_date', 'Activity Date in the Past', 'CRM_CivirulesConditions_Activity_ActivityIsPast', 1);
 
 
 

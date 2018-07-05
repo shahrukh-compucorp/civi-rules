@@ -6,7 +6,8 @@
  * @license AGPL-3.0
  */
 
-class CRM_CivirulesCondition_Activity_ActivityIsFuture extends CRM_Civirules_Condition {
+class CRM_CivirulesConditions_Activity_ActivityIsFuture extends CRM_Civirules_Condition {
+
 
   /**
    * Returns a redirect url to extra data input from the user after adding a condition

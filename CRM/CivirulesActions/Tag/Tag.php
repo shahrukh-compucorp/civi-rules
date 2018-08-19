@@ -47,7 +47,7 @@ abstract class CRM_CivirulesActions_Tag_Tag extends CRM_CivirulesActions_Generic
       //alter parameters by subclass
       $params = $this->alterApiParameters($params, $triggerData);
 
-      // check if they exists in db.
+      // check if record already exists in db.
       try {
         $id = civicrm_api3('EntityTag', 'getvalue', $params + ['return' => 'id']);
         if (strtolower($action) == 'create') {

@@ -12,6 +12,8 @@ require_once 'CRM/Core/Form.php';
 class CRM_Civirules_Form_RuleCondition extends CRM_Core_Form {
 
   protected $ruleId = NULL;
+  private $_domainVersion = NULL;
+
 
   /**
    * Function to buildQuickForm (extends parent function)
@@ -30,6 +32,9 @@ class CRM_Civirules_Form_RuleCondition extends CRM_Core_Form {
    * @access public
    */
   function preProcess() {
+    $domainVersion = civicrm_api3('Domain', 'getvalue', array('current_domain' => "TRUE", 'return' => 'version'));
+    $this->_domainVersion = round((float) $domainVersion, 2);
+
     $this->ruleId = CRM_Utils_Request::retrieve('rid', 'Integer');
     $redirectUrl = CRM_Utils_System::url('civicrm/civirule/form/rule', 'action=update&id='.$this->ruleId, TRUE);
     $session = CRM_Core_Session::singleton();
@@ -82,8 +87,14 @@ class CRM_Civirules_Form_RuleCondition extends CRM_Core_Form {
   }
 
   protected function buildConditionList() {
-    $conditions = CRM_Civirules_Utils::buildConditionList();
-    return array_filter($conditions, array($this, 'doesConditionWorkWithTrigger'), ARRAY_FILTER_USE_KEY);
+    $conditions = CRM_Civirules_BAO_Condition::getValues(array());
+    $conditionOptions = array();
+    foreach($conditions as $condition) {
+      if ($this->doesConditionWorkWithTrigger($condition)) {
+        $conditionOptions[$condition['id']] = $condition['label'];
+      }
+    }
+    return $conditionOptions;
   }
 
   /**
@@ -92,9 +103,9 @@ class CRM_Civirules_Form_RuleCondition extends CRM_Core_Form {
    * @param $condition_id
    * @return bool
    */
-  protected function doesConditionWorkWithTrigger($condition_id) {
+  protected function doesConditionWorkWithTrigger($condition) {
     try {
-      $conditionClass = CRM_Civirules_BAO_Condition::getConditionObjectById($condition_id, FALSE);
+      $conditionClass = CRM_Civirules_BAO_Condition::getConditionObjectById($condition['id'], FALSE);
       if (!$conditionClass) {
         return FALSE;
       }
@@ -121,8 +132,14 @@ class CRM_Civirules_Form_RuleCondition extends CRM_Core_Form {
      */
     $linkList = array('AND' => 'AND', 'OR' =>'OR');
     $this->add('select', 'rule_condition_link_select', ts('Select Link Operator'), $linkList);
-    $conditionList = array(' - select - ') + $this->buildConditionList();
-    asort($conditionList);
+    $foundConditions = $this->buildConditionList();
+    if (!empty($foundConditions)) {
+      $conditionList = array(' - select - ') + $foundConditions;
+      asort($conditionList);
+    }
+    else {
+      $conditionList = array(' - select - ');
+    }
     $this->add('select', 'rule_condition_select', ts('Select Condition'), $conditionList, true, array('class' => 'crm-select2'));
 
     $this->addButtons(array(

@@ -280,9 +280,9 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     CRM_Core_DAO::executeQuery("UPDATE `civirule_trigger` SET `class_name` = 'CRM_CivirulesPostTrigger_Participant' WHERE `object_name` = 'Participant'");
     CRM_Core_DAO::executeQuery("
       INSERT INTO civirule_condition (name, label, class_name, is_active) VALUES 
-        ('event_type', 'Event Type is', 'CRM_CivirulesConditions_Event_EventType', 1),
-        ('participant_role', 'Participant has role', 'CRM_CivirulesConditions_Participant_ParticipantRole', 1),
-        ('participant_status', 'Participant status is', 'CRM_CivirulesConditions_Participant_ParticipantStatus', 1);
+        ('event_type', 'Event is (not) of Type(s)', 'CRM_CivirulesConditions_Event_EventType', 1),
+        ('participant_role', 'Participant has (not) one of Role(s)', 'CRM_CivirulesConditions_Participant_ParticipantRole', 1),
+        ('participant_status', 'Participant Status is (not) one ofs', 'CRM_CivirulesConditions_Participant_ParticipantStatus', 1);
     ");
 
     return TRUE;
@@ -300,10 +300,10 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
   }
 
   /**
-   * Upgrade 1030 add Contact Lives in Country condition
+   * Upgrade 1025 add Contact Lives in Country condition
    */
 	public function upgrade_1025() {
-    $this->ctx->log->info('Applying update 1030 - add LivesInCountry condition to CiviRules');
+    $this->ctx->log->info('Applying update 1025 - add LivesInCountry condition to CiviRules');
     $select = "SELECT COUNT(*) FROM civirule_condition WHERE class_name = %1";
     $selectParams = array(
       1 => array('CRM_CivirulesConditions_Contact_LivesInCountry', 'String'),
@@ -322,5 +322,30 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     return TRUE;
   }
 
+  /**
+   * Upgrade 1026 add activity date conditions.
+   */
+  public function upgrade_1026() {
+    CRM_Core_DAO::executeQuery("
+    INSERT INTO civirule_condition (name, label, class_name, is_active)
+      VALUES('activity_is_future_date', 'Activity Date in the Future', 'CRM_CivirulesConditions_Activity_ActivityIsFuture', 1);
+    ");
+    CRM_Core_DAO::executeQuery("
+    INSERT INTO civirule_condition (name, label, class_name, is_active)
+      VALUES('activity_is_past_date', 'Activity Date in the Past', 'CRM_CivirulesConditions_Activity_ActivityIsPast', 1);
+    ");
+    return true;
+  }
+
+  /**
+   * Upgrade 1027 check and insert civirules conditions, actions and triggers if needed
+   */
+  public function upgrade_1027() {
+    $this->ctx->log->info('Applying update 1027 - inserting conditions, actions and triggers if required');
+    CRM_Civirules_Utils_Upgrader::checkCiviRulesConditions();
+    CRM_Civirules_Utils_Upgrader::checkCiviRulesActions();
+    CRM_Civirules_Utils_Upgrader::checkCiviRulesTriggers();
+    return true;
+  }
 }
 

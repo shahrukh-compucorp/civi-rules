@@ -60,14 +60,26 @@ class CRM_CivirulesCronTrigger_GroupMembership extends CRM_Civirules_Trigger_Cro
       $groupWhereStatement = "`c`.`group_id` = '".CRM_Utils_Type::escape($this->triggerParams['group_id'], 'Integer', true)."'";
     }
 
-    $sql = "SELECT c.*
+    CRM_Contact_BAO_GroupContactCache::loadAll($this->triggerParams['group_id']);
+    $sql = "SELECT c.group_id, c.contact_id
             FROM `civicrm_group_contact` `c`
-            WHERE {$groupWhereStatement} AND c.status = 'Added'
-            AND `c`.`contact_id` NOT IN (
-              SELECT `rule_log`.`contact_id`
-              FROM `civirule_rule_log` `rule_log`
-              WHERE `rule_log`.`rule_id` = %1 AND DATE(`rule_log`.`log_date`) = DATE(NOW())
-            )";
+            WHERE {$groupWhereStatement}
+              AND c.status = 'Added'
+              AND `c`.`contact_id` NOT IN (
+                SELECT `rule_log`.`contact_id`
+                FROM `civirule_rule_log` `rule_log`
+                WHERE `rule_log`.`rule_id` = %1 AND DATE(`rule_log`.`log_date`) = DATE(NOW())
+              )
+            UNION
+            SELECT c.group_id, c.contact_id
+            FROM `civicrm_group_contact_cache` c
+            WHERE {$groupWhereStatement}
+              AND `c`.`contact_id` NOT IN (
+                SELECT `rule_log`.`contact_id`
+                FROM `civirule_rule_log` `rule_log`
+                WHERE `rule_log`.`rule_id` = %1 AND DATE(`rule_log`.`log_date`) = DATE(NOW())
+              )
+    ";
 
     $params[1] = array($this->ruleId, 'Integer');
     $this->dao = CRM_Core_DAO::executeQuery($sql, $params, true, 'CRM_Contact_DAO_GroupContact');

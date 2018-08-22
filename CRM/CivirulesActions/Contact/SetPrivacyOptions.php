@@ -24,7 +24,21 @@ class CRM_CivirulesActions_Contact_SetPrivacyOptions extends CRM_Civirules_Actio
       $params['do_not_'.$privacyOption] = $actionParams['on_or_off'];
     }
     try {
-      civicrm_api3('Contact', 'create', $params);
+      if (is_a($triggerData->getTrigger(), 'CRM_CivirulesPostTrigger_Contact')) {
+        $sqlUpd = [];
+        foreach ($params as $f => $v) {
+          $sqlUpd[] = "{$f} = {$v}";
+        }
+        $sqlUpdStr = implode(', ', $sqlUpd);
+        CRM_Core_DAO::executeQuery("
+          UPDATE civicrm_contact
+          SET {$sqlUpdStr}
+          WHERE id = {$params['id']}
+        ");
+      }
+      else {
+        civicrm_api3('Contact', 'create', $params);
+      }
     }
     catch (CiviCRM_API3_Exception $ex) {
       throw new Exception('Could not update contact with privacy options in '.__METHOD__

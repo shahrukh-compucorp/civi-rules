@@ -97,7 +97,42 @@ function civirules_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_managed
  */
 function civirules_civicrm_managed(&$entities) {
+  // First create a backup because the managed entities are gone
+  // so the actions and conditions table are first going to be emptied
+  _civirules_upgrade_to_2x_backup();
   return _civirules_civix_civicrm_managed($entities);
+}
+
+/**
+ * Helper function to create a backup if the current schema version is of a 1.x version.
+ * We need this backup to restore missing actions and rules after upgrading.
+ */
+function _civirules_upgrade_to_2x_backup() {
+  // Check schema version
+  // Schema version 1023 is inserted by a 2x version
+  // So if the schema version is lower than 1023 we are still on a 1x version.
+  $schemaVersion = CRM_Core_DAO::singleValueQuery("SELECT schema_version FROM civicrm_extension WHERE `name` = 'CiviRules'");
+  if ($schemaVersion >= 1023) {
+    return; // No need for preparing the update.
+  }
+
+  if (!CRM_Core_DAO::checkTableExists('civirule_rule_action_backup')) {
+    // Backup the current action and condition connected to a civirule
+    CRM_Core_DAO::executeQuery("
+      CREATE TABLE `civirule_rule_action_backup` 
+      SELECT `civirule_rule_action`.*, `civirule_action`.`class_name` as `action_class_name` 
+      FROM `civirule_rule_action` 
+      INNER JOIN `civirule_action` ON `civirule_rule_action`.`action_id` = `civirule_action`.`id` 
+    ");
+  }
+  if (!CRM_Core_DAO::checkTableExists('civirule_rule_action_backup')) {
+    CRM_Core_DAO::executeQuery("
+      CREATE TABLE `civirule_rule_condition_backup`
+      SELECT `civirule_rule_condition`.*, `civirule_condition`.`class_name` as `condition_class_name` 
+      FROM `civirule_rule_condition` 
+      INNER JOIN `civirule_condition` ON `civirule_rule_condition`.`condition_id` = `civirule_condition`.`id` 
+    ");
+  }
 }
 
 /**

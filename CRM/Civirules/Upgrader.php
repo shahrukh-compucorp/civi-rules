@@ -276,6 +276,40 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
       CRM_Core_DAO::executeQuery($query, $params);
     }
 
+    // now insert all Civirules Actions and Conditions
+    $this->executeSqlFile('sql/insertCivirulesActions.sql');
+    $this->executeSqlFile('sql/insertCivirulesConditions.sql');
+
+    // Now check whether we have a backup and restore the backup
+    if (CRM_Core_DAO::checkTableExists('civirule_rule_action_backup')) {
+      CRM_Core_DAO::executeQuery("TRUNCATE `civirule_rule_action`");
+      CRM_Core_DAO::executeQuery("
+        INSERT INTO `civirule_rule_action` 
+        SELECT `civirule_rule_action_backup`.`id`,
+        `civirule_rule_action_backup`.`rule_id`,
+        `civirule_action`.`id` as `action_id`,
+        `civirule_rule_action_backup`.`action_params`,
+        `civirule_rule_action_backup`.`delay`,
+        `civirule_rule_action_backup`.`ignore_condition_with_delay`,
+        `civirule_rule_action_backup`.`is_active` 
+        FROM `civirule_rule_action_backup`
+        INNER JOIN `civirule_action` ON `civirule_rule_action_backup`.`action_name` = `civirule_action`.`name`");
+    }
+    if (CRM_Core_DAO::checkTableExists('civirule_rule_condition_backup')) {
+      CRM_Core_DAO::executeQuery("TRUNCATE `civirule_rule_condition`");
+      CRM_Core_DAO::executeQuery("
+        INSERT INTO `civirule_rule_condition` 
+        SELECT `civirule_rule_condition_backup`.`id`,
+        `civirule_rule_condition_backup`.`rule_id`,
+        `civirule_rule_condition_backup`.`condition_link`,
+        `civirule_condition`.`id` as `condition_id`,
+        `civirule_rule_condition_backup`.`condition_params`,
+        `civirule_rule_condition_backup`.`is_active` 
+        FROM `civirule_rule_condition_backup`
+        INNER JOIN `civirule_condition` ON `civirule_rule_condition_backup`.`condition_name` = `civirule_condition`.`name`");
+    }
+
+
     // Update the participant trigger and add the event conditions
     CRM_Core_DAO::executeQuery("UPDATE `civirule_trigger` SET `class_name` = 'CRM_CivirulesPostTrigger_Participant' WHERE `object_name` = 'Participant'");
     CRM_Core_DAO::executeQuery("
@@ -342,9 +376,14 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
    */
   public function upgrade_1027() {
     $this->ctx->log->info('Applying update 1027 - inserting conditions, actions and triggers if required');
-    CRM_Civirules_Utils_Upgrader::checkCiviRulesConditions();
-    CRM_Civirules_Utils_Upgrader::checkCiviRulesActions();
-    CRM_Civirules_Utils_Upgrader::checkCiviRulesTriggers();
+    //CRM_Civirules_Utils_Upgrader::checkCiviRulesConditions();
+    //CRM_Civirules_Utils_Upgrader::checkCiviRulesActions();
+    //CRM_Civirules_Utils_Upgrader::checkCiviRulesTriggers();
+    return true;
+  }
+
+  public function upgrade_2000() {
+    // Stub function to make sure the schema version jumps to 2000, indicating we are on 2.x version. 
     return true;
   }
 }

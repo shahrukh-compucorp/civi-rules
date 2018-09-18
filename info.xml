@@ -14,8 +14,8 @@
     <author>CiviCooP</author>
     <email>helpdesk@civicoop.org</email>
   </maintainer>
-  <releaseDate>2018-06-20</releaseDate>
-  <version>2.1</version>
+  <releaseDate>2018-09-18</releaseDate>
+  <version>2.2</version>
   <develStage>stable</develStage>
   <compatibility>
     <ver>4.4</ver>
@@ -23,6 +23,9 @@
     <ver>4.7</ver>
     <ver>5.0</ver>
     <ver>5.1</ver>
+    <ver>5.2</ver>
+    <ver>5.3</ver>
+    <ver>5.4</ver>
   </compatibility>
   <comments>This extension is in production</comments>
   <civix>

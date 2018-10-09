@@ -16,12 +16,12 @@ __Triggers__ that gets CiviRules into action. This will be things like:
 __Conditions__ that determine the conditions to be compared when the trigger occurs. The conditions determine if the action will be executed and can be combined with AND or OR. This could be stuff like:
 
 - when it is the first contribution of a donor
-- when the contribution is of a certain financial type AND the total amount is more than
+- when the contribution is of a certain financial type AND the total amount is more than xxx
 - when the contact is member of group xxx.
 
 __Actions__ that specify what is to happen if the trigger occurs and the conditions are met. Each CiviRule can have one or more actions. This could be:
 
-- send an emai, SMS or PDF
+- send an email, SMS or PDF
 - add a contact to a group
 - add an activity to a contact
 - remove a tag from a contact

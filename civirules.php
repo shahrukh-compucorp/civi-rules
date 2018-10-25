@@ -172,7 +172,11 @@ function civirules_civicrm_navigationMenu( &$params ) {
   // retrieve the option group id of the rule tags option group
   $optionGroup = CRM_Civirules_Utils_OptionGroup::getSingleWithName('civirule_rule_tag');
   // retrieve the id of the "Administer" menu item
-  $administerID = CRM_Core_DAO::getFieldValue('CRM_Core_DAO_Navigation', 'Administer', 'id', 'name');
+  foreach($params as $key => $item) {
+  	if (isset($item['attributes']['name']) && $item['attributes']['name'] === 'Administer') {
+  	  $administerID = $item['attributes']['navID'];
+  	}
+  }
 
   $params[$administerID]['child'][$newNavId] = array(
     'attributes' => array(

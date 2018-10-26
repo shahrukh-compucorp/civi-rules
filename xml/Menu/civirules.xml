@@ -78,6 +78,13 @@
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
   <item>
+    <path>civicrm/civirule/form/condition/activity/date</path>
+    <page_callback>CRM_CivirulesConditions_Form_Activity_Date</page_callback>
+    <title>Activity Date</title>
+    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
     <path>civicrm/civirule/form/condition/entitytag/tagid</path>
     <page_callback>CRM_CivirulesConditions_Form_EntityTag_TagId</page_callback>
     <title>EntityTag Tag Id</title>

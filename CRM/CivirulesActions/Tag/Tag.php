@@ -59,7 +59,6 @@ abstract class CRM_CivirulesActions_Tag_Tag extends CRM_CivirulesActions_Generic
           continue;
         }
       }
-
       //execute the action
       $this->executeApiAction($entity, $action, $params);
     }

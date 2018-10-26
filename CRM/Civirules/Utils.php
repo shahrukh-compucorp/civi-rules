@@ -373,5 +373,23 @@ class CRM_Civirules_Utils {
     return $campaignList;
   }
 
+  /**
+   * Method to set the operator options
+   *
+   * @return array
+   */
+  public static function getActivityDateOperatorOptions() {
+    return array(
+      'equals',
+      'later than',
+      'later than or equal',
+      'earlier than',
+      'earlier than or equal',
+      'not equal',
+      'between',
+    );
+  }
+
+
 }
 

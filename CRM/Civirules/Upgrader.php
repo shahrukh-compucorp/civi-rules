@@ -359,7 +359,7 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
    */
   public function upgrade_1026() {
     // This function is a stub and does not do anything in particulair.
-    return true;
+    return TRUE;
   }
 
   /**
@@ -370,12 +370,36 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     CRM_Civirules_Utils_Upgrader::checkCiviRulesConditions();
     CRM_Civirules_Utils_Upgrader::checkCiviRulesActions();
     CRM_Civirules_Utils_Upgrader::checkCiviRulesTriggers();
-    return true;
+    return TRUE;
   }
 
   public function upgrade_2000() {
     // Stub function to make sure the schema version jumps to 2000, indicating we are on 2.x version. 
-    return true;
+    return TRUE;
   }
+
+  /**
+   * Upgrade 1028 add activity date condition
+   */
+  public function upgrade_2010() {
+    $this->ctx->log->info('Applying update 2010 - add Activity Date is .... condition');
+    $select = "SELECT COUNT(*) FROM civirule_condition WHERE class_name = %1";
+    $selectParams = array(
+      1 => array('CRM_CivirulesConditions_Activity_DateComparison', 'String'),
+    );
+    $count = CRM_Core_DAO::singleValueQuery($select, $selectParams);
+    if ($count == 0) {
+      $insert = "INSERT INTO civirule_condition (name, label, class_name, is_active) VALUES(%1, %2, %3, %4)";
+      $insertParams = array(
+        1 => array('activity_date_comparison', 'String'),
+        2 => array('Activity Date is ....', 'String'),
+        3 => array('CRM_CivirulesConditions_Activity_Date', 'String'),
+        4 => array(1, 'Integer'),
+      );
+      CRM_Core_DAO::executeQuery($insert, $insertParams);
+    }
+    return TRUE;
+  }
+
 }
 

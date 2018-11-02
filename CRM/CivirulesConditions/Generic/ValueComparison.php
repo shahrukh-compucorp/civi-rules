@@ -289,10 +289,25 @@ abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civir
         if (empty($leftValue)) {
           return true;
         }
+        else if (is_array($leftValue)){
+          foreach ($leftValue as $item){
+            if (!empty($item)){
+              return false;
+            }
+          }
+          return true;
+        }
         return false;
       case 'is not empty':
         if (empty($leftValue)) {
           return false;
+        }
+        else if(is_array($leftValue)){
+          foreach ($leftValue as $item){
+            if (empty($item)){
+              return false;
+            }
+          }
         }
         return true;
       default:

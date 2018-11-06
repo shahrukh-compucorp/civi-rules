@@ -401,5 +401,11 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     return TRUE;
   }
 
+  public function upgrade_2011() {
+    \CRM_Core_DAO::executeQuery("INSERT INTO civirule_condition (name, label, class_name, is_active)
+  VALUES('group_type', 'Group is (not) one of Type(s)', 'CRM_CivirulesConditions_Group_GroupType', 1);");
+    return TRUE;
+  }
+
 }
 

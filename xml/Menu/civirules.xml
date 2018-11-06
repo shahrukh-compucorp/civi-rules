@@ -106,6 +106,13 @@
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
   <item>
+    <path>civicrm/civirule/form/condition/group/grouptype</path>
+    <page_callback>CRM_CivirulesConditions_Form_Group_GroupType</page_callback>
+    <title>case type</title>
+    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
     <path>civicrm/civirule/form/condition/relationship/relationshiptype</path>
     <page_callback>CRM_CivirulesConditions_Form_Relationship_RelationshipType</page_callback>
     <title>relationship type</title>

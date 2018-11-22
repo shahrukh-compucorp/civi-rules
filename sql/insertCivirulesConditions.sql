@@ -114,6 +114,8 @@ INSERT INTO civirule_condition (name, label, class_name, is_active)
   VALUES('activity_is_past_date', 'Activity Date in the Past', 'CRM_CivirulesConditions_Activity_ActivityIsPast', 1);
 INSERT INTO civirule_condition (name, label, class_name, is_active)
   VALUES('activity_date_comparison', 'Activity Date is .....', 'CRM_CivirulesConditions_Activity_Date', 1);
+INSERT INTO civirule_condition (name, label, class_name, is_active)
+  VALUES('xth_contribution_contact', 'xth Contribution of Contact', 'CRM_CivirulesConditions_Contribution_xthContribution', 1);
 
 
 

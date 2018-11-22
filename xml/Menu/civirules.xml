@@ -225,6 +225,13 @@
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
   <item>
+    <path>civicrm/civirule/form/condition/contribution/xthcontribution</path>
+    <page_callback>CRM_CivirulesConditions_Form_Contribution_xthContribution</page_callback>
+    <title>xth contribution of donor</title>
+    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
     <path>civicrm/civirule/form/condition/contact_ingroup</path>
     <page_callback>CRM_CivirulesConditions_Form_Contact_InGroup</page_callback>
     <title>In Group</title>

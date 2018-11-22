@@ -387,7 +387,7 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     $selectParams = array(
       1 => array('CRM_CivirulesConditions_Activity_DateComparison', 'String'),
     );
-    $count = CRM_Core_DAO::singleValueQuery($select, $selectParams);
+    $count = \CRM_Core_DAO::singleValueQuery($select, $selectParams);
     if ($count == 0) {
       $insert = "INSERT INTO civirule_condition (name, label, class_name, is_active) VALUES(%1, %2, %3, %4)";
       $insertParams = array(
@@ -396,7 +396,7 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
         3 => array('CRM_CivirulesConditions_Activity_Date', 'String'),
         4 => array(1, 'Integer'),
       );
-      CRM_Core_DAO::executeQuery($insert, $insertParams);
+      \CRM_Core_DAO::executeQuery($insert, $insertParams);
     }
     return TRUE;
   }
@@ -406,6 +406,53 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
   VALUES('group_type', 'Group is (not) one of Type(s)', 'CRM_CivirulesConditions_Group_GroupType', 1);");
     return TRUE;
   }
+
+  /**
+   * Upgrade 2012 add xth contribution of donor condition
+   */
+  public function upgrade_2012() {
+    $this->ctx->log->info('Applying update 2012 - add xth Contribution condition');
+    $select = "SELECT COUNT(*) FROM civirule_condition WHERE class_name = %1";
+    $selectParams = array(
+      1 => array('CRM_CivirulesConditions_Contribution_xthContribution', 'String'),
+    );
+    $count = \CRM_Core_DAO::singleValueQuery($select, $selectParams);
+    if ($count == 0) {
+      $insert = "INSERT INTO civirule_condition (name, label, class_name, is_active) VALUES(%1, %2, %3, %4)";
+      $insertParams = array(
+        1 => array('xth_contribution_contact', 'String'),
+        2 => array('xth Contribution of Contact', 'String'),
+        3 => array('CRM_CivirulesConditions_Contribution_xthContribution', 'String'),
+        4 => array(1, 'Integer'),
+      );
+      \CRM_Core_DAO::executeQuery($insert, $insertParams);
+    }
+    return TRUE;
+  }
+
+  /**
+   * Upgrade 2013 add contribution paid by condition
+   */
+  public function upgrade_2013() {
+    $this->ctx->log->info('Applying update 2013 - add Contributon Paid By condition');
+    $select = "SELECT COUNT(*) FROM civirule_condition WHERE class_name = %1";
+    $selectParams = array(
+      1 => array('CRM_CivirulesConditions_Contribution_PaidBy', 'String'),
+    );
+    $count = CRM_Core_DAO::singleValueQuery($select, $selectParams);
+    if ($count == 0) {
+      $insert = "INSERT INTO civirule_condition (name, label, class_name, is_active) VALUES(%1, %2, %3, %4)";
+      $insertParams = array(
+        1 => array('contribution_paid_y', 'String'),
+        2 => array('Contribution paid by', 'String'),
+        3 => array('CRM_CivirulesConditions_Contribution_PaidBy', 'String'),
+        4 => array(1, 'Integer'),
+      );
+      CRM_Core_DAO::executeQuery($insert, $insertParams);
+    }
+    return TRUE;
+  }
+
 
 }
 

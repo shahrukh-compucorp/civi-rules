@@ -387,11 +387,6 @@ class CRM_Civirules_Utils {
       'earlier than or equal',
       'not equal',
       'between',
-      'is date checked',
-      'xxx days later than date triggered',
-      'xxx days later than or on date triggered',
-      'xxx days earlier than date triggered',
-      'xxx days earlier than or on date triggered',
     );
   }
 

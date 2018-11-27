@@ -34,6 +34,9 @@ class CRM_CivirulesActions_Contact_SetCommPref extends CRM_Civirules_Action {
         'id' => $params['id'],
         'return' => 'preferred_communication_method'
       ));
+      if (!is_array($currentCommPrefs)) {
+        $currentCommPrefs = [$currentCommPrefs];
+      }
       if ($actionParams['on_or_off'] == 0 && isset($actionParams['comm_pref'])) {
         foreach ($currentCommPrefs as $currentKey => $currentValue) {
           if (!in_array($currentValue, $actionParams['comm_pref'])) {

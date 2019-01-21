@@ -25,7 +25,7 @@ class CRM_Civirules_Utils_CustomDataFromPre {
         // present and if it is not present we will treat the record number as a new one
         // and give it the id of -1.
         $customInfo = explode("_", $key, 3);
-        if (count($customInfo == 2)) {
+        if (count($customInfo) == 2) {
           list($custom_, $fid) = $customInfo;
           $id = -1; //It is a new value
         } elseif (count($customInfo) == 3) {

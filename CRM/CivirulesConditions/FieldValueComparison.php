@@ -70,7 +70,9 @@ class CRM_CivirulesConditions_FieldValueComparison extends CRM_CivirulesConditio
    */
   protected function getComparisonValue() {
     $value = parent::getComparisonValue();
-    if (strlen($value) != 0) {
+    if (is_array($value)) {
+      return $this->normalizeValue($value);
+    } elseif (strlen($value) != 0) {
       return $this->normalizeValue($value);
     } else {
       return null;

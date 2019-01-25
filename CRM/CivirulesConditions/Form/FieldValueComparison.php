@@ -107,7 +107,6 @@ class CRM_CivirulesConditions_Form_FieldValueComparison extends CRM_CivirulesCon
   public function buildQuickForm() {
     parent::buildQuickForm();
 
-
     $this->add('hidden', 'rule_condition_id');
     $this->add('select', 'entity', ts('Entity'), $this->getEntityOptions(), true);
     $this->add('select', 'field', ts('Field'), $this->getFields(), true, array('class' => 'crm-select2'));
@@ -146,9 +145,7 @@ class CRM_CivirulesConditions_Form_FieldValueComparison extends CRM_CivirulesCon
   public function setDefaultValues() {
     $data = array();
     $defaultValues = parent::setDefaultValues();
-    if ($this->ruleCondition->find(true)) {
-      $data = unserialize($this->ruleCondition->condition_params);
-    }
+    $data = unserialize($this->ruleCondition->condition_params);
     if (!empty($data['entity'])) {
       $defaultValues['entity'] = $data['entity'];
     }

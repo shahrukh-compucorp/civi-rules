@@ -437,7 +437,7 @@ class CRM_Civirules_Form_Rule extends CRM_Core_Form {
       $actionActions[] = '<a class="action-item" title="Edit" href="'.$editUrl.'">'.ts('Edit').'</a>';
     }
 
-    $removeUrl = CRM_Utils_System::url('civicrm/civirule/form/rule_action', 'reset=1&action=delete&rid='
+    $removeUrl = CRM_Utils_System::url('civicrm/civirule/form/rule_action', 'reset=1&action=delete&rule_id='
       .$this->ruleId.'&id='.$ruleActionId);
     $actionActions[] = '<a class="action-item" title="Remove" href="'.$removeUrl.'">Remove</a>';
     return $actionActions;

@@ -5,7 +5,7 @@
   <description>Native CiviCRM extension CiviRules</description>
   <license>AGPL-3.0</license>
 <urls>
-    <url desc="Main Extension Page">https://github.com/CiviCooP/org.civicoop.civirules</url>
+    <url desc="Main Extension Page">https://lab.civicrm.org/extensions/civirules</url>
     <url desc="Documentation">https://docs.civicrm.org/civirules/en/latest</url>
     <url desc="Support">http://www.civicoop.org</url>
     <url desc="Licensing">http://civicrm.org/licensing</url>

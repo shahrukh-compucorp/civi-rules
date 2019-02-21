@@ -41,51 +41,67 @@ class CRM_CivirulesConditions_Activity_Date extends CRM_Civirules_Condition {
   public function isConditionValid(CRM_Civirules_TriggerData_TriggerData $triggerData) {
     $activityData = $triggerData->getEntityData('Activity');
     if (isset($activityData['activity_date_time'])) {
-      $activityDate = new DateTime($activityData['activity_date_time']);
+      try {
+        $activityDate = new DateTime($activityData['activity_date_time']);
+      }
+      catch (Exception $ex) {
+        Civi::log()->error(ts('Could not parse activity_date_time ') . $activityData['activity_date_time']
+          . ts(' into a DateTime object in ') . __METHOD__ . ts(', condition returned as FALSE'));
+        return FALSE;
+      }
       if ($activityDate) {
         if ($this->_conditionParams['operator'] == 6) {
-          $fromDate = new DateTime($this->_conditionParams['activity_from_date']);
-          $toDate = new DateTime($this->_conditionParams['activity_to_date']);
-          $fromInterval = date_diff($fromDate, $activityDate);
-          $toInterval = date_diff($toDate, $activityDate);
-          if ($fromInterval->days >= 0 && $toInterval->days <= 0) {
+          try {
+            $fromDate = new DateTime($this->_conditionParams['activity_from_date']);
+            $toDate = new DateTime($this->_conditionParams['activity_to_date']);
+          }
+          catch (Exception $ex) {
+            Civi::log()->error(ts('Could not parse either from date or to date from the condition params into a DateTime object in ') . __METHOD__ . ts(', condition returned as FALSE'));
+            return FALSE;
+          }
+          if ($fromDate >= $activityDate && $toDate <= $activityDate) {
             return TRUE;
           }
         }
         else {
-          $compareDate = new DateTime($this->_conditionParams['activity_compare_date']);
-          $interval = date_diff($compareDate, $activityDate);
-          switch ($this->_conditionParams['operator']) {
-            case 0:
-              if ($interval->days == 0) {
-                return TRUE;
-              }
-              break;
-            case 1:
-              if ($interval->days > 0) {
-                return TRUE;
-              }
-              break;
-            case 2:
-              if ($interval->days >= 0) {
-                return TRUE;
-              }
-              break;
-            case 3:
-              if ($interval->days < 0) {
-                return TRUE;
-              }
-              break;
-            case 4:
-              if ($interval->days <= 0) {
-                return TRUE;
-              }
-              break;
-            case 5:
-              if ($interval->days != 0) {
-                return TRUE;
-              }
-              break;
+          try {
+            $compareDate = new DateTime($this->_conditionParams['activity_compare_date']);
+            switch ($this->_conditionParams['operator']) {
+              case 0:
+                if ($activityDate == $compareDate) {
+                  return TRUE;
+                }
+                break;
+              case 1:
+                if ($activityDate > $compareDate) {
+                  return TRUE;
+                }
+                break;
+              case 2:
+                if ($activityDate >= $compareDate) {
+                  return TRUE;
+                }
+                break;
+              case 3:
+                if ($activityDate < $compareDate) {
+                  return TRUE;
+                }
+                break;
+              case 4:
+                if ($activityDate <= $compareDate) {
+                  return TRUE;
+                }
+                break;
+              case 5:
+                if ($activityDate != $compareDate) {
+                  return TRUE;
+                }
+                break;
+            }
+          }
+          catch (Exception $ex) {
+            Civi::log()->error(ts('Could not parse compare date from the condition params into a DateTime object in ') . __METHOD__ . ts(', condition returned as FALSE'));
+            return FALSE;
           }
         }
       }
@@ -95,7 +111,6 @@ class CRM_CivirulesConditions_Activity_Date extends CRM_Civirules_Condition {
 
   /**
    * Returns a user friendly text explaining the condition params
-   * e.g. 'Older than 65'
    *
    * @return string
    * @access public
@@ -104,13 +119,22 @@ class CRM_CivirulesConditions_Activity_Date extends CRM_Civirules_Condition {
     $operatorOptions = CRM_Civirules_Utils::getActivityDateOperatorOptions();
     $friendlyText = ts("Activity Date ") . ts($operatorOptions[$this->_conditionParams['operator']]);
     if ($this->_conditionParams['operator'] == 6) {
-      $fromDate = new DateTime($this->_conditionParams['activity_from_date']);
-      $toDate = new DateTime($this->_conditionParams['activity_to_date']);
-      $friendlyText .= ' ' . $fromDate->format('j F Y') . ts(' and ') . $toDate->format('j F Y');
+      try {
+        $fromDate = new DateTime($this->_conditionParams['activity_from_date']);
+        $toDate = new DateTime($this->_conditionParams['activity_to_date']);
+        $friendlyText .= ' ' . $fromDate->format('j F Y') . ts(' and ') . $toDate->format('j F Y');
+      }
+      catch (Exception $ex) {
+      }
     }
     else {
-      $compareDate = new DateTime($this->_conditionParams['activity_compare_date']);
-      $friendlyText .= ' ' . $compareDate->format('j F Y');
+      try {
+        $compareDate = new DateTime($this->_conditionParams['activity_compare_date']);
+        $friendlyText .= ' ' . $compareDate->format('j F Y');
+      }
+      catch (Exception $ex) {
+        $friendlyText = 'Could not parse dates!';
+      }
     }
     return $friendlyText;
   }

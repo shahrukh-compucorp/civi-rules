@@ -52,11 +52,16 @@ class CRM_CivirulesConditions_Form_Activity_Date extends CRM_CivirulesConditions
         return $errors;
       }
       // to date can not be earlier than from date
-      $fromDate = new DateTime($fields['activity_from_date']);
-      $toDate = new DateTime($fields['activity_to_date']);
-      if ($toDate < $fromDate) {
-        $errors['from_date'] = ts('From Date should be earlier than or the same as To Date');
-        return $errors;
+      try {
+        $fromDate = new DateTime($fields['activity_from_date']);
+        $toDate = new DateTime($fields['activity_to_date']);
+        if ($toDate < $fromDate) {
+          $errors['from_date'] = ts('From Date should be earlier than or the same as To Date');
+          return $errors;
+        }
+      }
+      catch (Exception $ex) {
+        Civi::log()->error('Could not parse either from date or to date into DateTime in ' . __METHOD__);
       }
     }
     // if not between, compare date can not be empty
@@ -69,7 +74,7 @@ class CRM_CivirulesConditions_Form_Activity_Date extends CRM_CivirulesConditions
     return TRUE;
   }
 
-    /**
+  /**
    * Overridden parent method to set default values
    *
    * @return array $defaultValues

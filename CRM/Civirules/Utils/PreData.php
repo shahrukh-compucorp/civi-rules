@@ -26,6 +26,11 @@ class CRM_Civirules_Utils_PreData {
     if ($op != 'edit' || in_array($objectName, $nonPreEntities)) {
       return;
     }
+    // Don't execute this if no rules exist for this entity.
+    $rules = CRM_Civirules_BAO_Rule::findRulesByObjectNameAndOp($objectName, $op);
+    if (empty($rules)) {
+      return;
+    }
 
     /**
      * Not every object in CiviCRM sets the object id in the pre hook

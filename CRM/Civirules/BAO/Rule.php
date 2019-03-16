@@ -206,9 +206,6 @@ class CRM_Civirules_BAO_Rule extends CRM_Civirules_DAO_Rule {
    */
   public static function findRulesByObjectNameAndOp($objectName, $op)
   {
-    if (isset(self::$ruleCache[$objectName][$op])) {
-      return self::$ruleCache[$objectName][$op];
-    }
     $triggers = array();
     $sql = "SELECT r.id AS rule_id, t.id AS trigger_id, t.class_name, r.trigger_params
             FROM `civirule_rule` r
@@ -233,7 +230,6 @@ class CRM_Civirules_BAO_Rule extends CRM_Civirules_DAO_Rule {
         $triggers[] = $triggerObject;
       }
     }
-    self::$ruleCache[$objectName][$op] = $triggers;
     return $triggers;
   }
 

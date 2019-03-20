@@ -67,15 +67,18 @@ class CRM_Civirules_Engine {
    * @access protected
    * @static
    */
-  public static function executeAction(CRM_Civirules_TriggerData_TriggerData $triggerData, $ruleAction) {
+  public static function executeAction(CRM_Civirules_TriggerData_TriggerData &$triggerData, $ruleAction) {
     $actionEngine = CRM_Civirules_ActionEngine_Factory::getEngine($ruleAction, $triggerData);
 
     //determine if the action should be executed with a delay
     $delay = self::getActionDelay($ruleAction, $actionEngine);
     if ($delay instanceof DateTime) {
+      $triggerData->isDelayedExecution = TRUE;
+      $triggerData->delayedSubmitDateTime = CRM_Utils_Time::getTime('YmdHis');
       self::delayAction($delay, $actionEngine);
     } else {
       //there is no delay so process action immediatly
+      $triggerData->isDelayedExecution = FALSE;
       $actionEngine->execute();
     }
   }

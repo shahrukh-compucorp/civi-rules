@@ -20,7 +20,8 @@ class CRM_CivirulesConditions_Form_Activity_Date extends CRM_CivirulesConditions
     $this->add('datepicker', 'activity_compare_date', ts('Comparison Date'), array('placeholder' => ts('Compare with')),FALSE, array('time' => FALSE));
     $this->add('datepicker', 'activity_from_date', ts('From date'), array('placeholder' => ts('From')),FALSE, array('time' => FALSE));
     $this->add('datepicker', 'activity_to_date', ts('To date'), array('placeholder' => ts('To')),FALSE, array('time' => FALSE));
-
+    $this->addYesNo('use_trigger_date', ts('Compare with the date the rule is triggered'), [], TRUE);
+    $this->addYesNo('use_action_date', ts('Compare with the date the action is executed'), [], TRUE);
     $this->addButtons(array(
       array('type' => 'next', 'name' => ts('Save'), 'isDefault' => TRUE,),
       array('type' => 'cancel', 'name' => ts('Cancel'))));
@@ -34,7 +35,7 @@ class CRM_CivirulesConditions_Form_Activity_Date extends CRM_CivirulesConditions
    * @access public
    */
   public function addRules() {
-    $this->addFormRule(array('CRM_CivirulesConditions_Form_Activity_Date', 'validateDates'));
+    $this->addFormRule(array('CRM_CivirulesConditions_Form_Activity_Date', 'validateInputFields'));
   }
 
   /**
@@ -43,7 +44,7 @@ class CRM_CivirulesConditions_Form_Activity_Date extends CRM_CivirulesConditions
    * @param $fields
    * @return array|bool
    */
-  public static function validateDates($fields) {
+  public static function validateInputFields($fields) {
     // if operator is between
     if (isset($fields['operator']) && $fields['operator'] == 6) {
       // from and to date can not be empty
@@ -64,11 +65,33 @@ class CRM_CivirulesConditions_Form_Activity_Date extends CRM_CivirulesConditions
         Civi::log()->error('Could not parse either from date or to date into DateTime in ' . __METHOD__);
       }
     }
-    // if not between, compare date can not be empty
     else {
-      if (!isset($fields['activity_compare_date']) || empty($fields['activity_compare_date'])) {
-        $errors['activity_compare_date'] = ts('Date to compare with can not be empty');
+      // error if both trigger and action date are switched on
+      if (isset($fields['use_trigger_date']) && $fields['use_trigger_date'] == 1 && isset($fields['use_action_date']) && $fields['use_action_date'] == 1) {
+        $errors['use_trigger_date'] = ts('You can only use trigger date OR action execution date, not both!');
         return $errors;
+      }
+      // if not between and trigger or action data, compare date has to be empty
+      if (isset($fields['use_trigger_date']) && $fields['use_trigger_date'] == 1) {
+        if (isset($fields['activity_compare_date']) && !empty($fields['activity_compare_date'])) {
+          $errors['activity_compare_date'] = ts('Date to compare with has to be empty when using the trigger date');
+          return $errors;
+        }
+      }
+      if (isset($fields['use_action_date']) && $fields['use_action_date'] == 1) {
+        if (isset($fields['activity_compare_date']) && !empty($fields['activity_compare_date'])) {
+          $errors['activity_compare_date'] = ts('Date to compare with has to be empty when using the action execution date');
+          return $errors;
+        }
+      }
+      // if not between and no trigger or action data, compare date can not be empty
+      if (!isset($fields['use_trigger_date']) || empty($fields['use_trigger_date'])) {
+        if (!isset($fields['use_action_date']) || empty($fields['use_action_date'])) {
+          if (!isset($fields['activity_compare_date']) || empty($fields['activity_compare_date'])) {
+            $errors['activity_compare_date'] = ts('Date to compare with can not be empty');
+            return $errors;
+          }
+        }
       }
     }
     return TRUE;
@@ -95,6 +118,18 @@ class CRM_CivirulesConditions_Form_Activity_Date extends CRM_CivirulesConditions
     if (!empty($data['activity_to_date'])) {
       $defaultValues['activity_to_date'] = $data['activity_to_date'];
     }
+    if (isset($data['use_trigger_date']) && $data['use_trigger_date'] == 1) {
+      $defaultValues['use_trigger_date'] = 1;
+    }
+    else {
+      $defaultValues['use_trigger_date'] = 0;
+    }
+    if (isset($data['use_action_date']) && $data['use_action_date'] == 1) {
+      $defaultValues['use_action_date'] = 1;
+    }
+    else {
+      $defaultValues['use_action_date'] = 0;
+    }
     if ($data['operator'] == 6) {
       $this->assign('between', 1);
     }
@@ -113,14 +148,29 @@ class CRM_CivirulesConditions_Form_Activity_Date extends CRM_CivirulesConditions
     $data['operator'] = $this->_submitValues['operator'];
     if ($this->_submitValues['operator'] == 6) {
       $data['activity_compare_date'] = "";
+      $data['use_trigger_date'] = 0;
+      $data['use_action_date'] = 0;
       $data['activity_from_date'] = $this->_submitValues['activity_from_date'];
       $data['activity_to_date'] = $this->_submitValues['activity_to_date'];
     }
     else {
-      $data['activity_compare_date'] = $this->_submitValues['activity_compare_date'];
       $data['activity_from_date'] = "";
       $data['activity_to_date'] = "";
-
+      if ($this->_submitValues['use_trigger_date'] == 1) {
+        $data['activity_compare_date'] = "";
+        $data['use_trigger_date'] = 1;
+        $data['use_action_date'] = 0;
+      }
+      elseif ($this->_submitValues['use_action_date'] == 1) {
+        $data['activity_compare_date'] = "";
+        $data['use_trigger_date'] = 0;
+        $data['use_action_date'] = 1;
+      }
+      else {
+        $data['activity_compare_date'] = $this->_submitValues['activity_compare_date'];
+        $data['use_trigger_date'] = 0;
+        $data['use_action_date'] = 0;
+      }
     }
     $this->ruleCondition->condition_params = serialize($data);
     $this->ruleCondition->save();

@@ -64,46 +64,93 @@ class CRM_CivirulesConditions_Activity_Date extends CRM_Civirules_Condition {
           }
         }
         else {
-          try {
-            $compareDate = new DateTime($this->_conditionParams['activity_compare_date']);
-            switch ($this->_conditionParams['operator']) {
-              case 0:
-                if ($activityDate == $compareDate) {
-                  return TRUE;
-                }
-                break;
-              case 1:
-                if ($activityDate > $compareDate) {
-                  return TRUE;
-                }
-                break;
-              case 2:
-                if ($activityDate >= $compareDate) {
-                  return TRUE;
-                }
-                break;
-              case 3:
-                if ($activityDate < $compareDate) {
-                  return TRUE;
-                }
-                break;
-              case 4:
-                if ($activityDate <= $compareDate) {
-                  return TRUE;
-                }
-                break;
-              case 5:
-                if ($activityDate != $compareDate) {
-                  return TRUE;
-                }
-                break;
-            }
-          }
-          catch (Exception $ex) {
-            Civi::log()->error(ts('Could not parse compare date from the condition params into a DateTime object in ') . __METHOD__ . ts(', condition returned as FALSE'));
-            return FALSE;
+          $compareDate = $this->getCompareDate($triggerData);
+          if ($compareDate) {
+            return $this->compareDate($compareDate, $activityDate);
           }
         }
+      }
+    }
+    return FALSE;
+  }
+
+  /**
+   * Method to compare activity date and compare date
+   *
+   * @param DateTime $compareDate
+   * @param DateTime $activityDate
+   * @return bool
+   */
+  private function compareDate($compareDate, $activityDate) {
+    switch ($this->_conditionParams['operator']) {
+      case 0:
+        if ($activityDate == $compareDate) {
+          return TRUE;
+        }
+        break;
+      case 1:
+        if ($activityDate > $compareDate) {
+          return TRUE;
+        }
+        break;
+      case 2:
+        if ($activityDate >= $compareDate) {
+          return TRUE;
+        }
+        break;
+      case 3:
+        if ($activityDate < $compareDate) {
+          return TRUE;
+        }
+        break;
+      case 4:
+        if ($activityDate <= $compareDate) {
+          return TRUE;
+        }
+        break;
+      case 5:
+        if ($activityDate != $compareDate) {
+          return TRUE;
+        }
+        break;
+    }
+    return FALSE;
+  }
+
+  /**
+   * Method to get the compare date
+   *
+   * @param CRM_Civirules_TriggerData_TriggerData $triggerData
+   * @return bool|DateTime
+   */
+  private function getCompareDate($triggerData) {
+    // if use_trigger_date, compare with trigger date
+    if ($this->_conditionParams['use_trigger_date'] && !$this->_conditionParams['use_action_date'] && empty($this->_conditionParams['activity_compare_date'])) {
+      $dateToUse = date('YmdHis');
+      if ($triggerData->isDelayedExecution) {
+        if (isset($triggerData->delayedSubmitDateTime)) {
+          $dateToUse = $triggerData->delayedSubmitDateTime;
+        }
+      }
+      // if use_action_date, use date (only makes sense for actions with delays)
+    } elseif ($this->_conditionParams['use_action_date'] && !$this->_conditionParams['use_trigger_date'] && empty($this->_conditionParams['activity_compare_date'])) {
+      $dateToUse = date('YmdHis');
+    }
+    else {
+      // if compare date has been used
+      if (!empty($this->_conditionParams['activity_compare_date']) && !$this->_conditionParams['use_trigger_date'] && !$this->_conditionParams['use_action_date']) {
+        $dateToUse = $this->_conditionParams['activity_compare_date'];
+      }
+    }
+    if ($dateToUse) {
+      try {
+        // weird fix for the fact that activity_date_time does not hold seconds.....
+        $dateToUse = substr($dateToUse, 0, -2) . '00';
+        $compareDate = new DateTime($dateToUse);
+        return $compareDate;
+      }
+      catch (Exception $ex) {
+        Civi::log()->error(ts('Could not parse date ') . $this->_conditionParams['activity_compare_date'] . ' in ' . __METHOD__);
       }
     }
     return FALSE;
@@ -128,12 +175,22 @@ class CRM_CivirulesConditions_Activity_Date extends CRM_Civirules_Condition {
       }
     }
     else {
-      try {
-        $compareDate = new DateTime($this->_conditionParams['activity_compare_date']);
-        $friendlyText .= ' ' . $compareDate->format('j F Y');
+      // if use_trigger_date
+      if ($this->_conditionParams['use_trigger_date'] == 1) {
+        $friendlyText .= ' the date the rule is triggered.';
       }
-      catch (Exception $ex) {
-        $friendlyText = 'Could not parse dates!';
+      elseif ($this->_conditionParams['use_action_date'] == 1) {
+        // if use_action_date
+        $friendlyText .= ' the date the action is executed.';
+      }
+      else {
+        try {
+          $compareDate = new DateTime($this->_conditionParams['activity_compare_date']);
+          $friendlyText .= ' ' . $compareDate->format('j F Y');
+        }
+        catch (Exception $ex) {
+          $friendlyText = 'Could not parse dates!';
+        }
       }
     }
     return $friendlyText;

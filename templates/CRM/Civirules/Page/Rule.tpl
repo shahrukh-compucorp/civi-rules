@@ -1,3 +1,7 @@
+{* dialog for rule help text *}
+<div id="civirule_helptext_dialog-block">
+  <p><label id="civirule_help_text-value"></label></p>
+</div>
 <div class="crm-content-block crm-block">
   <div id="help">
     The existing CiviRules are listed below. You can manage, delete, disable/enable or add a rule. 
@@ -8,16 +12,18 @@
     </a>
   </div>
   <div id="civirule_wrapper" class="dataTables_wrapper">
+    {include file="CRM/common/jsortable.tpl"}
     <table id="civirule-table" class="display">
       <thead>
         <tr>
-          <th class="sorting-disabled" rowspan="1" colspan="1">{ts}Name{/ts}</th>
-          <th class="sorting-disabled" rowspan="1" colspan="1">{ts}Trigger{/ts}</th>
-          <th class="sorting-disabled" rowspan="1" colspan="1">{ts}Active{/ts}</th>
-          <th class="sorting-disabled" rowspan="1" colspan="1">{ts}Description{/ts}</th>
-          <th class="sorting-disabled" rowspan="1" colspan="1">{ts}Date Created{/ts}</th>
-          <th class="sorting-disabled" rowspan="1" colspan="1">{ts}Created By{/ts}</th>
-          <th class="sorting_disabled" rowspan="1" colspan="1"></th>
+          <th id="sortable">{ts}Rule Label{/ts}</th>
+          <th id="sortable">{ts}Trigger{/ts}</th>
+          <th id="sortable">{ts}Tag(s){/ts}</th>
+          <th id="nosort">{ts}Description{/ts}</th>
+          <th id="sortable">{ts}Active?{/ts}</th>
+          <th id="sortable">{ts}Date Created{/ts}</th>
+          <th id="sortable">{ts}Created By{/ts}</th>
+          <th id="nosort"></th>
         </tr>
       </thead>
       <tbody>
@@ -27,15 +33,12 @@
             <td hidden="1">{$rule.id}</td>
             <td>{$rule.label}</td>
             <td>{$rule.trigger_label}</td>
-            <td>{$rule.is_active}</td>
+            <td>{$rule.tags}</td>
             <td>{$rule.description}
               {if (!empty($rule.help_text))}
-                {if $earlier_than_46 eq 0}
-                  <a class="crm-popup medium-popup helpicon" href="{crmURL p='civicrm/civirules/civirulehelptext' q="reset=1&rid=`$rule.id`"}"></a>
-                {else}
-                  <a class="crm-popup medium-popup helpicon" href="{crmURL p='civicrm/civirules/civirulehelptext44' q="reset=1&rid=`$rule.id`"}"></a>
-                {/if}
+                <a id="civirule_help_text_icon" class="crm-popup medium-popup helpicon" onclick="showRuleHelp({$rule.id})" href="#"></a>
               {/if}
+            <td>{$rule.is_active}</td>
             </td>
             <td>{$rule.created_date|crmDate}</td>
             <td>{$rule.created_contact_name}</td>
@@ -64,14 +67,25 @@
 </div>
 
 {literal}
-  <script type="text/javascript">
-    function showRuleHelp(ruleId, helpText) {
-      if (helpText) {
-        CRM.alert(helpText, 'CiviRule Help', 'info');
-      } else {
-        CRM.alert('There is no help text defined for this rule. You can set the help text when you edit the rule', 'No Help for CiviRule', 'info');
-      }
-    }
+  <script>
+    function showRuleHelp(ruleId) {
+      console.log('rule id is ' + ruleId);
+      CRM.api3('CiviRuleRule', 'getsingle', {"id": ruleId})
+          .done(function(result) {
+            console.log(result);
+            cj("#civirule_helptext_dialog-block").dialog({
+              width: 600,
+              height: 300,
+              title: "Help for Rule " + result.label,
+              buttons: {
+                "Done": function() {
+                  cj(this).dialog("close");
+                }
+              }
+            });
+            cj("#civirule_helptext_dialog-block").html(result.help_text);
+          });
+    };
   </script>
 {/literal}
 

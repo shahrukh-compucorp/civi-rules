@@ -36,6 +36,8 @@ class CRM_Civirules_Page_Rule extends CRM_Core_Page {
       }
       $rules[$ruleId]['created_contact_name'] = CRM_Civirules_Utils::getContactName($rule['created_user_id']);
       $rules[$ruleId]['is_active'] = CRM_Civirules_Utils::formatIsActive($rule['is_active']);
+      // add civirule tags
+      $rules[$ruleId]['tags'] = implode(', ', CRM_Civirules_BAO_RuleTag::getTagLabelsForRule($ruleId));
     }
     return $rules;
   }

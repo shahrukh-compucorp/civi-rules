@@ -453,6 +453,15 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     return TRUE;
   }
 
+  public function upgrade_2014() {
+    \CRM_Core_DAO::executeQuery("
+        INSERT INTO civirule_trigger (name, label, object_name, op, cron, class_name, created_date, created_user_id)
+        VALUES 
+        ('membershipenddate', 'Membership End Date', NULL, NULL, 1, 'CRM_CivirulesCronTrigger_MembershipEndDate',  CURDATE(), 1);
+    ");
+    return TRUE;
+  }
+
 
 }
 

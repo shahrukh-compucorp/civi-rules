@@ -97,4 +97,5 @@ VALUES
   ('changed_contact_custom_data', 'Custom Data on Contact (of any Type) Changed', NULL, NULL, 0, 'CRM_CivirulesPostTrigger_ContactCustomDataChanged',  CURDATE(), 1),
   ('changed_household_custom_data', 'Custom Data on Household Changed', NULL, NULL, 0, 'CRM_CivirulesPostTrigger_HouseholdCustomDataChanged',  CURDATE(), 1),
   ('changed_individual_custom_data', 'Custom Data on Individual Changed', NULL, NULL, 0, 'CRM_CivirulesPostTrigger_IndividualCustomDataChanged',  CURDATE(), 1),
-  ('changed_organization_custom_data', 'Custom Data on Organization Changed', NULL, NULL, 0, 'CRM_CivirulesPostTrigger_OrganizationCustomDataChanged',  CURDATE(), 1);
+  ('changed_organization_custom_data', 'Custom Data on Organization Changed', NULL, NULL, 0, 'CRM_CivirulesPostTrigger_OrganizationCustomDataChanged',  CURDATE(), 1),
+  ('membershipenddate', 'Membership End Date', NULL, NULL, 1, 'CRM_CivirulesCronTrigger_MembershipEndDate',  CURDATE(), 1);

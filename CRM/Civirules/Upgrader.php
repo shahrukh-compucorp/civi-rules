@@ -454,14 +454,32 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
   }
 
   public function upgrade_2014() {
-    \CRM_Core_DAO::executeQuery("
+    CRM_Core_DAO::executeQuery("
         INSERT INTO civirule_trigger (name, label, object_name, op, cron, class_name, created_date, created_user_id)
         VALUES 
         ('membershipenddate', 'Membership End Date', NULL, NULL, 1, 'CRM_CivirulesCronTrigger_MembershipEndDate',  CURDATE(), 1);
     ");
     return TRUE;
   }
-
-
+  
+  /**
+   * Upgrade 2015 remove custom search and add manage rules form
+   */
+  public function upgrade_2015() {
+    $this->ctx->log->info('Applying update 2015');
+    // remove custom search
+    try {
+      $optionValueId = civicrm_api3('OptionValue', 'getvalue', [
+        'option_group_id' => 'custom_search',
+        'name' => 'CRM_Civirules_Form_Search_Rules',
+        'return' => 'id'
+      ]);
+      if ($optionValueId) {
+        civicrm_api3('OptionValue', 'delete', ['id' => $optionValueId]);
+      }
+    } catch (CiviCRM_API3_Exception $ex) {
+    }
+    return TRUE;
+  }
 }
 

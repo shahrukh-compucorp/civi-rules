@@ -426,4 +426,10 @@
     <access_arguments>access CiviCRM</access_arguments>
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/civirules/form/rulesview</path>
+    <page_callback>CRM_Civirules_Form_RuleView</page_callback>
+    <title>RuleView</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>

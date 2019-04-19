@@ -93,8 +93,13 @@ class CRM_Civirules_BAO_RuleTag extends CRM_Civirules_DAO_RuleTag  {
   public static function deleteWithRuleId($ruleId) {
     $ruleTag = new CRM_Civirules_BAO_RuleTag();
     $ruleTag->rule_id = $ruleId;
-    $ruleTag->find(false);
+    $ruleTagIds = [];
+    $ruleTag->find();
     while ($ruleTag->fetch()) {
+      $ruleTagIds[] = $ruleTag->id;
+    }
+    foreach ($ruleTagIds as $ruleTagId) {
+      $ruleTag->id = $ruleTagId;
       $ruleTag->delete();
     }
   }

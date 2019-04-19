@@ -71,13 +71,9 @@ class CRM_Civirules_Form_RuleDelete extends CRM_Core_Form {
     if (isset($requestValues['id'])) {
       $this->_ruleId = $requestValues['id'];
     }
-    $csId = CRM_Civirules_Utils::getFindRulesCsId();
-    if ($csId) {
-      $this->context = CRM_Utils_System::url("civicrm/contact/search/custom", "reset=1&csid=".$csId, TRUE);
-      $this->controller->_destination = $this->context;
-    }
+    $this->context = CRM_Utils_System::url("civicrm/civirules/form/rulesview", "reset=1", TRUE);
+    $this->controller->_destination = $this->context;
     CRM_Utils_System::setTitle(ts('Delete Rule (CiviRules)'));
-
   }
 
 

@@ -7,7 +7,7 @@
  */
 class CRM_Civirules_BAO_Rule extends CRM_Civirules_DAO_Rule {
 
-  private static $ruleCache = array();
+  private static $ruleCache = [];
 
   /**
    * Function to get values
@@ -52,7 +52,7 @@ class CRM_Civirules_BAO_Rule extends CRM_Civirules_DAO_Rule {
   public static function add($params) {
     $result = array();
     if (empty($params)) {
-      throw new Exception('Params can not be empty when adding or updating a civirule rule');
+      throw new Exception(ts('Params can not be empty when adding or updating a civirule rule'));
     }
 
     if (!empty($params['id'])) {
@@ -97,7 +97,7 @@ class CRM_Civirules_BAO_Rule extends CRM_Civirules_DAO_Rule {
    */
   public static function deleteWithId($ruleId) {
     if (empty($ruleId)) {
-      throw new Exception('rule id can not be empty when attempting to delete a civirule rule');
+      throw new Exception(ts('rule id can not be empty when attempting to delete a civirule rule'));
     }
 
     CRM_Utils_Hook::pre('delete', 'CiviRuleRule', $ruleId, CRM_Core_DAO::$_nullArray);
@@ -107,59 +107,19 @@ class CRM_Civirules_BAO_Rule extends CRM_Civirules_DAO_Rule {
       CRM_Civirules_BAO_RuleAction::deleteWithRuleId($ruleId);
       CRM_Civirules_BAO_RuleCondition::deleteWithRuleId($ruleId);
       CRM_Civirules_BAO_RuleTag::deleteWithRuleId($ruleId);
-    } 
+    }
     catch (Exception $ex) {
     }
-
     // also delete all references to the rule from logging if present
     if (self::checkTableExists('civirule_rule_log')) {
       $query = 'DELETE FROM civirule_rule_log WHERE rule_id = %1';
-      CRM_Core_DAO::executeQuery($query, array(1 => array($ruleId, 'Integer')));
+      CRM_Core_DAO::executeQuery($query, [1 => [$ruleId, 'Integer']]);
     }
-
     $rule = new CRM_Civirules_BAO_Rule();
     $rule->id = $ruleId;
     $rule->delete();
-
     CRM_Utils_Hook::post('delete', 'CiviRuleRule', $ruleId, CRM_Core_DAO::$_nullArray);
-
     return;
-  }
-
-  /**
-   * Function to disable a rule
-   * 
-   * @param int $ruleId
-   * @throws Exception when ruleId is empty
-   * @access public
-   * @static
-   */
-  public static function disable($ruleId) {
-    if (empty($ruleId)) {
-      throw new Exception('rule id can not be empty when attempting to disable a civirule rule');
-    }
-    $rule = new CRM_Civirules_BAO_Rule();
-    $rule->id = $ruleId;
-    $rule->find(true);
-    self::add(array('id' => $rule->id, 'is_active' => 0));
-  }
-
-  /**
-   * Function to enable an rule
-   * 
-   * @param int $ruleId
-   * @throws Exception when ruleId is empty
-   * @access public
-   * @static
-   */
-  public static function enable($ruleId) {
-    if (empty($ruleId)) {
-      throw new Exception('rule id can not be empty when attempting to enable a civirule rule');
-    }
-    $rule = new CRM_Civirules_BAO_Rule();
-    $rule->id = $ruleId;
-    $rule->find(true);
-    self::add(array('id' => $rule->id, 'is_active' => 1));
   }
 
   /**
@@ -204,26 +164,26 @@ class CRM_Civirules_BAO_Rule extends CRM_Civirules_DAO_Rule {
    * @param string $op op in the Post hook
    * @return array
    */
-  public static function findRulesByObjectNameAndOp($objectName, $op)
-  {
-    $triggers = array();
+  public static function findRulesByObjectNameAndOp($objectName, $op) {
+    $triggers = [];
     $sql = "SELECT r.id AS rule_id, t.id AS trigger_id, t.class_name, r.trigger_params
             FROM `civirule_rule` r
             INNER JOIN `civirule_trigger` t ON r.trigger_id = t.id AND t.is_active = 1";
     // If $objectName is a Contact Type, also search for "Contact".
     if ($objectName == 'Individual' || $objectName == 'Organization' || $objectName == 'Household') {
       $sqlWhere = " WHERE r.`is_active` = 1 AND t.cron = 0 AND (t.object_name = %1 OR t.object_name = 'Contact') AND t.op = %2";
-    } else {
+    }
+    else {
       $sqlWhere = " WHERE r.`is_active` = 1 AND t.cron = 0 AND t.object_name = %1 AND t.op = %2";
     }
     $sql .= $sqlWhere;
-    $params[1] = array($objectName, 'String');
-    $params[2] = array($op, 'String');
+    $params[1] = [$objectName, 'String'];
+    $params[2] = [$op, 'String'];
 
     $dao = CRM_Core_DAO::executeQuery($sql, $params);
     while ($dao->fetch()) {
-      $triggerObject = CRM_Civirules_BAO_Trigger::getPostTriggerObjectByClassName($dao->class_name, false);
-      if ($triggerObject !== false) {
+      $triggerObject = CRM_Civirules_BAO_Trigger::getPostTriggerObjectByClassName($dao->class_name, FALSE);
+      if ($triggerObject !== FALSE) {
         $triggerObject->setTriggerId($dao->trigger_id);
         $triggerObject->setRuleId($dao->rule_id);
         $triggerObject->setTriggerParams($dao->trigger_params);
@@ -240,7 +200,7 @@ class CRM_Civirules_BAO_Rule extends CRM_Civirules_DAO_Rule {
    */
   public static function findRulesForCron()
   {
-    $cronTriggers = array();
+    $cronTriggers = [];
     $sql = "SELECT r.id AS rule_id, t.id AS trigger_id, t.class_name, r.trigger_params
             FROM `civirule_rule` r
             INNER JOIN `civirule_trigger` t ON r.trigger_id = t.id AND t.is_active = 1
@@ -248,8 +208,8 @@ class CRM_Civirules_BAO_Rule extends CRM_Civirules_DAO_Rule {
 
     $dao = CRM_Core_DAO::executeQuery($sql);
     while ($dao->fetch()) {
-      $cronTriggerObject = CRM_Civirules_BAO_Trigger::getTriggerObjectByClassName($dao->class_name, false);
-      if ($cronTriggerObject !== false) {
+      $cronTriggerObject = CRM_Civirules_BAO_Trigger::getTriggerObjectByClassName($dao->class_name, FALSE);
+      if ($cronTriggerObject !== FALSE) {
         $cronTriggerObject->setTriggerId($dao->trigger_id);
         $cronTriggerObject->setRuleId($dao->rule_id);
         $cronTriggerObject->setTriggerParams($dao->trigger_params);
@@ -266,16 +226,16 @@ class CRM_Civirules_BAO_Rule extends CRM_Civirules_DAO_Rule {
    */
   public static function findRulesByClassname($classname)
   {
-    $triggers = array();
+    $triggers = [];
     $sql = "SELECT r.id AS rule_id, t.id AS trigger_id, t.class_name, r.trigger_params
             FROM `civirule_rule` r
             INNER JOIN `civirule_trigger` t ON r.trigger_id = t.id AND t.is_active = 1
             WHERE r.`is_active` = 1 AND t.class_name = %1";
-    $params[1] = array($classname, 'String');
+    $params[1] = [$classname, 'String'];
     $dao = CRM_Core_DAO::executeQuery($sql, $params);
     while ($dao->fetch()) {
-      $triggerObject = CRM_Civirules_BAO_Trigger::getTriggerObjectByClassName($dao->class_name, false);
-      if ($triggerObject !== false) {
+      $triggerObject = CRM_Civirules_BAO_Trigger::getTriggerObjectByClassName($dao->class_name, FALSE);
+      if ($triggerObject !== FALSE) {
         $triggerObject->setTriggerId($dao->trigger_id);
         $triggerObject->setRuleId($dao->rule_id);
         $triggerObject->setTriggerParams($dao->trigger_params);
@@ -312,15 +272,15 @@ class CRM_Civirules_BAO_Rule extends CRM_Civirules_DAO_Rule {
    */
   public static function getRuleIdsByTriggerId($triggerId) {
     if (!is_numeric($triggerId)) {
-      throw new Exception('You are passing a trigger id as a parameter into '.__METHOD__
-        .' which does not pass the PHP is_numeric test. An integer is required (only numbers allowed)! Contact your system administrator');
+      throw new Exception(ts('You are passing a trigger id as a parameter into ') . __METHOD__
+        . ts(' which does not pass the PHP is_numeric test. An integer is required (only numbers allowed)! Contact your system administrator'));
     }
-    $ruleIds = array();
+    $ruleIds = [];
     $sql = 'SELECT id FROM civirule_rule WHERE trigger_id = %1 AND is_active = %2';
-    $params = array(
-      1 => array($triggerId, 'Integer'),
-      2 => array(1, 'Integer')
-    );
+    $params = [
+      1 => [$triggerId, 'Integer'],
+      2 => [1, 'Integer']
+    ];
     $dao = CRM_Core_DAO::executeQuery($sql, $params);
     while ($dao->fetch()) {
       $ruleIds[] = $dao->id;
@@ -336,7 +296,7 @@ class CRM_Civirules_BAO_Rule extends CRM_Civirules_DAO_Rule {
    */
   public static function isRuleOnQueue($ruleId) {
     $query = "SELECT * FROM civicrm_queue_item WHERE queue_name = %1";
-    $dao = CRM_Core_DAO::executeQuery($query, array(1 => array("org.civicoop.civirules.action", "String")));
+    $dao = CRM_Core_DAO::executeQuery($query, [1 => ["org.civicoop.civirules.action", "String"]]);
     while ($dao->fetch()) {
       if (isset($dao->data)) {
         $queueItemData = unserialize($dao->data);

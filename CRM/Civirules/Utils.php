@@ -328,23 +328,6 @@ class CRM_Civirules_Utils {
   }
 
   /**
-   * Method to retrieve the custom search id of the find rules search
-   * @return array|bool
-   */
-  public static function getFindRulesCsId() {
-    // find custom search to find rules
-    try {
-      return civicrm_api3('OptionValue', 'getvalue', array(
-        'option_group_id' => 'custom_search',
-        'name' => 'CRM_Civirules_Form_Search_Rules',
-        'return' => 'value'
-      ));
-    } catch (CiviCRM_API3_Exception $ex) {
-      return FALSE;
-    }
-  }
-  
-  /**
    * Method to get the activity type list
    *
    * @return array
@@ -416,6 +399,30 @@ class CRM_Civirules_Utils {
     $apiVersion = (string) civicrm_api3('Domain', 'getvalue', array('current_domain' => "TRUE", 'return' => 'version'));
     $civiVersion = (float) substr($apiVersion, 0, 3);
     return $civiVersion;
+  }
+
+  /**
+   * Method to get the civirules base path
+   *
+   * @return string
+   * @throws CiviCRM_API3_Exception
+   */
+  public static function getCivirulesPath() {
+    $version = CRM_Core_BAO_Domain::version();
+    if ($version >= 4.7) {
+      $container = CRM_Extension_System::singleton()->getFullContainer();
+      return $container->getPath('org.civicoop.civirules');
+    }
+    else {
+      $settings = civicrm_api3('Setting', 'getsingle', []);
+      $path = $settings['extensionsDir'].'/civirules/';
+      if (is_dir($path)) {
+        return $path;
+      }
+      else {
+        return $settings['extensionsDir'].'/org.civicoop/civirules/';
+      }
+    }
   }
 
 }

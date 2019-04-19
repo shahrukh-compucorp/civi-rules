@@ -28,7 +28,7 @@ function civicrm_api3_civi_rule_rule_create($params) {
   if (!isset($params['id']) && empty($params['label'])) {
     return civicrm_api3_create_error('Label can not be empty when adding a new CiviRule');
   }
-  if (empty($params['trigger_id'])) {
+  if (!isset($params['id']) && empty($params['trigger_id'])) {
     return civicrm_api3_create_error('Trigger_id can not be empty');
   }
   /*

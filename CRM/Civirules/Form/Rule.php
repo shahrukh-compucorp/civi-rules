@@ -98,18 +98,6 @@ class CRM_Civirules_Form_Rule extends CRM_Core_Form {
     $this->assign('action', $this->_action);
     $this->assign('rule', $this->rule);
     $session = CRM_Core_Session::singleton();
-    switch($this->_action) {
-      case CRM_Core_Action::DISABLE:
-        CRM_Civirules_BAO_Rule::disable($this->ruleId);
-        $session->setStatus('CiviRule disabled', 'Disable', 'success');
-        CRM_Utils_System::redirect($session->readUserContext());
-        break;
-      case CRM_Core_Action::ENABLE:
-        CRM_Civirules_BAO_Rule::enable($this->ruleId);
-        $session->setStatus('CiviRule enabled', 'Enable', 'success');
-        CRM_Utils_System::redirect($session->readUserContext());
-        break;
-    }
   }
 
   /**

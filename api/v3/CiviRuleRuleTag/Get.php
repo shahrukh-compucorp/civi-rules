@@ -22,6 +22,6 @@ function _civicrm_api3_civi_rule_rule_tag_Get_spec(&$spec) {
  */
 function civicrm_api3_civi_rule_rule_tag_Get($params) {
   $returnValues = CRM_Civirules_BAO_RuleTag::getValues($params);
-  return civicrm_api3_create_success($returnValues, $params, 'CiviRuleTag', 'Get');
+  return civicrm_api3_create_success($returnValues, $params, 'CiviRuleRuleTag', 'Get');
 }
 

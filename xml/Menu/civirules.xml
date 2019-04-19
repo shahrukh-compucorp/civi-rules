@@ -1,13 +1,6 @@
 <?xml version="1.0"?>
 <menu>
   <item>
-    <path>civicrm/civirule/page/rule</path>
-    <page_callback>CRM_Civirules_Page_Rule</page_callback>
-    <title>RulePage</title>
-    <access_arguments>access CiviCRM</access_arguments>
-    <access_arguments>administer CiviCRM</access_arguments>
-  </item>
-  <item>
     <path>civicrm/civirule/form/rule</path>
     <page_callback>CRM_Civirules_Form_Rule</page_callback>
     <title>Rule</title>
@@ -425,5 +418,11 @@
     <title>Participant Status</title>
     <access_arguments>access CiviCRM</access_arguments>
     <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/civirules/form/rulesview</path>
+    <page_callback>CRM_Civirules_Form_RuleView</page_callback>
+    <title>RuleView</title>
+    <access_arguments>access CiviCRM</access_arguments>
   </item>
 </menu>

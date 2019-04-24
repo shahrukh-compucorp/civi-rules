@@ -99,17 +99,7 @@ class CRM_Civirules_BAO_Rule extends CRM_Civirules_DAO_Rule {
     if (empty($ruleId)) {
       throw new Exception(ts('rule id can not be empty when attempting to delete a civirule rule'));
     }
-
     CRM_Utils_Hook::pre('delete', 'CiviRuleRule', $ruleId, CRM_Core_DAO::$_nullArray);
-
-    // catch errors because rule might not have conditions or actions
-    try {
-      CRM_Civirules_BAO_RuleAction::deleteWithRuleId($ruleId);
-      CRM_Civirules_BAO_RuleCondition::deleteWithRuleId($ruleId);
-      CRM_Civirules_BAO_RuleTag::deleteWithRuleId($ruleId);
-    }
-    catch (Exception $ex) {
-    }
     // also delete all references to the rule from logging if present
     if (self::checkTableExists('civirule_rule_log')) {
       $query = 'DELETE FROM civirule_rule_log WHERE rule_id = %1';
@@ -299,11 +289,13 @@ class CRM_Civirules_BAO_Rule extends CRM_Civirules_DAO_Rule {
     $dao = CRM_Core_DAO::executeQuery($query, [1 => ["org.civicoop.civirules.action", "String"]]);
     while ($dao->fetch()) {
       if (isset($dao->data)) {
-        $queueItemData = unserialize($dao->data);
-        foreach($queueItemData->arguments as $dataArgument) {
-          if (is_subclass_of($dataArgument, 'CRM_Civirules_Action')) {
-            if ($dataArgument->getRuleId() == $ruleId) {
-              return TRUE;
+        $queueItemData = @unserialize($dao->data);
+        if ($queueItemData) {
+          foreach($queueItemData->arguments as $dataArgument) {
+            if (is_subclass_of($dataArgument, 'CRM_Civirules_Action')) {
+              if ($dataArgument->getRuleId() == $ruleId) {
+                return TRUE;
+              }
             }
           }
         }

@@ -16,6 +16,7 @@ class CRM_Civirules_Form_RuleView extends CRM_Core_Form {
   private $_triggerList = [];
   private $_tagFilters = [];
   private $_triggerFilters = [];
+  private $_includeDisabled = FALSE;
   private $_descriptionContainsFilter = NULL;
   private $_filterQuery = NULL;
   private $_filterQueryParams = [];
@@ -39,12 +40,22 @@ class CRM_Civirules_Form_RuleView extends CRM_Core_Form {
       'placeholder' => E::ts('- Select Trigger -'),
       ]);
     $this->add('text', 'desc_contains', E::ts('Description Contains'), [], FALSE);
+    $this->addYesNo('include_disabled', E::ts('Show disabled Rules?'), [], FALSE);
     $this->addButtons([
       ['type' => 'submit', 'name' => E::ts('Filter'), 'isDefault' => TRUE],
       ]);
     // get existing rules
     $this->assign('rules', $this->getRules());
     parent::buildQuickForm();
+  }
+
+  /**
+   * Method to set the included disabled to no
+   * @return array|mixed|NULL
+   */
+  public function setDefaultValues() {
+    $defaults['include_disabled'] = 0;
+    return $defaults;
   }
 
   /**
@@ -109,6 +120,11 @@ LEFT JOIN civirule_rule_tag AS crt ON cr.id = crt.rule_id";
       }
       $whereClauses[] = 'crt.rule_tag_id IN(' . implode(', ', $tagValues) . ')';
     }
+    if (!$this->_includeDisabled) {
+      $index++;
+      $whereClauses[] = 'cr.is_active = %' . $index;
+      $this->_filterQueryParams[$index] = [1, 'Integer'];
+    }
     if (!empty($whereClauses)) {
       $this->_filterQuery = $select . " " . $from . ' WHERE ' . implode(' AND ', $whereClauses);
     }
@@ -148,6 +164,7 @@ LEFT JOIN civirule_rule_tag AS crt ON cr.id = crt.rule_id";
     $this->_tagFilters = CRM_Utils_Request::retrieveValue('tag_id', 'String');
     $this->_triggerFilters = CRM_Utils_Request::retrieveValue('trigger_id', 'String');
     $this->_descriptionContainsFilter = CRM_Utils_Request::retrieveValue('desc_contains', 'String');
+    $this->_includeDisabled = CRM_Utils_Request::retrieveValue('include_disabled', 'Boolean');
     CRM_Utils_System::setTitle(E::ts('Manage CiviRules'));
     $this->setTriggerList();
     $this->assign('add_url', CRM_Utils_System::url('civicrm/civirule/form/rule',
@@ -177,7 +194,7 @@ LEFT JOIN civirule_rule_tag AS crt ON cr.id = crt.rule_id";
    */
   public function postProcess() {
     $filter = FALSE;
-    $checkElements = ['tag_id', 'trigger_id', 'desc_contains'];
+    $checkElements = ['tag_id', 'trigger_id', 'desc_contains', 'include_disabled'];
     foreach ($checkElements as $checkElement) {
       if (isset($this->_submitValues[$checkElement]) && !empty($this->_submitValues[$checkElement])) {
         $filter = TRUE;
@@ -186,7 +203,6 @@ LEFT JOIN civirule_rule_tag AS crt ON cr.id = crt.rule_id";
     if ($filter) {
       $filterUrl = CRM_Utils_System::url('civicrm/civirules/form/ruleview', [], TRUE);
       CRM_Core_Session::singleton()->pushUserContext($filterUrl);
-
     }
     parent::postProcess();
   }

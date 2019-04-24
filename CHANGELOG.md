@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## Version 2.7
+*Is still under developmenent*
+
 ## Version 2.6
 REQUIRES MENU REBUILD! (/civicrm/clearcache)
 

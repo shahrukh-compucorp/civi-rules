@@ -54,7 +54,12 @@ class CRM_Civirules_Form_RuleView extends CRM_Core_Form {
    * @return array|mixed|NULL
    */
   public function setDefaultValues() {
-    $defaults['include_disabled'] = 0;
+    if ($this->_includeDisabled) {
+      $defaults['include_disabled'] = 1;
+    }
+    else {
+      $defaults['include_disabled'] = 0;
+    }
     return $defaults;
   }
 

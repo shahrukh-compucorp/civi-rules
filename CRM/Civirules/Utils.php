@@ -357,6 +357,26 @@ class CRM_Civirules_Utils {
   }
 
   /**
+   * Function to return event type list
+   *
+   * @return array $eventTypeList
+   * @access public
+   */
+  public static function getEventTypeList() {
+    $eventTypeList = array();
+    $eventTypeOptionGroupId = self::getOptionGroupIdWithName('event_type');
+    $params = array(
+      'option_group_id' => $eventTypeOptionGroupId,
+      'is_active' => 1,
+      'options' => array('limit' => 0));
+    $eventTypes = civicrm_api3('OptionValue', 'Get', $params);
+    foreach ($eventTypes['values'] as $optionValue) {
+      $eventTypeList[$optionValue['value']] = $optionValue['label'];
+    }
+    return $eventTypeList;
+  }
+
+  /**
    * Method to set the date operator options
    *
    * @return array

@@ -432,4 +432,11 @@
     <title>RuleView</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/civirule/form/trigger/eventdate</path>
+    <page_callback>CRM_CivirulesCronTrigger_Form_EventDate</page_callback>
+    <title>Event date reached</title>
+    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
 </menu>

@@ -2,6 +2,7 @@
 
 ## Version 2.8
 * "Set Thank You Date for a Contribution" action now supports options for time as well as date.
+* Added trigger for Event Date reached. 
 
 ## Version 2.7
 * Changed the ON DELETE NO ACTION to ON DELETE CASCADE for the constraints for tables civirule_rule_action, civirule_rule_condition, civirule_rule_tag which fixes #8

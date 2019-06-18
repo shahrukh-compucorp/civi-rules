@@ -519,5 +519,14 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     CRM_Core_DAO::executeQuery($cascade);
     return TRUE;
   }
+
+  public function upgrade_2021() {
+    CRM_Core_DAO::executeQuery("
+        INSERT INTO civirule_trigger (name, label, object_name, op, cron, class_name, created_date, created_user_id)
+        VALUES 
+        ('eventdate', 'Event Date reached', NULL, NULL, 1, 'CRM_CivirulesCronTrigger_EventDate',  CURDATE(), 1);
+    ");
+    return TRUE;
+  }
 }
 

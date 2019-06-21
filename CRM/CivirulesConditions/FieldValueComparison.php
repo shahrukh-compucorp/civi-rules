@@ -15,7 +15,12 @@ class CRM_CivirulesConditions_FieldValueComparison extends CRM_CivirulesConditio
     $entity = $this->conditionParams['entity'];
     $field = $this->conditionParams['field'];
 
-    $data = $triggerData->getEntityData($entity);
+    if ($triggerData instanceof CRM_Civirules_TriggerData_Interface_OriginalData &&
+        !empty($this->conditionParams['original_data'])) {
+      $data = $triggerData->getOriginalData($entity);
+    } else {
+      $data = $triggerData->getEntityData($entity);
+    }
     if (isset($data[$field])) {
       return $this->normalizeValue($data[$field]);
     }
@@ -113,7 +118,11 @@ class CRM_CivirulesConditions_FieldValueComparison extends CRM_CivirulesConditio
     if (is_array($value)) {
       $value = implode(", ", $value);
     }
-    return htmlentities($this->conditionParams['entity'].'.'.$this->conditionParams['field'].' '.($this->getOperator())).' '.htmlentities($value);
+    $field = $this->conditionParams['field'];
+    if (!empty($this->conditionParams['original_data'])) {
+      $field .= ' (original value)';
+    }
+    return htmlentities($this->conditionParams['entity'].'.'.$field.' '.($this->getOperator())).' '.htmlentities($value);;
   }
 
 }

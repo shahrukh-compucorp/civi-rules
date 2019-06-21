@@ -110,6 +110,7 @@ class CRM_CivirulesConditions_Form_FieldValueComparison extends CRM_CivirulesCon
     $this->add('hidden', 'rule_condition_id');
     $this->add('select', 'entity', ts('Entity'), $this->getEntityOptions(), true);
     $this->add('select', 'field', ts('Field'), $this->getFields(), true, array('class' => 'crm-select2'));
+    $this->add('checkbox', 'original_data', ts('Compare to original value (before the change)?'));
     $this->assign('entities', $this->getEntities());
     $this->assign('custom_field_multi_select_html_types', CRM_Civirules_Utils_CustomField::getMultiselectTypes());
   }
@@ -167,6 +168,12 @@ class CRM_CivirulesConditions_Form_FieldValueComparison extends CRM_CivirulesCon
     $data['multi_value'] = explode("\r\n", $this->_submitValues['multi_value']);
     $data['entity'] = $this->_submitValues['entity'];
     $data['field'] = substr($this->_submitValues['field'], strlen($data['entity'].'_'));
+
+    if (isset($this->_submitValues['original_data'])) {
+      $data['original_data'] = $this->_submitValues['original_data'];
+    } else {
+      $data['original_data'] = 0;
+    }
 
     $this->ruleCondition->condition_params = serialize($data);
     $this->ruleCondition->save();

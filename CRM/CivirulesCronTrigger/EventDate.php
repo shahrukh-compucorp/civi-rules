@@ -73,7 +73,7 @@ class CRM_CivirulesCronTrigger_EventDate extends CRM_Civirules_Trigger_Cron {
     $sql = "SELECT `p`.*
             FROM `civicrm_participant` `p`
             INNER JOIN `civicrm_event` `e` ON `e`.`id` = `p`.`event_id`
-            WHERE {$dateExpression} <= NOW() 
+            WHERE {$dateExpression} = CURDATE() 
             AND `e`.`event_type_id` = %1
             AND `p`.`contact_id` NOT IN (
               SELECT `rule_log`.`contact_id`

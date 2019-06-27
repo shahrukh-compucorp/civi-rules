@@ -91,7 +91,7 @@ class CRM_CivirulesConditions_Contact_InDomain extends CRM_Civirules_Condition {
       $operatorLabel = $operators[$operator];
     }
 
-    $domainTitle = self::getDomainName($this->conditionParams['domain_id']){
+    $domainTitle = self::getDomainName($this->conditionParams['domain_id']);
 
     return $operatorLabel.' groups ('.$domainTitle.')';
   }
@@ -123,7 +123,7 @@ class CRM_CivirulesConditions_Contact_InDomain extends CRM_Civirules_Condition {
   }
 
   public static function isContactIndomain($contact_id, $domain_id) {
-    $setting = civicrm_api3('Setting', 'get', ['domain_id' => $domain_id];
+    $setting = civicrm_api3('Setting', 'get', ['domain_id' => $domain_id]);
     $group_id = $setting['values'][$domain_id]['domain_group_id'];
     if (empty($group_id)) {
       return TRUE;

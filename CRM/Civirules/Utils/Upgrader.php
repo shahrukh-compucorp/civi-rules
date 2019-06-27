@@ -192,7 +192,6 @@ class CRM_Civirules_Utils_Upgrader {
         'name' => 'contact_in_domain',
       ),
       'CRM_CivirulesConditions_Contact_SubtypesChanged' => array(
-      'CRM_CivirulesConditions_Contact_SubtypesChanged' => array(
         'label' => 'Contact Subtypes Changed',
         'name' => 'contact_sub_type_changed',
       ),

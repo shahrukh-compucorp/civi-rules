@@ -528,5 +528,17 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     ");
     return TRUE;
   }
+
+  /**
+   * Upgrade 1027 check and insert civirules conditions, actions and triggers if needed
+   */
+  public function upgrade_2021() {
+    $this->ctx->log->info('Applying update 2021 - inserting conditions, actions and triggers if required');
+    CRM_Civirules_Utils_Upgrader::checkCiviRulesConditions();
+    CRM_Civirules_Utils_Upgrader::checkCiviRulesActions();
+    CRM_Civirules_Utils_Upgrader::checkCiviRulesTriggers();
+    return TRUE;
+  }
+
 }
 

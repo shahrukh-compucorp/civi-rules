@@ -187,6 +187,11 @@ class CRM_Civirules_Utils_Upgrader {
         'label' => 'Contact (not) in Group(s)',
         'name' => 'contact_in_group',
       ),
+      'CRM_CivirulesConditions_Contact_InDomain' => array(
+        'label' => 'Contact (not) in Domain',
+        'name' => 'contact_in_domain',
+      ),
+      'CRM_CivirulesConditions_Contact_SubtypesChanged' => array(
       'CRM_CivirulesConditions_Contact_SubtypesChanged' => array(
         'label' => 'Contact Subtypes Changed',
         'name' => 'contact_sub_type_changed',

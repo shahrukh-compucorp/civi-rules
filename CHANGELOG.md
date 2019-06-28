@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## Unreleased version
+* Add a condition for contacts being within a specific domain. This is useful for multisite installations as it allows rules to only be executed on contacts that are within that domain's domain_group_id
+
 ## Version 2.8
 * "Set Thank You Date for a Contribution" action now supports options for time as well as date.
 * Added trigger for Event Date reached.

@@ -45,6 +45,8 @@ INSERT INTO civirule_condition (name, label, class_name, is_active)
 INSERT INTO civirule_condition (name, label, class_name, is_active)
   VALUES('contact_in_group', 'Contact (not) in Group(s)', 'CRM_CivirulesConditions_Contact_InGroup', 1);
 INSERT INTO civirule_condition (name, label, class_name, is_active)
+  VALUES('contact_in_group', 'Contact (not) in Domain', 'CRM_CivirulesConditions_Contact_InDomain', 1);
+INSERT INTO civirule_condition (name, label, class_name, is_active)
   VALUES('contact_sub_type_changed', 'Contact Subtypes Changed', 'CRM_CivirulesConditions_Contact_SubtypesChanged', 1);
 INSERT INTO civirule_condition (name, label, class_name, is_active)
   VALUES('contact_in_country', 'Contact Lives in Country', 'CRM_CivirulesConditions_Contact_LivesInCountry', 1);

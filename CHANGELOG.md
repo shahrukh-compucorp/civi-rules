@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Version 2.8 (unreleased)
+## Version 2.8
 * "Set Thank You Date for a Contribution" action now supports options for time as well as date.
 * Added trigger for Event Date reached.
 * Added option to compare with original value in Field Value Comparison condition

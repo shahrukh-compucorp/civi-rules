@@ -62,9 +62,9 @@ class CRM_CivirulesCronTrigger_EventDate extends CRM_Civirules_Trigger_Cron {
       }
       $offset = CRM_Utils_Type::escape($this->triggerParams['offset'], 'Integer');
       if ($this->triggerParams['offset_type'] == '-') {
-        $dateExpression = "DATE_SUB(`e`.`".$dateField."` INTERVAL ".$offset." ".$unit .")";
+        $dateExpression = "DATE_SUB(`e`.`".$dateField."`, INTERVAL ".$offset." ".$unit .")";
       } else {
-        $dateExpression = "DATE_ADD(`e`.`".$dateField."` INTERVAL ".$offset." ".$unit .")";
+        $dateExpression = "DATE_ADD(`e`.`".$dateField."`, INTERVAL ".$offset." ".$unit .")";
       }
     } else {
       $dateExpression = "DATE(`e`.`".$dateField."`)";

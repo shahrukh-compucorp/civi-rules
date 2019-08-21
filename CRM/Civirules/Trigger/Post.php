@@ -64,6 +64,10 @@ class CRM_Civirules_Trigger_Post extends CRM_Civirules_Trigger {
    * @static
    */
   public static function post( $op, $objectName, $objectId, &$objectRef ) {
+    // Do not trigger when objectName is empty. See issue #19
+    if (empty($objectName)) {
+      return;
+    }
     $extensionConfig = CRM_Civirules_Config::singleton();
     if (!in_array($op,$extensionConfig->getValidTriggerOperations())) {
       return;

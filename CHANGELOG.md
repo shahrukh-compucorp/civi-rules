@@ -2,7 +2,7 @@
 
 ## Version 2.9 (unreleased)
 
-* _no changes yet_
+* Fixed the fatal error after copying a profile (#19).  
 
 ## Version 2.8
 * "Set Thank You Date for a Contribution" action now supports options for time as well as date.

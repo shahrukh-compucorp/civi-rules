@@ -8,7 +8,7 @@
 
 class CRM_CivirulesConditions_Contact_InGroup extends CRM_Civirules_Condition {
 
-  private $conditionParams = array();
+  private $conditionParams = [];
 
   /**
    * Method to set the Rule Condition data
@@ -18,7 +18,7 @@ class CRM_CivirulesConditions_Contact_InGroup extends CRM_Civirules_Condition {
    */
   public function setRuleConditionData($ruleCondition) {
     parent::setRuleConditionData($ruleCondition);
-    $this->conditionParams = array();
+    $this->conditionParams = [];
     if (!empty($this->ruleCondition['condition_params'])) {
       $this->conditionParams = unserialize($this->ruleCondition['condition_params']);
     }
@@ -33,27 +33,37 @@ class CRM_CivirulesConditions_Contact_InGroup extends CRM_Civirules_Condition {
    * @abstract
    */
   public function isConditionValid(CRM_Civirules_TriggerData_TriggerData $triggerData) {
-    $isConditionValid = false;
+    $isConditionValid = FALSE;
     $contact_id = $triggerData->getContactId();
+    $checkGroupIds = $this->conditionParams['group_ids'];
+    // if check_group_tree, add child groups to checkGroupIds (link https://lab.civicrm.org/extensions/civirules/issues/18)
+    if ($this->conditionParams['check_group_tree']) {
+      $children = CRM_Contact_BAO_GroupNesting::getDescendentGroupIds($checkGroupIds);
+      foreach ($children as $child) {
+        if (!in_array($child, $checkGroupIds)) {
+          $checkGroupIds[] = $child;
+        }
+      }
+    }
     switch($this->conditionParams['operator']) {
       case 'in one of':
-        $isConditionValid = $this->contactIsMemberOfOneGroup($contact_id, $this->conditionParams['group_ids']);
+        $isConditionValid = $this->contactIsMemberOfOneGroup($contact_id, $checkGroupIds);
         break;
       case 'in all of':
-        $isConditionValid = $this->contactIsMemberOfAllGroups($contact_id, $this->conditionParams['group_ids']);
+        $isConditionValid = $this->contactIsMemberOfAllGroups($contact_id, $checkGroupIds);
         break;
       case 'not in':
-        $isConditionValid = $this->contactIsNotMemberOfGroup($contact_id, $this->conditionParams['group_ids']);
+        $isConditionValid = $this->contactIsNotMemberOfGroup($contact_id, $checkGroupIds);
         break;
     }
     return $isConditionValid;
   }
 
   protected function contactIsNotMemberOfGroup($contact_id, $group_ids) {
-    $isValid = true;
+    $isValid = TRUE;
     foreach($group_ids as $gid) {
       if (CRM_CivirulesConditions_Utils_GroupContact::isContactInGroup($contact_id, $gid)) {
-        $isValid = false;
+        $isValid = FALSE;
         break;
       }
     }
@@ -61,10 +71,10 @@ class CRM_CivirulesConditions_Contact_InGroup extends CRM_Civirules_Condition {
   }
 
   protected function contactIsMemberOfOneGroup($contact_id, $group_ids) {
-    $isValid = false;
+    $isValid = FALSE;
     foreach($group_ids as $gid) {
       if (CRM_CivirulesConditions_Utils_GroupContact::isContactInGroup($contact_id, $gid)) {
-        $isValid = true;
+        $isValid = TRUE;
         break;
       }
     }
@@ -79,9 +89,9 @@ class CRM_CivirulesConditions_Contact_InGroup extends CRM_Civirules_Condition {
       }
     }
     if (count($group_ids) == $isValid && count($group_ids) > 0) {
-      return true;
+      return TRUE;
     }
-    return false;
+    return FALSE;
   }
 
   /**
@@ -127,8 +137,11 @@ class CRM_CivirulesConditions_Contact_InGroup extends CRM_Civirules_Condition {
         // Do nothing.
       }
     }
-
-    return $operatorLabel.' groups ('.$groups.')';
+    $friendlyTxt = $operatorLabel . ' groups (' . $groups . ')';
+    if ($this->conditionParams['check_group_tree']) {
+      $friendlyTxt .= ' (also checking child group membership)';
+    }
+    return $friendlyTxt;
   }
 
   /**
@@ -138,11 +151,11 @@ class CRM_CivirulesConditions_Contact_InGroup extends CRM_Civirules_Condition {
    * @access protected
    */
   public static function getOperatorOptions() {
-    return array(
+    return [
       'in one of' => ts('In one of selected'),
       'in all of' => ts('In all selected'),
       'not in' => ts('Not in selected'),
-    );
+    ];
   }
 
 }

@@ -36,13 +36,15 @@ class CRM_CivirulesConditions_Form_Contact_InGroup extends CRM_CivirulesConditio
   public function buildQuickForm() {
     $this->add('hidden', 'rule_condition_id');
 
-    $group = $this->add('select', 'group_ids', ts('Groups'), $this->getGroups(), true);
+    $group = $this->add('select', 'group_ids', ts('Groups'), $this->getGroups(), TRUE);
     $group->setMultiple(TRUE);
-    $this->add('select', 'operator', ts('Operator'), $this->getOperators(), true);
+    $this->add('select', 'operator', ts('Operator'), $this->getOperators(), TRUE);
+    $this->addYesNo('check_group_tree', ts('Check Group Tree?'), FALSE, TRUE);
 
-    $this->addButtons(array(
-      array('type' => 'next', 'name' => ts('Save'), 'isDefault' => TRUE,),
-      array('type' => 'cancel', 'name' => ts('Cancel'))));
+    $this->addButtons([
+      ['type' => 'next', 'name' => ts('Save'), 'isDefault' => TRUE,],
+      ['type' => 'cancel', 'name' => ts('Cancel')],
+      ]);
   }
 
   /**
@@ -60,6 +62,9 @@ class CRM_CivirulesConditions_Form_Contact_InGroup extends CRM_CivirulesConditio
     if (!empty($data['operator'])) {
       $defaultValues['operator'] = $data['operator'];
     }
+    if (!empty($data['check_group_tree'])) {
+      $defaultValues['check_group_tree'] = $data['check_group_tree'];
+    }
     return $defaultValues;
   }
 
@@ -72,6 +77,7 @@ class CRM_CivirulesConditions_Form_Contact_InGroup extends CRM_CivirulesConditio
   public function postProcess() {
     $data['group_ids'] = $this->_submitValues['group_ids'];
     $data['operator'] = $this->_submitValues['operator'];
+    $data['check_group_tree'] = $this->_submitValues['check_group_tree'];
     $this->ruleCondition->condition_params = serialize($data);
     $this->ruleCondition->save();
 

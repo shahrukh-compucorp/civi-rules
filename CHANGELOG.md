@@ -2,7 +2,8 @@
 
 ## Version 2.9 (unreleased)
 
-* Fixed the fatal error after copying a profile (#19).  
+* Fixed the fatal error after copying a profile (#19).
+* Refactored the way triggers, actions and conditions are inserted in the database upon installation (#24).  
 
 ## Version 2.8
 * "Set Thank You Date for a Contribution" action now supports options for time as well as date.

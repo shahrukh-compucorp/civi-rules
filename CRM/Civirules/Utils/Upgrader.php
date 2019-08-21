@@ -89,6 +89,7 @@ class CRM_Civirules_Utils_Upgrader {
       }
     }
   }
+
   /**
    * Method to check if conditions are in the DB and insert if not
    */
@@ -340,7 +341,224 @@ class CRM_Civirules_Utils_Upgrader {
   }
 
   /**
+   * Read a json file and insert the action into the database.
+   *
+   * The file has the format of:
+   * [
+   *   {
+   *     "name": "activity_add",
+   *     "label": "Add activity to contact",
+   *     "class_name": "CRM_CivirulesActions_Activity_Add",
+   *   }
+   * ]
+   *
+   * @param string $jsonFile
+   *
+   * @throws \Exception
+   */
+  public static function insertActionsFromJson($jsonFile) {
+    $actions = json_decode(file_get_contents($jsonFile), true);
+    foreach($actions as $action) {
+      self::insertAction($action['name'], $action['label'], $action['class_name']);
+    }
+  }
+
+  /**
+   * Insert an action in the database and check whether the action already exists.
+   *
+   * @param $name
+   * @param $label
+   * @param $className
+   */
+  public static function insertAction($name, $label, $className) {
+    $user_id = CRM_Core_Session::getLoggedInContactID();
+    $id = CRM_Core_DAO::singleValueQuery("SELECT `id` FROM `civirule_action` WHERE `name` = %1", array(1=>array($name, 'String')));
+    if ($id) {
+      $update = "UPDATE `civirule_action` SET `label` = %2, `class_name` = %3, `modified_date` = NOW(), `modified_user_id` = %4 WHERE id = %1";
+      $updateParams[1] = array($id, 'Integer');
+      $updateParams[2] = array($label, 'String');
+      $updateParams[3] = array($className, 'String');
+      $updateParams[4] = array($user_id, 'Integer');
+      CRM_Core_DAO::executeQuery($update, $updateParams);
+    } else {
+      $insert = "INSERT INTO `civirule_action` (`name`, `label`, `class_name`, `created_date`, `created_user_id`) VALUES (%1, %2, %3, NOW(), %4)";
+      $insertParams[1] = array($name, 'String');
+      $insertParams[2] = array($label, 'String');
+      $insertParams[3] = array($className, 'String');
+      $insertParams[4] = array($user_id, 'Integer');
+      CRM_Core_DAO::executeQuery($insert, $insertParams);
+    }
+  }
+
+  /**
+   * Read a json file and insert the conditions into the database.
+   *
+   * The file has the format of:
+   * [
+   *   {
+   *     "name": "activity_in_campaign",
+   *     "label": "Activity is (not) in Campaign(s)",
+   *     "class_name": "CRM_CivirulesConditions_Activity_Campaign",
+   *   }
+   * ]
+   *
+   * @param string $jsonFile
+   *
+   * @throws \Exception
+   */
+  public static function insertConditionsFromJson($jsonFile) {
+    $conditions = json_decode(file_get_contents($jsonFile), true);
+    foreach($conditions as $condition) {
+      self::insertCondition($condition['name'], $condition['label'], $condition['class_name']);
+    }
+  }
+
+  /**
+   * Insert an condition in the database and check whether the action already exists.
+   *
+   * @param $name
+   * @param $label
+   * @param $className
+   */
+  public static function insertCondition($name, $label, $className) {
+    $user_id = CRM_Core_Session::getLoggedInContactID();
+    $id = CRM_Core_DAO::singleValueQuery("SELECT `id` FROM `civirule_condition` WHERE `name` = %1", array(1=>array($name, 'String')));
+    if ($id) {
+      $update = "UPDATE `civirule_condition` SET `label` = %2, `class_name` = %3, `modified_date` = NOW(), `modified_user_id` = %4 WHERE id = %1";
+      $updateParams[1] = array($id, 'Integer');
+      $updateParams[2] = array($label, 'String');
+      $updateParams[3] = array($className, 'String');
+      $updateParams[4] = array($user_id, 'Integer');
+      CRM_Core_DAO::executeQuery($update, $updateParams);
+    } else {
+      $insert = "INSERT INTO `civirule_condition` (`name`, `label`, `class_name`, `created_date`, `created_user_id`) VALUES (%1, %2, %3, NOW(), %4)";
+      $insertParams[1] = array($name, 'String');
+      $insertParams[2] = array($label, 'String');
+      $insertParams[3] = array($className, 'String');
+      $insertParams[4] = array($user_id, 'Integer');
+      CRM_Core_DAO::executeQuery($insert, $insertParams);
+    }
+  }
+
+  /**
+   * Read a json file and insert tre triggers to the database.
+   *
+   * The file has the format of:
+   * [
+   *   {
+   *     "name": "new_activity",
+   *     "label": "Activity is added",
+   *     "object_name": "Activity",
+   *     "op": "create",
+   *     "class_name": "CRM_CivirulesPostTrigger_Activity",
+   *     "cron": 0
+   *   }
+   * ]
+   *
+   * @param string $jsonFile
+   *
+   * @throws \Exception
+   */
+  public static function insertTriggersFromJson($jsonFile) {
+    $triggers = json_decode(file_get_contents($jsonFile), true);
+    foreach($triggers as $trigger) {
+      if (!isset($trigger['object_name'])) {
+        $trigger['object_name'] = null;
+      }
+      if (!isset($trigger['op'])) {
+        $trigger['op'] = null;
+      }
+      if (!isset($trigger['class_name'])) {
+        $trigger['class_name'] = null;
+      }
+      self::insertTrigger($trigger['name'], $trigger['label'], $trigger['cron'], $trigger['class_name'], $trigger['object_name'], $trigger['op']);
+    }
+  }
+
+  /**
+   * Insert a trigger. Checks if trigger already exists and if so update the existing one.
+   *
+   * @param $name
+   * @param $label
+   * @param $cron
+   * @param null $className
+   * @param null $objectName
+   * @param null $op
+   *
+   * @throws \Exception
+   */
+  public static function insertTrigger($name, $label, $cron, $className=null, $objectName = null, $op = null) {
+    if (!empty($objectName) && empty($op)) {
+      throw new \Exception('Op parameter could not be empty for trigger '.$name);
+    }
+    if (empty($objectName) && !empty($op)) {
+      throw new \Exception('Object Name parameter could not be empty for trigger '.$name);
+    }
+    if (empty($objectName) && empty($op) && empty($className)) {
+      throw new \Exception('Object Name, op and class Name parameter could not be empty for trigger '.$name);
+    }
+    $user_id = CRM_Core_Session::getLoggedInContactID();
+    $id = CRM_Core_DAO::singleValueQuery("SELECT `id` FROM `civirule_trigger` WHERE `name` = %1", array(1=>array($name, 'String')));
+    if ($id) {
+      $update = "UPDATE `civirule_trigger` SET `label` = %2, `cron` = %3, `modified_date` = NOW(), `modified_user_id` = %4";
+      $updateParams[1] = array($id, 'Integer');
+      $updateParams[2] = array($label, 'String');
+      $updateParams[3] = array($cron ? '1': '0', 'Boolean');
+      $updateParams[4] = array($user_id, 'Integer');
+      $i = 5;
+      if ($objectName && $op) {
+        $update .= ", `object_name` = %{$i}";
+        $updateParams[$i] = array($objectName, 'String');
+        $i++;
+        $update .= ", `op` = %{$i}";
+        $updateParams[$i] = array($op, 'String');
+        $i++;
+      } else {
+        $update .= ", `object_name` = null, `op` = null";
+      }
+      if ($className) {
+        $update .= ", `class_name` = %{$i}";
+        $updateParams[$i] = array($className, 'String');
+        $i++;
+      } else {
+        $update .= ", `class_name` = null";
+      }
+      $update .= " WHERE id = %1";
+      CRM_Core_DAO::executeQuery($update, $updateParams);
+    } else {
+      $insert = "INSERT INTO `civirule_trigger` (`name`, `label`, `cron`, `created_date`, `created_user_id`";
+      $insertParams[1] = array($name, 'String');
+      $insertParams[2] = array($label, 'String');
+      $insertParams[3] = array($cron ? '1': '0', 'Boolean');
+      $insertParams[4] = array($user_id, 'Integer');
+      $valueStatement = "(%1, %2, %3, NOW(), %4";
+      $i = 5;
+      if ($objectName && $op) {
+        $insert .= ", `object_name`";
+        $valueStatement .= ", %{$i}";
+        $insertParams[$i] = array($objectName, 'String');
+        $i++;
+        $insert .= ", `op`";
+        $valueStatement .= ", %{$i}";
+        $insertParams[$i] = array($op, 'String');
+        $i++;
+      }
+      if ($className) {
+        $insert .= ", `class_name`";
+        $valueStatement .= ", %{$i}";
+        $insertParams[$i] = array($className, 'String');
+        $i++;
+      }
+      $insert .= ") VALUES ".$valueStatement.");";
+      CRM_Core_DAO::executeQuery($insert, $insertParams);
+    }
+  }
+
+  /**
    * Method to check for triggers and insert if required
+   *
+   * @deprecated because the triggers are not put in a json file and
+   * every trigger is checked for existence when the json file is processed
    */
   public static function checkCiviRulesTriggers() {
     $triggers = array(

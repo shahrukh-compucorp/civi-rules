@@ -41,6 +41,33 @@ Obviously you can use any name you like for your `class_name`, we have stuck to 
 
 !!! Note
     You can also use the API to add an Action to CiviRules. Entity is `CiviRuleAction`, action is `Create`.
+    
+#### Alternative method json file (since CiviRules 2.9)
+
+When your action is in the CiviRules extension you can add your condition to the `sql/actions.json` file.
+When you have created the action in your own extension you can add a `civirules_actions.json` file in the root of your extension. And add the following data
+
+```json
+
+[
+{
+  "name": "contact_soft_delete",
+  "label": "Soft delete a contact",
+  "class_name": "CRM_CivirulesActions_Contact_SoftDelete"
+}
+]
+
+```   
+
+In your extension upgrader class add the following line:
+
+```php
+
+CRM_Civirules_Utils_Upgrader::insertActionsFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'civirules_actions.json');
+
+```        
+
+The advantage of this alternative way is that it also checks whether the action already exists and if so it updates the action.
 
 ### Step 2 - Add a Class That Extends CRM_CiviRule_Action
 
@@ -134,6 +161,33 @@ Obviously you can use any name you like for your `class_name`, we have stuck to 
 
 !!! Note
     You can also use the API to add an Action to CiviRules. Entity is `CiviRuleAction`, action is `Create`.
+    
+#### Alternative method json file (since CiviRules 2.9)
+
+When your action is in the CiviRules extension you can add your condition to the `sql/actions.json` file.
+When you have created the action in your own extension you can add a `civirules_actions.json` file in the root of your extension. And add the following data
+
+```json
+
+[
+{
+  "name": "contact_sub_type",
+  "label": "Set subtype for a contact",
+  "class_name": "CRM_CivirulesActions_Contact_Subtype"
+}
+]
+
+```   
+
+In your extension upgrader class add the following line:
+
+```php
+
+CRM_Civirules_Utils_Upgrader::insertActionsFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'civirules_actions.json');
+
+```        
+
+The advantage of this alternative way is that it also checks whether the action already exists and if so it updates the action.
 
 ### Step 2 - Add a Class That Extends CRM_CiviRule_Action
 

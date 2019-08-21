@@ -14,7 +14,6 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     $this->executeSqlFile('sql/createCiviruleAction.sql');
     $this->executeSqlFile('sql/createCiviruleCondition.sql');
     $this->executeSqlFile('sql/createCiviruleTrigger.sql');
-    $this->executeSqlFile('sql/insertCiviruleTrigger.sql');
     $this->executeSqlFile('sql/createCiviruleRule.sql');
     $this->executeSqlFile('sql/createCiviruleRuleAction.sql');
     $this->executeSqlFile('sql/createCiviruleRuleCondition.sql');
@@ -24,9 +23,11 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     if (empty($ruleTagOptionGroup)) {
       CRM_Civirules_Utils_OptionGroup::create('civirule_rule_tag', 'Tags for CiviRules', 'Tags used to filter CiviRules on the CiviRules page');
     }
-    // now insert all Civirules Actions and Conditions
-    $this->executeSqlFile('sql/insertCivirulesActions.sql');
-    $this->executeSqlFile('sql/insertCivirulesConditions.sql');
+
+    // Insert the triggers
+    CRM_Civirules_Utils_Upgrader::insertTriggersFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/triggers.json');
+    CRM_Civirules_Utils_Upgrader::insertActionsFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/actions.json');
+    CRM_Civirules_Utils_Upgrader::insertConditionsFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/conditions.json');
 
   }
 
@@ -539,6 +540,13 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     CRM_Civirules_Utils_Upgrader::checkCiviRulesTriggers();
     return TRUE;
   }
+
+  /*public function upgrade_2023() {
+    CRM_Civirules_Utils_Upgrader::insertTriggersFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/triggers.json');
+    CRM_Civirules_Utils_Upgrader::insertActionsFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/actions.json');
+    CRM_Civirules_Utils_Upgrader::insertConditionsFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/conditions.json');
+    return true;
+  }*/
 
 }
 

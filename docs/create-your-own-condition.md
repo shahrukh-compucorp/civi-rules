@@ -45,6 +45,33 @@ Obviously you can use any name you like for your `class_name`, we have stuck to 
 
 !!! Note
     You can also use the API to add a Condition to CiviRules. Entity is `CiviRuleCondition`, action is `Create`.
+    
+#### Alternative method json file (since CiviRules 2.9)
+
+If your condition is in the CiviRules extension you can add your condition to the `sql/conditions.json` file.
+When you have created the condition in your own extension you can add a `civirules_conditions.json` file in the root of your extension. And add the following data
+
+```json
+
+[
+{
+  "name": "first_donation_of_contact",
+  "label": "First Donation of a Contact",
+  "class_name": "CRM_CivirulesConditions_Contribution_FirstDonation"
+}
+]
+
+```   
+
+In your extension upgrader class add the following line:
+
+```php
+
+CRM_Civirules_Utils_Upgrader::insertConditionsFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'civirules_conditions.json');
+
+```
+
+The advantage of this alternative way is that it also checks whether the condition already exists and if so it updates the condition.
 
 ### Step 2 - Add a Class That Extends CRM_CiviRule_Condition
 
@@ -199,6 +226,7 @@ I am going to create my condition step by step.
 1. implement the required methods `isConditionValid` and `getExtraDataInputUrl`
 1. link my condition to the entity Contribution with the method `requiredEntities`
 
+
 ### Step 1 - Add the Condition to the Database
 
 You need to make sure that there is a record in the civirule_condition table for your condition. We recommend you do some by using an `insert` query.
@@ -222,7 +250,33 @@ Obviously you can use any name you like for your `class_name`, we have stuck to 
 
 !!! Note
     You can also use the API to add a Condition to CiviRules. Entity is `CiviRuleCondition`, action is `Create`.
+    
+#### Alternative method json file (since CiviRules 2.9)
 
+If your condition is in the CiviRules extension you can add your condition to the `sql/conditions.json` file.
+When you have created the condition in your own extension you can add a `civirules_conditions.json` file in the root of your extension. And add the following data
+
+```json
+
+[
+{
+  "name": "membership_is_of_type",
+  "label": "Membership is (not) of type(s)",
+  "class_name": "CRM_CivirulesConditions_Membership_Type"
+}
+]
+
+```   
+
+In your extension upgrader class add the following line:
+
+```php
+
+CRM_Civirules_Utils_Upgrader::insertConditionsFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'civirules_conditions.json');
+
+```    
+
+The advantage of this alternative way is that it also checks whether the condition already exists and if so it updates the condition.
 
 ### Step 2 - Add a Class That Extends CRM_CiviRule_Condition
 

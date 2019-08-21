@@ -2,6 +2,7 @@
 
 ## Version 2.9 (unreleased)
 
+* Adds new action: update participant status
 * Refactored the way triggers, actions and conditions are inserted in the database upon installation (#24).  
 * Fixed the fatal error after copying a profile (#19).  
 * Fixed php warning in CRM_CivirulesConditions_Contact_AgeComparison

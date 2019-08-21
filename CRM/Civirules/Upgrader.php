@@ -249,7 +249,7 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     ));
     return TRUE;
   }
-	
+
 	public function upgrade_1022() {
 		CRM_Core_DAO::executeQuery("
 			UPDATE civirule_trigger
@@ -375,7 +375,7 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
   }
 
   public function upgrade_2000() {
-    // Stub function to make sure the schema version jumps to 2000, indicating we are on 2.x version. 
+    // Stub function to make sure the schema version jumps to 2000, indicating we are on 2.x version.
     return TRUE;
   }
 
@@ -541,12 +541,10 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     return TRUE;
   }
 
-  /*public function upgrade_2023() {
-    CRM_Civirules_Utils_Upgrader::insertTriggersFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/triggers.json');
+  public function upgrade_2023() {
     CRM_Civirules_Utils_Upgrader::insertActionsFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/actions.json');
-    CRM_Civirules_Utils_Upgrader::insertConditionsFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/conditions.json');
     return true;
-  }*/
+  }
 
 }
 

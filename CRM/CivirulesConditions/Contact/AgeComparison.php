@@ -74,4 +74,7 @@ class CRM_CivirulesConditions_Contact_AgeComparison extends CRM_CivirulesConditi
     return $trigger->doesProvideEntity('Contact');
   }
 
+  protected function getComparisonValue() {
+    return $this->conditionParams['value'];
+  }
 }

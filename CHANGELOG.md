@@ -4,6 +4,10 @@
 
 * Fixed the fatal error after copying a profile (#19).
 * Refactored the way triggers, actions and conditions are inserted in the database upon installation (#24).  
+* Fixed the fatal error after copying a profile (#19).  
+* Fixed php warning in CRM_CivirulesConditions_Contact_AgeComparison
+* Fixed Cancel button on Rule form returns to "random" page (now it returns to rule overview)
+* Fixed uncorrect behavior of isConditionValid with empty value (now returns FALSE)
 
 ## Version 2.8
 * "Set Thank You Date for a Contribution" action now supports options for time as well as date.

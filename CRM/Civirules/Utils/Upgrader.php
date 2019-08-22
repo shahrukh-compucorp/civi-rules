@@ -372,6 +372,9 @@ class CRM_Civirules_Utils_Upgrader {
    */
   public static function insertAction($name, $label, $className) {
     $user_id = CRM_Core_Session::getLoggedInContactID();
+    if (!$user_id) {
+      $user_id = 0;
+    }
     $id = CRM_Core_DAO::singleValueQuery("SELECT `id` FROM `civirule_action` WHERE `name` = %1", array(1=>array($name, 'String')));
     if ($id) {
       $update = "UPDATE `civirule_action` SET `label` = %2, `class_name` = %3, `modified_date` = NOW(), `modified_user_id` = %4 WHERE id = %1";
@@ -422,6 +425,9 @@ class CRM_Civirules_Utils_Upgrader {
    */
   public static function insertCondition($name, $label, $className) {
     $user_id = CRM_Core_Session::getLoggedInContactID();
+    if (!$user_id) {
+      $user_id = 0;
+    }
     $id = CRM_Core_DAO::singleValueQuery("SELECT `id` FROM `civirule_condition` WHERE `name` = %1", array(1=>array($name, 'String')));
     if ($id) {
       $update = "UPDATE `civirule_condition` SET `label` = %2, `class_name` = %3, `modified_date` = NOW(), `modified_user_id` = %4 WHERE id = %1";
@@ -498,6 +504,9 @@ class CRM_Civirules_Utils_Upgrader {
       throw new \Exception('Object Name, op and class Name parameter could not be empty for trigger '.$name);
     }
     $user_id = CRM_Core_Session::getLoggedInContactID();
+    if (!$user_id) {
+      $user_id = 0;
+    }
     $id = CRM_Core_DAO::singleValueQuery("SELECT `id` FROM `civirule_trigger` WHERE `name` = %1", array(1=>array($name, 'String')));
     if ($id) {
       $update = "UPDATE `civirule_trigger` SET `label` = %2, `cron` = %3, `modified_date` = NOW(), `modified_user_id` = %4";

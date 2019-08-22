@@ -546,5 +546,44 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     return true;
   }
 
+  /**
+   * Upgrade 2025 - change constraints for civirule_rule to ON DELETE CASCADE
+   * (this is a repeat of upgrade_2020 because of issue 40 (https://lab.civicrm.org/extensions/civirules/issues/40)
+   *
+   * @return bool
+   */
+  public function upgrade_2025() {
+    $this->ctx->log->info('Applying update 2025');
+    // civirule_rule_tag table
+    $drop = "ALTER TABLE civirule_rule_tag DROP FOREIGN KEY fk_rule_id";
+    CRM_Core_DAO::executeQuery($drop);
+    $cascade = "ALTER TABLE civirule_rule_tag ADD CONSTRAINT fk_rule_id 
+    FOREIGN KEY (rule_id) REFERENCES civirule_rule (id) ON DELETE CASCADE";
+    CRM_Core_DAO::executeQuery($cascade);
+    // civirule_rule_condition table
+    $drop = "ALTER TABLE civirule_rule_condition DROP FOREIGN KEY fk_rc_condition";
+    CRM_Core_DAO::executeQuery($drop);
+    $cascade = "ALTER TABLE civirule_rule_condition ADD CONSTRAINT fk_rc_condition 
+    FOREIGN KEY (condition_id) REFERENCES civirule_condition (id) ON DELETE CASCADE";
+    CRM_Core_DAO::executeQuery($cascade);
+    $drop = "ALTER TABLE civirule_rule_condition DROP FOREIGN KEY fk_rc_rule";
+    CRM_Core_DAO::executeQuery($drop);
+    $cascade = "ALTER TABLE civirule_rule_condition ADD CONSTRAINT fk_rc_rule 
+    FOREIGN KEY (rule_id) REFERENCES civirule_rule (id) ON DELETE CASCADE";
+    CRM_Core_DAO::executeQuery($cascade);
+    // civirule_rule_action table
+    $drop = "ALTER TABLE civirule_rule_action DROP FOREIGN KEY fk_ra_action";
+    CRM_Core_DAO::executeQuery($drop);
+    $cascade = "ALTER TABLE civirule_rule_action ADD CONSTRAINT fk_ra_action 
+    FOREIGN KEY (action_id) REFERENCES civirule_action (id) ON DELETE CASCADE";
+    CRM_Core_DAO::executeQuery($cascade);
+    $drop = "ALTER TABLE civirule_rule_action DROP FOREIGN KEY fk_ra_rule";
+    CRM_Core_DAO::executeQuery($drop);
+    $cascade = "ALTER TABLE civirule_rule_action ADD CONSTRAINT fk_ra_rule 
+    FOREIGN KEY (rule_id) REFERENCES civirule_rule (id) ON DELETE CASCADE";
+    CRM_Core_DAO::executeQuery($cascade);
+    return TRUE;
+  }
+
 }
 

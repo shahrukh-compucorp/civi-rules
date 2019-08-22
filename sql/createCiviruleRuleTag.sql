@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS civirule_rule_tag (
   CONSTRAINT fk_rule_id
     FOREIGN KEY (rule_id)
     REFERENCES civirule_rule (id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_general_ci

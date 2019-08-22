@@ -13,13 +13,13 @@ CREATE TABLE IF NOT EXISTS civirule_rule_action (
   CONSTRAINT fk_ra_rule
     FOREIGN KEY (rule_id)
     REFERENCES civirule_rule (id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT,
   CONSTRAINT fk_ra_action
     FOREIGN KEY (action_id)
     REFERENCES civirule_action (id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_general_ci

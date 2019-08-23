@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Version 2.9 (unreleased)
+## Version 2.9
 
 * Adds new action: update participant status
 * Refactored the way triggers, actions and conditions are inserted in the database upon installation (#24).  

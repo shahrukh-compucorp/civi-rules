@@ -453,4 +453,11 @@
     <access_arguments>access CiviCRM</access_arguments>
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/civirule/form/action/entity_set_value</path>
+    <page_callback>CRM_CivirulesActions_Entity_Form_SetValue</page_callback>
+    <title>Set Value</title>
+    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
 </menu>

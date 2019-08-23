@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 2.10 (not yet released)
+
+*Nothing changed yet*
+
 ## Version 2.9
 
 * Adds new action: update participant status

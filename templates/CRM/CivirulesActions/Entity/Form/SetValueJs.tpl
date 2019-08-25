@@ -20,15 +20,14 @@
 
                // add items
                for(var field in result['values']) {
-                   fieldList.append(CRM.$('<option></option>').attr('value', result['values'][field].name).text(result['values'][field].title));
+                   fieldList.append(CRM.$('<option></option>').attr('value', field).text(result['values'][field].title));
 
                    // set the default value (if it matches)
                    if (field == currentValue) {
                        fieldList.val(currentValue);
+                       CRM.$('#rule_action_field').change();
                    }
                }
-
-
            }, function(error) {
                alert("Can't get fields of entity: " + entity);
            });

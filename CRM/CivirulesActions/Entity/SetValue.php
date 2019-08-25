@@ -42,8 +42,8 @@ class CRM_CivirulesActions_Entity_SetValue extends CRM_CivirulesActions_Generic_
     $field = $action_params['field'];
     $value = $action_params['value'];
 
-    $activityData = $triggerData->getEntityData($entity);
-    $parameters['id'] = $activityData['id'];
+    $entityData = $triggerData->getEntityData($entity);
+    $parameters['id'] = $entityData['id'];
     $parameters[$field] = $value;
     return $parameters;
   }

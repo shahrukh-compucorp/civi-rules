@@ -75,11 +75,28 @@
             cj("#civirule_helptext_dialog-block").html(result.help_text);
           });
     }
+
     function civiruleEnableDisable(ruleId, action) {
-      CRM.api3('CiviRuleRule', 'create', {"id": ruleId, "is_active": action})
-          .done(function(result) {
-            location.reload(true);
-          });
+      if (action === 1) {
+        CRM.api3('CiviRuleRule', 'getClones', {"id": ruleId})
+            .done(function (result) {
+              if (result.count > 0) {
+                location.href = CRM.url('civicrm/civirule/form/ruleenable', {"id": ruleId});
+              }
+              else {
+                CRM.api3('CiviRuleRule', 'create', {"id": ruleId, "is_active": action})
+                    .done(function (result) {
+                      location.reload(true);
+                    });
+              }
+            });
+      }
+      else {
+        CRM.api3('CiviRuleRule', 'create', {"id": ruleId, "is_active": action})
+            .done(function (result) {
+              location.reload(true);
+            });
+      }
     }
   </script>
 {/literal}

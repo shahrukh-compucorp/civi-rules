@@ -1,7 +1,7 @@
 <?php
 /**
  * Utils - class with generic functions CiviRules
- * 
+ *
  * @author Erik Hommel (CiviCooP) <erik.hommel@civicoop.org>
  * @license http://www.gnu.org/licenses/agpl-3.0.html
  */
@@ -9,7 +9,7 @@ class CRM_Civirules_Utils {
 
   /**
    * Function return display name of contact retrieved with contact_id
-   * 
+   *
    * @param int $contactId
    * @return string $contactName
    * @access public
@@ -32,7 +32,7 @@ class CRM_Civirules_Utils {
 
   /**
    * Function to format is_active to yes/no
-   * 
+   *
    * @param int $isActive
    * @return string
    * @access public
@@ -443,6 +443,57 @@ class CRM_Civirules_Utils {
         return $settings['extensionsDir'].'/org.civicoop/civirules/';
       }
     }
+  }
+
+
+  /**
+   * Reads a part of the rule into an array to make it comparable with
+   * other rules. Used to determine of both rules are clones of each other,
+   * rules with the same actions
+   *
+   * @param $ruleId
+   *
+   * @return array
+   */
+  public static function ruleCompareFormat($ruleId, $triggerId = NULL) {
+
+    $result = [];
+    if (!$triggerId) {
+      $triggerId = civicrm_api3('CiviRuleRule', 'getvalue', [
+        'id' => $ruleId,
+        'return' => 'trigger_id'
+      ]);
+    }
+    $result['triggerId'] = $triggerId;
+
+    $dao = CRM_Core_DAO::executeQuery('SELECT condition_link,condition_id,condition_params,is_active FROM civirule_rule_condition WHERE rule_id = %1 ORDER BY id', [
+      1 => [$ruleId, 'Integer']
+    ]);
+
+    $result ['conditions'] = [];
+    while ($dao->fetch()) {
+      $result ['conditions'][] = [
+        'condition_link' => $dao->condition_link,
+        'condition_id' => $dao->condition_id,
+        'condition_params' => $dao->condition_params,
+        'is_active' => $dao->is_active,
+      ];
+    };
+
+    $dao = CRM_Core_DAO::executeQuery('SELECT action_id ,action_params, delay, ignore_condition_with_delay, is_active FROM civirule_rule_action WHERE rule_id = %1 ORDER BY id', [
+      1 => [$ruleId, 'Integer']
+    ]);
+    $result['actions'] = [];
+    while ($dao->fetch()){
+      $result ['actions'][] = [
+        'action_id' => $dao->action_id,
+        'action_params' => $dao->action_params,
+        'delay' => $dao->delay,
+        'ignore_condition_with_delay' => $dao->ignore_condition_with_delay,
+        'is_active' => $dao->is_active,
+        ];
+    }
+    return $result;
   }
 
 }

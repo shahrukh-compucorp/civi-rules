@@ -447,10 +447,9 @@
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
   <item>
-    <path>civicrm/civirule/form/action/participant_update_status</path>
-    <page_callback>CRM_CivirulesActions_Participant_Form_UpdateStatus</page_callback>
-    <title>Update participant status</title>
+    <path>civicrm/civirule/form/ruleenable</path>
+    <page_callback>CRM_Civirules_Form_RuleEnable</page_callback>
+    <title>RuleEnable</title>
     <access_arguments>access CiviCRM</access_arguments>
-    <access_arguments>administer CiviCRM</access_arguments>
   </item>
 </menu>

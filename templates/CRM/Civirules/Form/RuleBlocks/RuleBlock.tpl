@@ -23,9 +23,14 @@
   </div>
   <div class="crm-section">
     <div class="label">{$form.rule_is_active.label}</div>
-    <div class="content">{$form.rule_is_active.html}</div>
+    <div class="content">{$form.rule_is_active.html}
+    {if $clones}
+        <br><span class="description font-red">{ts}This rule has the following duplicate(s) : {$clones}{/ts}</span>
+        <br><span class="description font-red">{ts}Enabling can result in unintended double actions{/ts}</span>
+    {/if}
+    </div>
     <div class="clear"></div>
-  </div>      
+  </div>
   <div class="crm-section">
     <div class="label">{$form.rule_created_date.label}</div>
     <div class="content">{$form.rule_created_date.value}</div>
@@ -38,3 +43,15 @@
   </div>
   {$postRuleBlock}
 </div>
+
+{if $clones}
+{literal}
+<script>
+  CRM.$('#rule_is_active').on('change',function(){
+    if(this.checked){
+        CRM.alert(CRM.ts('Enabling can result in unintended double actions'))
+      }}
+  );
+</script>
+{/literal}
+{/if}

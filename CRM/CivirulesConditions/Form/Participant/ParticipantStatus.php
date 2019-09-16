@@ -9,7 +9,7 @@
 class CRM_CivirulesConditions_Form_Participant_ParticipantStatus extends CRM_CivirulesConditions_Form_Form {
 
   protected function getParticipantStatuses() {
-    $participantStatusList = civicrm_api3('ParticipantStatusType', 'getlist', array());
+    $participantStatusList = civicrm_api3('ParticipantStatusType', 'get', ['options' => ['limit' => 0]]);
     $statuses = array();
     foreach($participantStatusList['values'] as $status) {
       $statuses[$status['id']] = $status['label'];

@@ -9,7 +9,7 @@
 class CRM_CivirulesConditions_Form_Event_EventType extends CRM_CivirulesConditions_Form_Form {
 
   protected function getEventTypes() {
-    $eventTypeList = civicrm_api3('OptionValue', 'getlist', array('params' => array('option_group_id' => "event_type")));
+    $eventTypeList = civicrm_api3('OptionValue', 'get', array('option_group_id' => "event_type", 'options' => ['limit' => 0]));
     $eventTypes = array();
     foreach($eventTypeList['values'] as $eventType) {
       $eventTypes[$eventType['id']] = $eventType['label'];

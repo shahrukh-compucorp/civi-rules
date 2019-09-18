@@ -2,7 +2,7 @@
 
 ## Version 2.10 (not yet released)
 
-*Nothing changed yet*
+* Added clone butten to the edit rule screen, so you can copy and change only what needs changing (#29)
 
 ## Version 2.9
 

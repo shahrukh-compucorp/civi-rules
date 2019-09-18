@@ -16,7 +16,7 @@
       {include file="CRM/Civirules/Form/RuleBlocks/ActionBlock.tpl"}
     {/if}
 {/if}
-  
+
 <div class="crm-submit-buttons">
   {include file="CRM/common/formButtons.tpl" location="bottom"}
 </div>

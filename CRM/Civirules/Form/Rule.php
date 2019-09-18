@@ -101,7 +101,19 @@ class CRM_Civirules_Form_Rule extends CRM_Core_Form {
 
     $this->assign('action', $this->_action);
     $this->assign('rule', $this->rule);
-    $session = CRM_Core_Session::singleton();
+
+    if ($this->_action == CRM_Core_Action::UPDATE) {
+      $clones = civicrm_api3('CiviRuleRule', 'getclones', [
+        'id' => $this->ruleId,
+      ]);
+      if ($clones['count'] > 0) {
+        $cloneLabels = [];
+        foreach ($clones['values'] as $key => $clone) {
+          $cloneLabels[$key] = $clone['label'];
+        }
+        $this->assign('clones', implode(',', $cloneLabels));
+      }
+    }
   }
 
   /**
@@ -112,15 +124,18 @@ class CRM_Civirules_Form_Rule extends CRM_Core_Form {
   function postProcess() {
     $session = CRM_Core_Session::singleton();
     $userId = $session->get('userID');
-    if ($this->_action == CRM_Core_Action::DELETE) {
-      CRM_Civirules_BAO_Rule::deleteWithId($this->ruleId);
-      $session->setStatus('CiviRule deleted', 'Delete', 'success');
-      CRM_Utils_System::redirect($session->readUserContext());
-    }
 
-    $this->saveRule($this->_submitValues, $userId);
-    $this->saveRuleTrigger($this->_submitValues);
-    $session->setStatus('Rule with linked Trigger saved succesfully', 'CiviRule saved', 'success');
+    if (isset($this->_submitValues['_qf_Rule_next_clone'])) {
+      $result = civicrm_api3('CiviRuleRule', 'clone', [
+        'id' => $this->ruleId,
+      ]);
+      $this->ruleId = $result['values']['clone_id'];
+      $session->setStatus('Rule cloned succesfully', 'CiviRule clone', 'success');
+    } else {
+      $this->saveRule($this->_submitValues, $userId);
+      $this->saveRuleTrigger($this->_submitValues);
+      $session->setStatus('Rule with linked Trigger saved succesfully', 'CiviRule saved', 'success');
+    }
     /*
      * if add mode, set user context to form in edit mode to add conditions and actions
      */
@@ -131,9 +146,7 @@ class CRM_Civirules_Form_Rule extends CRM_Core_Form {
 
     if (isset($this->_submitValues['rule_trigger_select'])) {
       $redirectUrl = $this->getTriggerRedirect($this->_submitValues['rule_trigger_select']);
-      if ($redirectUrl) {
-        CRM_Utils_System::redirect($redirectUrl);
-      }
+      $session->pushUserContext($redirectUrl);
     }
 
     parent::postProcess();
@@ -261,6 +274,7 @@ class CRM_Civirules_Form_Rule extends CRM_Core_Form {
     } else {
       $this->addButtons(array(
         array('type' => 'next', 'name' => ts('Save'), 'isDefault' => TRUE,),
+        array('type' => 'next', 'name' => ts('Clone'), 'subName' => 'clone', 'icon' => 'fa-creative-commons'),
         array('type' => 'cancel', 'name' => ts('Cancel'))));
     }
   }

@@ -3,6 +3,9 @@
 ## Version 2.10 (not yet released)
 
 * Added clone butten to the edit rule screen, so you can copy and change only what needs changing (#29)
+* Added configuration for the record type for Activity and Case Activity trigger.
+* Fixed bug in Activity and Case Activity trigger with an empty contact id.
+* Added action to set Case Role
 
 ## Version 2.9
 

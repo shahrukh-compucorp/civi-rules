@@ -252,13 +252,13 @@ class CRM_Civirules_Form_Rule extends CRM_Core_Form {
         $this->addWysiwyg('rule_help_text', ts('Help text with purpose of rule'), array('rows' => 6, 'cols' => 80), FALSE);
       }
       $this->add('select', 'rule_tag_id', ts('Civirule Tag(s)'), CRM_Civirules_BAO_RuleTag::getRuleTagsList(), FALSE,
-        array('id' => 'rule_tag_id', 'multiple' => 'multiple', 'class' => 'crm-select2'));
+        array('id' => 'rule_tag_id', 'multiple' => 'multiple', 'class' => 'crm-select2 huge'));
       $this->add('checkbox', 'rule_is_active', ts('Enabled'));
       $this->add('text', 'rule_created_date', ts('Created Date'));
       $this->add('text', 'rule_created_contact', ts('Created By'));
       $triggerList = array(' - select - ') + CRM_Civirules_Utils::buildTriggerList();
       asort($triggerList);
-      $this->add('select', 'rule_trigger_select', ts('Select Trigger'), $triggerList, false, array('class' => 'crm-select2'));
+      $this->add('select', 'rule_trigger_select', ts('Select Trigger'), $triggerList, false, array('class' => 'crm-select2 huge'));
       if ($this->_action == CRM_Core_Action::UPDATE) {
         $this->createUpdateFormElements();
       }

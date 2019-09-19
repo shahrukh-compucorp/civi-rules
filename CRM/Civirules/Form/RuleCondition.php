@@ -140,7 +140,7 @@ class CRM_Civirules_Form_RuleCondition extends CRM_Core_Form {
     else {
       $conditionList = array(' - select - ');
     }
-    $this->add('select', 'rule_condition_select', ts('Select Condition'), $conditionList, true, array('class' => 'crm-select2'));
+    $this->add('select', 'rule_condition_select', ts('Select Condition'), $conditionList, true, array('class' => 'crm-select2 huge'));
 
     $this->addButtons(array(
       array('type' => 'next', 'name' => ts('Save'), 'isDefault' => TRUE,),

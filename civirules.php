@@ -8,6 +8,8 @@ if (!class_exists("\\Psr\\Log\\LogLevel")) {
   require_once('psr/log/LogLevel.php');
 }
 
+use CRM_Civirules_ExtensionUtil as E;
+
 /**
  * Implementation of hook_civicrm_config
  *
@@ -100,6 +102,10 @@ function civirules_civicrm_managed(&$entities) {
   // First create a backup because the managed entities are gone
   // so the actions and conditions table are first going to be emptied
   _civirules_upgrade_to_2x_backup();
+  // Check triggers, actions and conditions
+  CRM_Civirules_Utils_Upgrader::insertTriggersFromJson(E::path('sql/triggers.json'));
+  CRM_Civirules_Utils_Upgrader::insertActionsFromJson(E::path('sql/actions.json'));
+  CRM_Civirules_Utils_Upgrader::insertConditionsFromJson(E::path('sql/conditions.json'));
   return _civirules_civix_civicrm_managed($entities);
 }
 

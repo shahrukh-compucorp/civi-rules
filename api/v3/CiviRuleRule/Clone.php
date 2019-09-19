@@ -32,6 +32,7 @@ function civicrm_api3_civi_rule_rule_Clone($params) {
     'name' => substr('clone_of_'.$rule['name'], 0, 80),
     'label' => substr('Clone of '.$rule['label'], 0, 128),
     'trigger_id' => $rule['trigger_id'],
+    'trigger_params' => $rule['trigger_params'],
     // a clone is disabled by default
     'is_active' => 0,
     'description' => $rule['description'],

@@ -89,5 +89,6 @@
   {"name":"changed_individual_custom_data","label":"Custom Data on Individual Changed","object_name":null,"op":null,"class_name":"CRM_CivirulesPostTrigger_IndividualCustomDataChanged","cron":"0"},
   {"name":"changed_organization_custom_data","label":"Custom Data on Organization Changed","object_name":null,"op":null,"class_name":"CRM_CivirulesPostTrigger_OrganizationCustomDataChanged","cron":"0"},
   {"name":"membershipenddate","label":"Membership End Date","object_name":null,"op":null,"class_name":"CRM_CivirulesCronTrigger_MembershipEndDate","cron":"1"},
-  {"name":"eventdate","label":"Event Date reached","object_name":null,"op":null,"class_name":"CRM_CivirulesCronTrigger_EventDate","cron":"1"}
+  {"name":"eventdate","label":"Event Date reached","object_name":null,"op":null,"class_name":"CRM_CivirulesCronTrigger_EventDate","cron":"1"},
+  {"name": "create_ufmatch", "label": "UF Match (link with CMS user) is added", "object_name": "UFMatch", "op": "create", "class_name":null,"cron":"0"}
 ]

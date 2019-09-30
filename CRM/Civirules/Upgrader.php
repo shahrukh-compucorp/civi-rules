@@ -586,21 +586,21 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
   }
 
   /**
-   * Upgrade 2030 - add condition is cms user
+   * Upgrade 2030 - add trigger is cms user
    *
    * @return bool
    */
   public function upgrade_2030() {
     $this->ctx->log->info('Applying update 2030');
-    $query = "SELECT COUNT(*) FROM civirule_condition WHERE class_name = %1";
-    $count = CRM_Core_DAO::singleValueQuery($query, [1 => ["CRM_CivirulesConditions_Contact_IsCmsUser", "String"]]);
+    $query = "SELECT COUNT(*) FROM civirule_trigger WHERE name = %1";
+    $count = CRM_Core_DAO::singleValueQuery($query, [1 => ["create_ufmatch", "String"]]);
     if ($count == 0) {
-      $insert = "INSERT INTO civirule_condition (name, label, class_name, is_active) VALUES(%1, %2, %3, %4)";
+      $insert = "INSERT INTO civirule_trigger (name, label, object_name, op) VALUES(%1, %2, %3, %4)";
       CRM_Core_DAO::executeQuery($insert, [
-        1 => ["contact_is_cmsuser", "String"],
-        2 => ["Contact is CMS user", "String"],
-        3 => ["CRM_CivirulesConditions_Contact_IsCmsUser", "String"],
-        4 => [1, "Integer"],
+        1 => ["create_ufmatch", "String"],
+        2 => ["UF Match (link with CMS user) is added", "String"],
+        3 => ["UFMatch", "String"],
+        4 => ["create", "String"],
       ]);
     }
     return TRUE;

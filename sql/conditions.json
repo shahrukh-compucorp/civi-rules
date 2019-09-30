@@ -58,6 +58,5 @@
   {"name":"activity_is_past_date","label":"Activity Date in the Past","class_name":"CRM_CivirulesConditions_Activity_ActivityIsPast"},
   {"name":"activity_date_comparison","label":"Activity Date is .....","class_name":"CRM_CivirulesConditions_Activity_Date"},
   {"name":"xth_contribution_contact","label":"xth Contribution of Contact","class_name":"CRM_CivirulesConditions_Contribution_xthContribution"},
-  {"name":"contact_in_domain","label":"Contact (not) in Domain","class_name":"CRM_CivirulesConditions_Contact_InDomain"},
-  {"name":"contact_is_cmsuser","label":"Contact is CMS user","class_name":"CRM_CivirulesConditions_Contact_IsCmsUser"}
+  {"name":"contact_in_domain","label":"Contact (not) in Domain","class_name":"CRM_CivirulesConditions_Contact_InDomain"}
 ]

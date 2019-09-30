@@ -1,4 +1,5 @@
 <?php
+use CRM_Civirules_ExtensionUtil as E;
 
 /**
  * Copyright (C) 2015 Coöperatieve CiviCooP U.A. <http://www.civicoop.org>
@@ -602,6 +603,38 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
         3 => ["UFMatch", "String"],
         4 => ["create", "String"],
       ]);
+    }
+    return TRUE;
+  }
+
+  /**
+   * Upgrade 2035 - remove trigger case added (see https://lab.civicrm.org/extensions/civirules/issues/45)
+   *
+   * @return bool
+   */
+  public function upgrade_2035() {
+    $this->ctx->log->info('Applying update 2035 - disabling all rules with trigger Case Added and remove trigger Case Added');
+    $caseAddedRules = [];
+    // retrieve id of trigger case added
+    $query = "SELECT id FROM civirule_trigger WHERE name = %1";
+    $triggerId = (int) CRM_Core_DAO::singleValueQuery($query, [1 => ["new_case", "String"]]);
+    if ($triggerId) {
+      // check if there are any rules with the case added trigger and if so, add message line and copy rule to table
+      $count = (int) CRM_Core_DAO::singleValueQuery("SELECT COUNT(*) FROM civirule_rule WHERE trigger_id = %1", [1 => [$triggerId, "Integer"]]);
+      if ($count > 0) {
+        // keep all relevant records in separate tables
+        $this->executeSqlFile('sql/createUpgrade2035Tables.sql');
+        $pre210 = new CRM_Civirules_SaveUpgrade2035($triggerId);
+        $pre210->saveOldRecords();
+        CRM_Core_Session::setStatus(E::ts("The upgrade has deleted ") . $count . E::ts(" rules with trigger Case is added. \n\n These rules and their data have been saved in tables civirule_per210_rule, civirule_pre210_rule_action and civirule_pre210_condition. \n\n You need to manually re-create those rules with the trigger Case Activitity added with condition activity_type is Open Case (see https://lab.civicrm.org/extensions/civirules/issues/45"), E::ts("Upgrade has DELETED rules!"), "info");
+        // delete all current rules with trigger case added
+        CRM_Core_DAO::executeQuery("DELETE FROM civirule_rule  WHERE trigger_id = %1", [1 => [$triggerId, "Integer"]]);
+      }
+      // delete trigger case added
+      CRM_Core_DAO::executeQuery("DELETE FROM civirule_trigger WHERE id = %1", [1 => [$triggerId, "Integer"]]);
+    }
+    else {
+      Civi::log()->warning(E::ts('Could not find a Civirules trigger with name new_case, this could be a problem? Please check carefully if you do not have any rules with the trigger Case is added and do not have a trigger called Case is added. If that is true, you are fine. If not, read the README.md of the Civirules extension on upgrade to 2.10.'));
     }
     return TRUE;
   }

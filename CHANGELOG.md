@@ -6,6 +6,8 @@
 * Added configuration for the record type for Activity and Case Activity trigger.
 * Fixed bug in Activity and Case Activity trigger with an empty contact id.
 * Added action to set Case Role
+* Added trigger for new UFMatch record (link with CMS user is added)
+* Removed the Case Added trigger as it causes errors (check https://lab.civicrm.org/extensions/civirules/issues/45). To do stuff when a new case is added use the Case Activity Added trigger instead with activity type Open Case. During the upgrade all existing rules based on the Case Added trigger will be deleted! They need to be recreated manually with the Case Activity is added trigger with activity type Open Case.
 
 ## Version 2.9
 
@@ -17,7 +19,6 @@
 * Fixed uncorrect behavior of isConditionValid with empty value (now returns FALSE)
 * Fixed issue 40 (https://lab.civicrm.org/extensions/civirules/issues/40) where the fresh install SQL scripts still create tables with CONSTRAINT ON DELETE RESTRICT rather than ON DELETE CASCADE. There is an upgrade action (2025) linked to this fix which will remove the current constraints on tables civirule_rule_action, civirule_rule_condition and civirule_rule_tag and replace them with CONSTRAINT ON DELETE CASCADE and ON UPDATE RESTRICT.
 * Introduces the option to take child groups into consideration for the condition 'contact is (not) in group'.
-
 
 ## Version 2.8
 * "Set Thank You Date for a Contribution" action now supports options for time as well as date.

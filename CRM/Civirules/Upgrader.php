@@ -585,5 +585,26 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     return TRUE;
   }
 
+  /**
+   * Upgrade 2030 - add condition is cms user
+   *
+   * @return bool
+   */
+  public function upgrade_2030() {
+    $this->ctx->log->info('Applying update 2030');
+    $query = "SELECT COUNT(*) FROM civirule_condition WHERE class_name = %1";
+    $count = CRM_Core_DAO::singleValueQuery($query, [1 => ["CRM_CivirulesConditions_Contact_IsCmsUser", "String"]]);
+    if ($count == 0) {
+      $insert = "INSERT INTO civirule_condition (name, label, class_name, is_active) VALUES(%1, %2, %3, %4)";
+      CRM_Core_DAO::executeQuery($insert, [
+        1 => ["contact_is_cmsuser", "String"],
+        2 => ["Contact is CMS user", "String"],
+        3 => ["CRM_CivirulesConditions_Contact_IsCmsUser", "String"],
+        4 => [1, "Integer"],
+      ]);
+    }
+    return TRUE;
+  }
+
 }
 

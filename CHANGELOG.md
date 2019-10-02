@@ -8,6 +8,7 @@
 * Added action to set Case Role
 * Added trigger for new UFMatch record (link with CMS user is added)
 * Removed the Case Added trigger as it causes errors (check https://lab.civicrm.org/extensions/civirules/issues/45). To do stuff when a new case is added use the Case Activity Added trigger instead with activity type Open Case. During the upgrade all existing rules based on the Case Added trigger will be deleted! They need to be recreated manually with the Case Activity is added trigger with activity type Open Case.
+* Added condition Compare old participant status to new participant status
 
 ## Version 2.9
 

@@ -639,5 +639,27 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     return TRUE;
   }
 
+  /**
+   * Upgrade 2036 add participant status changed condition
+   */
+  public function upgrade_2036() {
+    $this->ctx->log->info('Applying update 2036 - add Participant Status Changed condition');
+    $select = "SELECT COUNT(*) FROM civirule_condition WHERE class_name = %1";
+    $selectParams = [1 => ['CRM_CivirulesConditions_Participation_StatusChanged', 'String']];
+    $count = CRM_Core_DAO::singleValueQuery($select, $selectParams);
+    if ($count == 0) {
+      $insert = "INSERT INTO civirule_condition (name, label, class_name, is_active) VALUES(%1, %2, %3, %4)";
+      $insertParams = [
+        1 => ['participant_status_changed', 'String'],
+        2 => ['Compare Old Participant Status to New Participant Status', 'String'],
+        3 => ['CRM_CivirulesConditions_Participant_StatusChanged', 'String'],
+        4 => [1, 'Integer'],
+      ];
+      CRM_Core_DAO::executeQuery($insert, $insertParams);
+    }
+    return TRUE;
+  }
+
+
 }
 

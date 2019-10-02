@@ -103,6 +103,21 @@ abstract class CRM_Civirules_TriggerData_TriggerData {
   }
 
   /**
+   * Method to return originalData if present
+   *
+   * @return array
+   */
+  public function getOriginalData() {
+    if (isset($this->originalData)) {
+      return $this->originalData;
+    }
+    else {
+      return [];
+    }
+  }
+
+
+  /**
    * Returns an array of custom fields in param format
    *
    * @param $custom_field_id

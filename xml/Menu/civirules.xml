@@ -474,4 +474,11 @@
     <access_arguments>access CiviCRM</access_arguments>
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/civirule/form/condition/participant/statuschanged</path>
+    <page_callback>CRM_CivirulesConditions_Form_Participant_StatusChanged</page_callback>
+    <title>participant status changed</title>
+    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
 </menu>

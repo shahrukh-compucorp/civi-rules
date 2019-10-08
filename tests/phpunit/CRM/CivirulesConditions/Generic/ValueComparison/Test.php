@@ -9,7 +9,7 @@ use Civi\Test\TransactionalInterface;
  * @license http://www.gnu.org/licenses/agpl-3.0.html
  * @group headless
  */
-class CRM_CivirulesConditions_Generic_ValueComparison_Test extends \PHPUnit_Framework_TestCase implements HeadlessInterface, HookInterface, TransactionalInterface {
+class CRM_CivirulesConditions_Generic_ValueComparison_Test extends \PHPUnit\Framework\TestCase implements HeadlessInterface, HookInterface, TransactionalInterface {
 
   public function setUpHeadless() {
     // Civi\Test has many helpers, like install(), uninstall(), sql(), and sqlFile().

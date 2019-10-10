@@ -16,5 +16,6 @@
   {"name":"remove_tag_contact","label":"Remove Tag from a Contact","class_name":"CRM_CivirulesActions_Tag_Remove"},
   {"name":"display_user_message","label":"Shows a Message to CiviCRM Users","class_name":"CRM_CivirulesActions_User_DisplayMessage"},
   {"name":"set_contact_donor","label":"Set Contact as Donor","class_name":"CRM_CivirulesActions_CreateDonor"},
-  {"name":"participant_update_status","label":"Update Participant Status","class_name":"CRM_CivirulesActions_Participant_UpdateStatus"}
+  {"name":"participant_update_status","label":"Update Participant Status","class_name":"CRM_CivirulesActions_Participant_UpdateStatus"},
+  {"name":"Relationship_add", "label":"Add relationship", "class_name":"CRM_CivirulesActions_Relationship_Add"}
 ]

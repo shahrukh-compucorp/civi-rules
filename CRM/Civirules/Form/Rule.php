@@ -395,7 +395,9 @@ class CRM_Civirules_Form_Rule extends CRM_Core_Form {
       $ruleActions[$ruleActionId]['formattedDelay'] = '';
       if (!empty($ruleAction['delay'])) {
         $delayClass = unserialize($ruleAction['delay']);
-        $ruleActions[$ruleActionId]['formattedDelay'] = $delayClass->getDelayExplanation();
+        if ($delayClass instanceof CRM_Civirules_Delay_Delay) {
+          $ruleActions[$ruleActionId]['formattedDelay'] = $delayClass->getDelayExplanation();
+        }
       }
     }
     return $ruleActions;

@@ -3,6 +3,7 @@
 ## Version 2.11 (not yet released)
 
 * Added action to create relationships.
+* fixed issue #53 (https://lab.civicrm.org/extensions/civirules/issues/53)
 
 ## Version 2.10
 

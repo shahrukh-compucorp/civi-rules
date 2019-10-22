@@ -36,6 +36,9 @@ class CRM_CivirulesConditions_Contact_InGroup extends CRM_Civirules_Condition {
     $isConditionValid = FALSE;
     $contact_id = $triggerData->getContactId();
     $checkGroupIds = $this->conditionParams['group_ids'];
+    if (!isset($this->conditionParams['check_group_tree'])) {
+      $this->conditionParams['check_group_tree'] = FALSE;
+    }
     // if check_group_tree, add child groups to checkGroupIds (link https://lab.civicrm.org/extensions/civirules/issues/18)
     if ($this->conditionParams['check_group_tree']) {
       $children = CRM_Contact_BAO_GroupNesting::getDescendentGroupIds($checkGroupIds);

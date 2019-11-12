@@ -488,4 +488,11 @@
     <access_arguments>access CiviCRM</access_arguments>
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/civirule/form/action/membership/add</path>
+    <page_callback>CRM_CivirulesActions_Membership_Form_Add</page_callback>
+    <title>Activity</title>
+    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
 </menu>

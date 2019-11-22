@@ -673,6 +673,12 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     return true;
   }
 
+  public function upgrade_2039()
+  {
+    // Add the condition: is contribution recurring?
+    CRM_Civirules_Utils_Upgrader::insertConditionsFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/conditions.json');
+    return true;
+  }
 
 }
 

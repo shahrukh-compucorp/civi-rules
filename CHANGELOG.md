@@ -4,6 +4,8 @@
 
 * Added action to create relationships.
 * Added action to create a membership
+* Added action to set financial type of a contribution
+* Added condition to check whether a contribution is a recurring contribution
 * fixed issue #53 (https://lab.civicrm.org/extensions/civirules/issues/53)
 
 ## Version 2.10

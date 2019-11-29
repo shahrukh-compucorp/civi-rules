@@ -7,6 +7,7 @@
 * Added action to set financial type of a contribution
 * Added condition to check whether a contribution is a recurring contribution
 * fixed issue #53 (https://lab.civicrm.org/extensions/civirules/issues/53)
+* fixed issue #46 (the is empty condition on the field value comparison is broken)
 
 ## Version 2.10
 

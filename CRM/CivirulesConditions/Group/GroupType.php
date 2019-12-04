@@ -27,6 +27,8 @@ class CRM_CivirulesConditions_Group_GroupType extends CRM_Civirules_Condition {
   public function isConditionValid(CRM_Civirules_TriggerData_TriggerData $triggerData) {
     $isConditionValid = FALSE;
     $group = $triggerData->getEntityData('Group');
+    // getting a group with groupType as Array instead of string.
+    $group = civicrm_api3('Group', 'getsingle', ['id' => $group['id']]);
     // if no case type, return FALSE
     if (!isset($group['group_type'])) {
       return $isConditionValid;

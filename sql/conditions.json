@@ -60,5 +60,6 @@
   {"name":"xth_contribution_contact","label":"xth Contribution of Contact","class_name":"CRM_CivirulesConditions_Contribution_xthContribution"},
   {"name":"contact_in_domain","label":"Contact (not) in Domain","class_name":"CRM_CivirulesConditions_Contact_InDomain"},
   {"name": "participant_status_changed", "label":"Compare Old Participant Status to New Participant Status", "class_name": "CRM_CivirulesConditions_Participant_StatusChanged"},
-  {"name":"contribution_is_recurring", "label":"Is Contribution recurring?", "class_name":"CRM_CivirulesConditions_Contribution_IsRecurring"}
+  {"name":"contribution_is_recurring", "label":"Is Contribution recurring?", "class_name":"CRM_CivirulesConditions_Contribution_IsRecurring"},
+  {"name":"campaign_type", "label":"Campaign Type is (not) one of", "class_name":"CRM_CivirulesConditions_Campaign_Type"}
 ]

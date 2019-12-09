@@ -103,7 +103,7 @@
     <page_callback>CRM_CivirulesConditions_Form_Contribution_IsRecurring</page_callback>
     <title>Is Contribution Recurring?</title>
     <access_arguments>administer CiviCRM</access_arguments>
-  </item>  
+  </item>
   <item>
     <path>civicrm/civirule/form/condition/case/casetype</path>
     <page_callback>CRM_CivirulesConditions_Form_Case_CaseType</page_callback>
@@ -373,6 +373,13 @@
     <path>civicrm/civirule/form/condition/activity_type</path>
     <page_callback>CRM_CivirulesConditions_Form_Activity_Type</page_callback>
     <title>Activity Type</title>
+    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/civirule/form/condition/campaign_type</path>
+    <page_callback>CRM_CivirulesConditions_Form_Campaign_Type</page_callback>
+    <title>Campaign Type</title>
     <access_arguments>access CiviCRM</access_arguments>
     <access_arguments>administer CiviCRM</access_arguments>
   </item>

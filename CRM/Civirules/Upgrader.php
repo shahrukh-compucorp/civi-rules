@@ -286,14 +286,14 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     if (CRM_Core_DAO::checkTableExists('civirule_rule_action_backup')) {
       CRM_Core_DAO::executeQuery("TRUNCATE `civirule_rule_action`");
       CRM_Core_DAO::executeQuery("
-        INSERT INTO `civirule_rule_action` 
+        INSERT INTO `civirule_rule_action`
         SELECT `civirule_rule_action_backup`.`id`,
         `civirule_rule_action_backup`.`rule_id`,
         `civirule_action`.`id` as `action_id`,
         `civirule_rule_action_backup`.`action_params`,
         `civirule_rule_action_backup`.`delay`,
         `civirule_rule_action_backup`.`ignore_condition_with_delay`,
-        `civirule_rule_action_backup`.`is_active` 
+        `civirule_rule_action_backup`.`is_active`
         FROM `civirule_rule_action_backup`
         INNER JOIN `civirule_action` ON `civirule_rule_action_backup`.`action_class_name` = `civirule_action`.`class_name`
       ");
@@ -302,13 +302,13 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     if (CRM_Core_DAO::checkTableExists('civirule_rule_condition_backup')) {
       CRM_Core_DAO::executeQuery("TRUNCATE `civirule_rule_condition`");
       CRM_Core_DAO::executeQuery("
-        INSERT INTO `civirule_rule_condition` 
+        INSERT INTO `civirule_rule_condition`
         SELECT `civirule_rule_condition_backup`.`id`,
         `civirule_rule_condition_backup`.`rule_id`,
         `civirule_rule_condition_backup`.`condition_link`,
         `civirule_condition`.`id` as `condition_id`,
         `civirule_rule_condition_backup`.`condition_params`,
-        `civirule_rule_condition_backup`.`is_active` 
+        `civirule_rule_condition_backup`.`is_active`
         FROM `civirule_rule_condition_backup`
         INNER JOIN `civirule_condition` ON `civirule_rule_condition_backup`.`condition_class_name` = `civirule_condition`.`class_name`
       ");
@@ -458,7 +458,7 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
   public function upgrade_2014() {
     CRM_Core_DAO::executeQuery("
         INSERT INTO civirule_trigger (name, label, object_name, op, cron, class_name, created_date, created_user_id)
-        VALUES 
+        VALUES
         ('membershipenddate', 'Membership End Date', NULL, NULL, 1, 'CRM_CivirulesCronTrigger_MembershipEndDate',  CURDATE(), 1);
     ");
     return TRUE;
@@ -494,29 +494,29 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     // civirule_rule_tag table
     $drop = "ALTER TABLE civirule_rule_tag DROP FOREIGN KEY fk_rule_id";
     CRM_Core_DAO::executeQuery($drop);
-    $cascade = "ALTER TABLE civirule_rule_tag ADD CONSTRAINT fk_rule_id 
+    $cascade = "ALTER TABLE civirule_rule_tag ADD CONSTRAINT fk_rule_id
     FOREIGN KEY (rule_id) REFERENCES civirule_rule (id) ON DELETE CASCADE";
     CRM_Core_DAO::executeQuery($cascade);
     // civirule_rule_condition table
     $drop = "ALTER TABLE civirule_rule_condition DROP FOREIGN KEY fk_rc_condition";
     CRM_Core_DAO::executeQuery($drop);
-    $cascade = "ALTER TABLE civirule_rule_condition ADD CONSTRAINT fk_rc_condition 
+    $cascade = "ALTER TABLE civirule_rule_condition ADD CONSTRAINT fk_rc_condition
     FOREIGN KEY (condition_id) REFERENCES civirule_condition (id) ON DELETE CASCADE";
     CRM_Core_DAO::executeQuery($cascade);
     $drop = "ALTER TABLE civirule_rule_condition DROP FOREIGN KEY fk_rc_rule";
     CRM_Core_DAO::executeQuery($drop);
-    $cascade = "ALTER TABLE civirule_rule_condition ADD CONSTRAINT fk_rc_rule 
+    $cascade = "ALTER TABLE civirule_rule_condition ADD CONSTRAINT fk_rc_rule
     FOREIGN KEY (rule_id) REFERENCES civirule_rule (id) ON DELETE CASCADE";
     CRM_Core_DAO::executeQuery($cascade);
     // civirule_rule_action table
     $drop = "ALTER TABLE civirule_rule_action DROP FOREIGN KEY fk_ra_action";
     CRM_Core_DAO::executeQuery($drop);
-    $cascade = "ALTER TABLE civirule_rule_action ADD CONSTRAINT fk_ra_action 
+    $cascade = "ALTER TABLE civirule_rule_action ADD CONSTRAINT fk_ra_action
     FOREIGN KEY (action_id) REFERENCES civirule_action (id) ON DELETE CASCADE";
     CRM_Core_DAO::executeQuery($cascade);
     $drop = "ALTER TABLE civirule_rule_action DROP FOREIGN KEY fk_ra_rule";
     CRM_Core_DAO::executeQuery($drop);
-    $cascade = "ALTER TABLE civirule_rule_action ADD CONSTRAINT fk_ra_rule 
+    $cascade = "ALTER TABLE civirule_rule_action ADD CONSTRAINT fk_ra_rule
     FOREIGN KEY (rule_id) REFERENCES civirule_rule (id) ON DELETE CASCADE";
     CRM_Core_DAO::executeQuery($cascade);
     return TRUE;
@@ -525,7 +525,7 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
   public function upgrade_2021() {
     CRM_Core_DAO::executeQuery("
         INSERT INTO civirule_trigger (name, label, object_name, op, cron, class_name, created_date, created_user_id)
-        VALUES 
+        VALUES
         ('eventdate', 'Event Date reached', NULL, NULL, 1, 'CRM_CivirulesCronTrigger_EventDate',  CURDATE(), 1);
     ");
     return TRUE;
@@ -558,29 +558,29 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     // civirule_rule_tag table
     $drop = "ALTER TABLE civirule_rule_tag DROP FOREIGN KEY fk_rule_id";
     CRM_Core_DAO::executeQuery($drop);
-    $cascade = "ALTER TABLE civirule_rule_tag ADD CONSTRAINT fk_rule_id 
+    $cascade = "ALTER TABLE civirule_rule_tag ADD CONSTRAINT fk_rule_id
     FOREIGN KEY (rule_id) REFERENCES civirule_rule (id) ON DELETE CASCADE";
     CRM_Core_DAO::executeQuery($cascade);
     // civirule_rule_condition table
     $drop = "ALTER TABLE civirule_rule_condition DROP FOREIGN KEY fk_rc_condition";
     CRM_Core_DAO::executeQuery($drop);
-    $cascade = "ALTER TABLE civirule_rule_condition ADD CONSTRAINT fk_rc_condition 
+    $cascade = "ALTER TABLE civirule_rule_condition ADD CONSTRAINT fk_rc_condition
     FOREIGN KEY (condition_id) REFERENCES civirule_condition (id) ON DELETE CASCADE";
     CRM_Core_DAO::executeQuery($cascade);
     $drop = "ALTER TABLE civirule_rule_condition DROP FOREIGN KEY fk_rc_rule";
     CRM_Core_DAO::executeQuery($drop);
-    $cascade = "ALTER TABLE civirule_rule_condition ADD CONSTRAINT fk_rc_rule 
+    $cascade = "ALTER TABLE civirule_rule_condition ADD CONSTRAINT fk_rc_rule
     FOREIGN KEY (rule_id) REFERENCES civirule_rule (id) ON DELETE CASCADE";
     CRM_Core_DAO::executeQuery($cascade);
     // civirule_rule_action table
     $drop = "ALTER TABLE civirule_rule_action DROP FOREIGN KEY fk_ra_action";
     CRM_Core_DAO::executeQuery($drop);
-    $cascade = "ALTER TABLE civirule_rule_action ADD CONSTRAINT fk_ra_action 
+    $cascade = "ALTER TABLE civirule_rule_action ADD CONSTRAINT fk_ra_action
     FOREIGN KEY (action_id) REFERENCES civirule_action (id) ON DELETE CASCADE";
     CRM_Core_DAO::executeQuery($cascade);
     $drop = "ALTER TABLE civirule_rule_action DROP FOREIGN KEY fk_ra_rule";
     CRM_Core_DAO::executeQuery($drop);
-    $cascade = "ALTER TABLE civirule_rule_action ADD CONSTRAINT fk_ra_rule 
+    $cascade = "ALTER TABLE civirule_rule_action ADD CONSTRAINT fk_ra_rule
     FOREIGN KEY (rule_id) REFERENCES civirule_rule (id) ON DELETE CASCADE";
     CRM_Core_DAO::executeQuery($cascade);
     return TRUE;
@@ -685,6 +685,14 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     // Add the action: set contribution's financial type
     CRM_Civirules_Utils_Upgrader::insertActionsFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/actions.json');
     return true;
+  }
+  public function upgrade_2041() {
+    CRM_Civirules_Utils_Upgrader::insertTriggersFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/triggers.json');
+    return TRUE;
+  }
+  public function upgrade_2042() {
+    CRM_Civirules_Utils_Upgrader::insertConditionsFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/conditions.json');
+    return TRUE;
   }
 
 }

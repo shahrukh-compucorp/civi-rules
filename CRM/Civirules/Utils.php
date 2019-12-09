@@ -166,6 +166,27 @@ class CRM_Civirules_Utils {
   }
 
   /**
+   * Function to return campaign type list
+   *
+   * @return array $campaignTypeList
+   * @access public
+   */
+  public static function getCampaignTypeList() {
+    $campaignTypeList = [];
+    $campaignTypeOptionGroupId = self::getOptionGroupIdWithName('campaign_type');
+    $params = [
+      'option_group_id' => $campaignTypeOptionGroupId,
+      'is_active' => 1,
+      'options' => ['limit' => 0],
+      ];
+    $campaignTypes = civicrm_api3('OptionValue', 'get', $params);
+    foreach ($campaignTypes['values'] as $optionValue) {
+      $campaignTypeList[$optionValue['value']] = $optionValue['label'];
+    }
+    return $campaignTypeList;
+  }
+
+  /**
    * Function to get the option group id of an option group with name
    *
    * @param string $optionGroupName

@@ -1,6 +1,8 @@
 # CHANGELOG
 
-## Version 2.11 (not yet released)
+## Version 2.12 (not yet released)
+
+## Version 2.11
 
 * Added action to create relationships.
 * Added action to create a membership
@@ -8,6 +10,7 @@
 * Added condition to check whether a contribution is a recurring contribution
 * fixed issue #53 (https://lab.civicrm.org/extensions/civirules/issues/53)
 * fixed issue #46 (the is empty condition on the field value comparison is broken)
+* fixed issue #59 (added triggers for campaign and condition campaign type)
 
 ## Version 2.10
 
@@ -22,8 +25,8 @@
 ## Version 2.9
 
 * Adds new action: update participant status
-* Refactored the way triggers, actions and conditions are inserted in the database upon installation (#24).  
-* Fixed the fatal error after copying a profile (#19).  
+* Refactored the way triggers, actions and conditions are inserted in the database upon installation (#24).
+* Fixed the fatal error after copying a profile (#19).
 * Fixed php warning in CRM_CivirulesConditions_Contact_AgeComparison
 * Fixed Cancel button on Rule form returns to "random" page (now it returns to rule overview)
 * Fixed uncorrect behavior of isConditionValid with empty value (now returns FALSE)

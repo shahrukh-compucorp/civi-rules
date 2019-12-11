@@ -40,6 +40,7 @@
             cj('#operator option[value="<"').addClass('hiddenElement');
             cj('#operator option[value="<="').addClass('hiddenElement');
             cj('#operator option[value="contains string"').addClass('hiddenElement');
+            cj('#operator option[value="not contains string"').addClass('hiddenElement');
         }
         if (options.length && multiple) {
             cj('#operator option[value="="').addClass('hiddenElement');

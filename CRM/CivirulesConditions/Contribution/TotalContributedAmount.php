@@ -86,6 +86,7 @@ class CRM_CivirulesConditions_Contribution_TotalContributedAmount extends CRM_Ci
       case '<':
       case '<=':
       case 'contains string':
+      case 'not contains string':
         $key = 'value';
         break;
       case 'is one of':

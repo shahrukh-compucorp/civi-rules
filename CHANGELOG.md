@@ -2,6 +2,8 @@
 
 ## Version 2.12 (not yet released)
 
+* Added operator 'Does not contain string' to Field Value condition.
+
 ## Version 2.11
 
 * Added action to create relationships.

@@ -28,6 +28,7 @@ abstract class CRM_CivirulesConditions_Generic_FieldValueChangeComparison extend
       case '<':
       case '<=':
       case 'contains string':
+      case 'not contains string':
         $key = 'original_value';
         break;
       case 'is one of':
@@ -63,6 +64,7 @@ abstract class CRM_CivirulesConditions_Generic_FieldValueChangeComparison extend
       case '<':
       case '<=':
       case 'contains string':
+      case 'not contains string':
         $key = 'value';
         break;
       case 'is one of':

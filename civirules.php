@@ -36,7 +36,7 @@ function civirules_civicrm_xmlMenu(&$files) {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_install
  */
 function civirules_civicrm_install() {
-  return _civirules_civix_civicrm_install();
+  _civirules_civix_civicrm_install();
 }
 
 /**
@@ -54,7 +54,7 @@ function civirules_civicrm_postInstall() {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_uninstall
  */
 function civirules_civicrm_uninstall() {
-  return _civirules_civix_civicrm_uninstall();
+  _civirules_civix_civicrm_uninstall();
 }
 
 /**
@@ -63,7 +63,7 @@ function civirules_civicrm_uninstall() {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_enable
  */
 function civirules_civicrm_enable() {
-  return _civirules_civix_civicrm_enable();
+  _civirules_civix_civicrm_enable();
 }
 
 /**
@@ -72,7 +72,7 @@ function civirules_civicrm_enable() {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_disable
  */
 function civirules_civicrm_disable() {
-  return _civirules_civix_civicrm_disable();
+  _civirules_civix_civicrm_disable();
 }
 
 /**
@@ -264,6 +264,15 @@ function civirules_civicrm_pre($op, $objectName, $objectId, &$params) {
 }
 
 function civirules_civicrm_post( $op, $objectName, $objectId, &$objectRef ) {
+  if (CRM_Core_Transaction::isActive()) {
+    CRM_Core_Transaction::addCallback(CRM_Core_Transaction::PHASE_POST_COMMIT, 'civirules_civicrm_post_callback', [$op, $objectName, $objectId, $objectRef]);
+  }
+  else {
+    civirules_civicrm_post_callback($op, $objectName, $objectId, $objectRef);
+  }
+}
+
+function civirules_civicrm_post_callback( $op, $objectName, $objectId, $objectRef) {
   CRM_Civirules_Trigger_Post::post($op, $objectName, $objectId, $objectRef);
 }
 

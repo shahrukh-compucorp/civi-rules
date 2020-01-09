@@ -4,6 +4,7 @@
 
 * Added operator 'Does not contain string' to Field Value condition.
 * Make sure we trigger rules after transaction has completed (see also issue #21)
+* Added "No Bulk Mail" (is_opt_out) to privacy options action 
 
 ## Version 2.11
 

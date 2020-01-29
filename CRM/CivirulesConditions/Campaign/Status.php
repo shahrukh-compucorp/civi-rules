@@ -1,18 +1,22 @@
 <?php
 /**
- * Class for CiviRule Condition Campaign is of Type
+ * Class for CiviRule Condition Campaign is of Status
  *
  * @author Erik Hommel (CiviCooP) <erik.hommel@civicoop.org>
- * @date 9 Dec 2019
+ * @date 28 Jan 2020
  * @license http://www.gnu.org/licenses/agpl-3.0.html
  */
 
-class CRM_CivirulesConditions_Campaign_Type extends CRM_Civirules_Condition {
+class CRM_CivirulesConditions_Campaign_Status extends CRM_Civirules_Condition {
 
   private $_conditionParams = array();
 
+  /**
+   * @param int $ruleConditionId
+   * @return bool|string
+   */
   public function getExtraDataInputUrl($ruleConditionId) {
-    return CRM_Utils_System::url('civicrm/civirule/form/condition/campaign_type/',
+    return CRM_Utils_System::url('civicrm/civirule/form/condition/campaign_status/',
       'rule_condition_id=' . $ruleConditionId);
   }
 
@@ -31,7 +35,8 @@ class CRM_CivirulesConditions_Campaign_Type extends CRM_Civirules_Condition {
   }
 
   /**
-   * Method to check if the condition is valid, will check if the campaign is (not) of the selected type
+   * Method to check if the condition is valid, will check if the campaign status is (not) in the
+   * selected ones
    *
    * @param object CRM_Civirules_TriggerData_TriggerData $triggerData
    * @return bool
@@ -42,12 +47,12 @@ class CRM_CivirulesConditions_Campaign_Type extends CRM_Civirules_Condition {
     $campaignData = $triggerData->getEntityData('campaign');
     switch ($this->_conditionParams['operator']) {
       case '0':
-        if (in_array($campaignData['campaign_type_id'], $this->_conditionParams['campaign_type_id'])) {
+        if (in_array($campaignData['status_id'], $this->_conditionParams['campaign_status_id'])) {
           $isConditionValid = TRUE;
         }
         break;
       case '1':
-        if (!in_array($campaignData['campaign_type_id'], $this->_conditionParams['campaign_type_id'])) {
+        if (!in_array($campaignData['status_id'], $this->_conditionParams['campaign_status_id'])) {
           $isConditionValid = TRUE;
         }
         break;
@@ -64,20 +69,19 @@ class CRM_CivirulesConditions_Campaign_Type extends CRM_Civirules_Condition {
   public function userFriendlyConditionParams() {
     $friendlyText = "";
     if ($this->_conditionParams['operator'] == 0) {
-      $friendlyText = 'Campaign Type is one of: ';
+      $friendlyText = 'Campaign Status is one of: ';
     }
     if ($this->_conditionParams['operator'] == 1) {
-      $friendlyText = 'Campaign Type is NOT one of: ';
+      $friendlyText = 'Campaign Status is NOT one of: ';
     }
     $campaignText = [];
-    foreach ($this->_conditionParams['campaign_type_id'] as $campaignTypeId) {
+    foreach ($this->_conditionParams['campaign_status_id'] as $campaignStatusId) {
       try {
         $campaignText[] = civicrm_api3('OptionValue', 'getvalue', [
-          'option_group_id' => 'campaign_type',
-          'value' => $campaignTypeId,
+          'option_group_id' => 'campaign_status',
+          'value' => $campaignStatusId,
           'return' => 'label'
         ]);
-
       }
       catch (CiviCRM_API3_Exception $ex) {
       }

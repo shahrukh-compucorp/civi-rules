@@ -170,6 +170,7 @@ class CRM_Civirules_Utils {
    *
    * @return array $campaignTypeList
    * @access public
+   * @throws
    */
   public static function getCampaignTypeList() {
     $campaignTypeList = [];
@@ -184,6 +185,28 @@ class CRM_Civirules_Utils {
       $campaignTypeList[$optionValue['value']] = $optionValue['label'];
     }
     return $campaignTypeList;
+  }
+
+  /**
+   * Function to return campaign status list
+   *
+   * @return array $campaignStatusList
+   * @access public
+   * @throws
+   */
+  public static function getCampaignStatusList() {
+    $campaignStatusList = [];
+    $campaignStatusOptionGroupId = self::getOptionGroupIdWithName('campaign_status');
+    $params = [
+      'option_group_id' => $campaignStatusOptionGroupId,
+      'is_active' => 1,
+      'options' => ['limit' => 0],
+      ];
+    $campaignStatus = civicrm_api3('OptionValue', 'get', $params);
+    foreach ($campaignStatus['values'] as $optionValue) {
+      $campaignStatusList[$optionValue['value']] = $optionValue['label'];
+    }
+    return $campaignStatusList;
   }
 
   /**

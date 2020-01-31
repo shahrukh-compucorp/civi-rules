@@ -62,5 +62,6 @@
   {"name": "participant_status_changed", "label":"Compare Old Participant Status to New Participant Status", "class_name": "CRM_CivirulesConditions_Participant_StatusChanged"},
   {"name":"contribution_is_recurring", "label":"Is Contribution recurring?", "class_name":"CRM_CivirulesConditions_Contribution_IsRecurring"},
   {"name":"campaign_type", "label":"Campaign Type is (not) one of", "class_name":"CRM_CivirulesConditions_Campaign_Type"},
-  {"name":"campaign_status", "label":"Campaign Status is (not) one of", "class_name":"CRM_CivirulesConditions_Campaign_Status"}
+  {"name":"campaign_status", "label":"Campaign Status is (not) one of", "class_name":"CRM_CivirulesConditions_Campaign_Status"},
+  {"name":"soft_credit_type", "label":"Soft Credit Type is (not) one of", "class_name":"CRM_CivirulesConditions_ContributionSoft_SoftCreditType"}
 ]

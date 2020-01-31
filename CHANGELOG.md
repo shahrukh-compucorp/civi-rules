@@ -6,6 +6,8 @@
 * Make sure we trigger rules after transaction has completed (see also issue #21)
 * Added "No Bulk Mail" (is_opt_out) to privacy options action
 * Fixed issue #61 (add condition campaign status is (not) one of)
+* Added contribution soft credit trigger
+* Added action "Soft Credit Type is (not) one of"
 
 ## Version 2.11
 

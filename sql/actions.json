@@ -9,6 +9,7 @@
   {"name":"set_contact_privacy_options","label":"Set Privacy Options of a Contact","class_name":"CRM_CivirulesActions_Contact_SetPrivacyOptions"},
   {"name":"contact_soft_delete","label":"Soft Delete a Contact","class_name":"CRM_CivirulesActions_Contact_SoftDelete"},
   {"name":"set_contact_sub_type","label":"Set Subtype for a Contact","class_name":"CRM_CivirulesActions_Contact_Subtype"},
+  {"name":"update_numeric_value","label":"Update Numeric Value","class_name":"CRM_CivirulesActions_Contact_UpdateNumericValue"},
   {"name":"set_contribution_thank_date","label":"Set Thank You Date for a Contribution","class_name":"CRM_CivirulesActions_Contribution_ThankYouDate"},
   {"name":"add_contact_group","label":"Add Contact to a Group","class_name":"CRM_CivirulesActions_GroupContact_Add"},
   {"name":"remove_contact_group","label":"Remove Contact from a Group","class_name":"CRM_CivirulesActions_GroupContact_Remove"},

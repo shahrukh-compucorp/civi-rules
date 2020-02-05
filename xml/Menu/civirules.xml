@@ -335,6 +335,13 @@
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
   <item>
+    <path>civicrm/civirule/form/action/contact/updatenumericvalue</path>
+    <page_callback>CRM_CivirulesActions_Contact_Form_UpdateNumericValue</page_callback>
+    <title>Update Numeric Value</title>
+    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
     <path>civicrm/civirule/form/action/contact/jobtitle</path>
     <page_callback>CRM_CivirulesActions_Contact_Form_Jobtitle</page_callback>
     <title>Set contact job title</title>

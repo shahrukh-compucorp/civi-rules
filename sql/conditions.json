@@ -63,6 +63,6 @@
   {"name":"contribution_is_recurring", "label":"Is Contribution recurring?", "class_name":"CRM_CivirulesConditions_Contribution_IsRecurring"},
   {"name":"campaign_type", "label":"Campaign Type is (not) one of", "class_name":"CRM_CivirulesConditions_Campaign_Type"},
   {"name":"campaign_status", "label":"Campaign Status is (not) one of", "class_name":"CRM_CivirulesConditions_Campaign_Status"},
-  {"name":"soft_credit_type", "label":"Soft Credit Type is (not) one of", "class_name":"CRM_CivirulesConditions_ContributionSoft_SoftCreditType"}.
+  {"name":"soft_credit_type", "label":"Soft Credit Type is (not) one of", "class_name":"CRM_CivirulesConditions_ContributionSoft_SoftCreditType"},
   {"name":"contact_createdby", "label":"Contact is created by someone in this group", "class_name":"CRM_CivirulesConditions_Contact_CreatedBy"}
 ]

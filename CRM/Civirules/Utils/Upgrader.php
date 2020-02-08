@@ -325,7 +325,7 @@ class CRM_Civirules_Utils_Upgrader {
         'name' => 'activity_is_past_date',
       ),
       'CRM_CivirulesConditions_Contact_CreatedBy' => array(
-        'label' => 'Contact is created by someone in this group',
+        'label' => 'Contact added by Contact (not) in Group(s)',
         'name' => 'contact_createdby',
       ),
     );

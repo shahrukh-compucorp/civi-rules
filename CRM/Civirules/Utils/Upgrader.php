@@ -324,6 +324,10 @@ class CRM_Civirules_Utils_Upgrader {
         'label' => 'Activity Date in the Past',
         'name' => 'activity_is_past_date',
       ),
+      'CRM_CivirulesConditions_Contact_CreatedBy' => array(
+        'label' => 'Contact added by Contact (not) in Group(s)',
+        'name' => 'contact_createdby',
+      ),
     );
     foreach ($conditions as $className => $conditionData) {
       $select = "SELECT COUNT(*) FROM civirule_condition WHERE class_name = %1";

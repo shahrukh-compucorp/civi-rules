@@ -7,7 +7,8 @@
 * Added "No Bulk Mail" (is_opt_out) to privacy options action
 * Fixed issue #61 (add condition campaign status is (not) one of)
 * Added contribution soft credit trigger
-* Added action "Soft Credit Type is (not) one of"
+* Added condition: "Soft Credit Type is (not) one of"
+* Added condition: "Contact added by Contact (not) in Group(s)"
 
 ## Version 2.11
 

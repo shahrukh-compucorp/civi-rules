@@ -62,7 +62,7 @@ class CRM_CivirulesConditions_Form_Contact_InGroup extends CRM_CivirulesConditio
     if (!empty($data['operator'])) {
       $defaultValues['operator'] = $data['operator'];
     }
-    if (!empty($data['check_group_tree'])) {
+    if (isset($data['check_group_tree'])) {
       $defaultValues['check_group_tree'] = $data['check_group_tree'];
     }
     return $defaultValues;

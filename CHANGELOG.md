@@ -9,6 +9,7 @@
 * Added contribution soft credit trigger
 * Added condition: "Soft Credit Type is (not) one of"
 * Added condition: "Contact added by Contact (not) in Group(s)"
+* Added action: "Update Numeric Value"
 
 ## Version 2.11
 

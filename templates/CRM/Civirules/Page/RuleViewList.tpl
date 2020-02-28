@@ -1,8 +1,8 @@
 <div class="crm-content-block crm-block">
   </div>
   <div class="action-link">
-    <a class="button new-option" href="{$add_url}">
-      <span><div class="icon add-icon ui-icon-circle-plus civirule-add-new"></div>{ts}Add CiviRule{/ts}</span>
+    <a class="button new-option civirule-add-new" href="{$add_url}">
+      <span><i class="crm-i fa-plus-circle"></i> {ts}Add CiviRule{/ts}</span>
     </a>
   </div>
   <div id="civirule_wrapper" class="dataTables_wrapper">
@@ -50,8 +50,8 @@
     </table>
   </div>
   <div class="action-link">
-    <a class="button new-option" href="{$add_url}">
-      <span><div class="icon add-icon ui-icon-circle-plus civirule-add-new"></div>{ts}Add CiviRule{/ts}</span>
+    <a class="button new-option civirule-add-new" href="{$add_url}">
+      <span><i class="crm-i fa-plus-circle"></i> {ts}Add CiviRule{/ts}</span>
     </a>
   </div>
 </div>

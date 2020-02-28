@@ -1,6 +1,6 @@
 
-{*block for linked condition *}    
-<h3>Linked Action(s)</h3>
+{*block for linked condition *}
+<h3>{ts}Linked Action(s){/ts}</h3>
 <div class="crm-block crm-form-block crm-civirule-rule_action-block">
   <div class="crm-section">
     <div id="civirule_wrapper" class="dataTables_wrapper">
@@ -49,7 +49,7 @@
   </div>
   <div class="crm-submit-buttons">
     <a class="add button" title="Add Action" href="{$ruleActionAddUrl}">
-      <span><div class="icon add-icon ui-icon-circle-plus"></div>Add Action</span></a>
+      <span><i class="crm-i fa-plus-circle"></i> {ts}Add Action{/ts}</span></a>
   </div>
 </div>
 

@@ -10,6 +10,7 @@
 * Added condition: "Soft Credit Type is (not) one of"
 * Added condition: "Contact added by Contact (not) in Group(s)"
 * Added action: "Update Numeric Value"
+* Also check smartgroups for 'Contact in group' condition
 
 ## Version 2.11
 

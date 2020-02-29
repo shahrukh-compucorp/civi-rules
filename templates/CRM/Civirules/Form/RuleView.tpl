@@ -16,7 +16,7 @@
           <td class="content civirule_view_tag_id">{$form.desc_contains.html}</td>
           <td class="label civirule_view_include_disabled_label">{$form.include_disabled.label}</td>
           <td class="content civirule_view_include_disabled">{$form.include_disabled.html}</td>
-          <td>{include file="CRM/common/formButtons.tpl"}</td>
+          <td><div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl"}</div></td>
         </tr>
       </table>
     </div>

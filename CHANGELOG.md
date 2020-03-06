@@ -11,6 +11,7 @@
 * Added condition: "Contact added by Contact (not) in Group(s)"
 * Added action: "Update Numeric Value"
 * Also check smartgroups for 'Contact in group' condition
+* Fixed issue #67 ("Event Type is" condition doesn't work)
 
 ## Version 2.11
 

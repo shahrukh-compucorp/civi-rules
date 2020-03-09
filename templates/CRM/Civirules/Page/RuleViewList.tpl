@@ -5,6 +5,12 @@
     <span><i class="crm-i fa-plus-circle"></i> {ts}Add CiviRule{/ts}</span>
   </a>
 </div>
+
+{* dialog for rule help text *}
+<div id="civirule_helptext_dialog-block">
+  <p><label id="civirule_help_text-value"></label></p>
+</div>
+
 <div id="civirule_wrapper" class="dataTables_wrapper">
   {include file="CRM/common/jsortable.tpl"}
   {include file="CRM/common/enableDisableApi.tpl"}

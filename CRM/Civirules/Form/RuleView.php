@@ -39,7 +39,7 @@ class CRM_Civirules_Form_RuleView extends CRM_Core_Form {
       'class' => 'crm-select2',
       'placeholder' => E::ts('- Select Trigger -'),
       ]);
-    $this->add('text', 'desc_contains', E::ts('Description Contains'), [], FALSE);
+    $this->add('text', 'desc_contains', E::ts('Description Contains'), ['size' => 40], FALSE);
     $this->addYesNo('include_disabled', E::ts('Show disabled Rules?'), [], FALSE);
     $this->addButtons([
       ['type' => 'submit', 'name' => E::ts('Filter'), 'isDefault' => TRUE],
@@ -93,7 +93,7 @@ class CRM_Civirules_Form_RuleView extends CRM_Core_Form {
    * Method to generate the query and query parameters to get the rules
    */
   private function generateRuleQuery() {
-    $select = "SELECT DISTINCT(cr.id) AS rule_id, cr.label, ct.label AS trigger_label, cr.is_active, cr.description, cr.help_text, 
+    $select = "SELECT DISTINCT(cr.id) AS rule_id, cr.label, ct.label AS trigger_label, cr.is_active, cr.description, cr.help_text,
 cr.created_date, cr.created_user_id, cc.sort_name AS created_by";
     $from = "FROM civirule_rule AS cr JOIN civirule_trigger AS ct ON cr.trigger_id = ct.id
 LEFT JOIN civicrm_contact AS cc ON cr.created_user_id = cc.id

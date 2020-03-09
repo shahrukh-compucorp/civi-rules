@@ -38,9 +38,9 @@
           {/if}
         </td>
         <td>{$row.is_active}</td>
-        <td>{$row.created_date|crmDate}</td>
+        <td>{$row.created_date}</td>
         <td>{$row.created_by}</td>
-        <td>{$row.last_trigger_date|crmDate}</td>
+        <td>{$row.last_trigger_date}</td>
         <td>{$row.last_trigger_contact}</td>
         <td>
               <span>

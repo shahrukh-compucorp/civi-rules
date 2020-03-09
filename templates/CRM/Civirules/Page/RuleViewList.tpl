@@ -12,13 +12,15 @@
     <thead>
     <tr>
       <th id="sortable">{ts}ID{/ts}</th>
-      <th id="sortable">{ts}Rule Label{/ts}</th>
+      <th id="sortable">{ts}Label{/ts}</th>
       <th id="sortable">{ts}Trigger{/ts}</th>
       <th id="sortable">{ts}Tag(s){/ts}</th>
       <th id="nosort">{ts}Description{/ts}</th>
-      <th id="sortable">{ts}Active?{/ts}</th>
-      <th id="sortable">{ts}Date Created{/ts}</th>
-      <th id="sortable">{ts}Created By{/ts}</th>
+      <th id="sortable">{ts}Enabled?{/ts}</th>
+      <th id="sortable">{ts}Date created{/ts}</th>
+      <th id="sortable">{ts}Created by{/ts}</th>
+      <th id="sortable">{ts}Last triggered{/ts}</th>
+      <th id="sortable">{ts}Triggered by{/ts}</th>
       <th id="nosort"></th>
     </tr>
     </thead>
@@ -37,7 +39,9 @@
         </td>
         <td>{$row.is_active}</td>
         <td>{$row.created_date|crmDate}</td>
-        <td>{$row.created_contact_name}</td>
+        <td>{$row.created_by}</td>
+        <td>{$row.last_trigger_date|crmDate}</td>
+        <td>{$row.last_trigger_contact}</td>
         <td>
               <span>
                 {foreach from=$row.actions item=action_link}

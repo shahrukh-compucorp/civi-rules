@@ -77,9 +77,30 @@ class CRM_Civirules_Form_RuleView extends CRM_Core_Form {
     while ($dao->fetch()) {
       $row = [];
       $elements = ['rule_id', 'label', 'trigger_label', 'description', 'is_active',
-        'help_text', 'created_date', 'created_by'];
+        'help_text', 'created_date', 'created_by_name', 'last_trigger_date', 'last_trigger_contactname'];
+      $triggerDetail = $this->getRuleLogLatestTriggerDetail($dao->rule_id);
+
       foreach ($elements as $element) {
-        $row[$element] = $dao->$element;
+        switch ($element) {
+          case 'created_by_name':
+            $row['created_by'] = CRM_Civirules_Utils::formatContactLink($dao->created_by_id, $dao->created_by_name);
+            break;
+
+          case 'last_trigger_contactname':
+            $row['last_trigger_contact'] = CRM_Civirules_Utils::formatContactLink($triggerDetail['last_trigger_contactid'], $triggerDetail['last_trigger_contactname']);
+            break;
+
+          case 'last_trigger_date':
+            $row['last_trigger_date'] = $triggerDetail['last_trigger_date'];
+            break;
+
+          case 'is_active':
+            $row['is_active'] = CRM_Civirules_Utils::formatIsActive($dao->is_active);
+            break;
+
+          default:
+            $row[$element] = $dao->$element;
+        }
       }
       // add civirule tags
       $row['tags'] = implode(', ', CRM_Civirules_BAO_RuleTag::getTagLabelsForRule($dao->rule_id));
@@ -94,7 +115,7 @@ class CRM_Civirules_Form_RuleView extends CRM_Core_Form {
    */
   private function generateRuleQuery() {
     $select = "SELECT DISTINCT(cr.id) AS rule_id, cr.label, ct.label AS trigger_label, cr.is_active, cr.description, cr.help_text,
-cr.created_date, cr.created_user_id, cc.sort_name AS created_by";
+cr.created_date, cr.created_user_id AS created_by_id, cc.sort_name AS created_by_name";
     $from = "FROM civirule_rule AS cr JOIN civirule_trigger AS ct ON cr.trigger_id = ct.id
 LEFT JOIN civicrm_contact AS cc ON cr.created_user_id = cc.id
 LEFT JOIN civirule_rule_tag AS crt ON cr.id = crt.rule_id";
@@ -131,11 +152,32 @@ LEFT JOIN civirule_rule_tag AS crt ON cr.id = crt.rule_id";
       $this->_filterQueryParams[$index] = [1, 'Integer'];
     }
     if (!empty($whereClauses)) {
-      $this->_filterQuery = $select . " " . $from . ' WHERE ' . implode(' AND ', $whereClauses);
+      $this->_filterQuery = "{$select} {$from} WHERE " . implode(' AND ', $whereClauses);
     }
     else {
-      $this->_filterQuery = $select . " " . $from;
+      $this->_filterQuery = "{$select} {$from}";
     }
+  }
+
+  /**
+   * @param $ruleID
+   *
+   * @return array
+   */
+  private function getRuleLogLatestTriggerDetail($ruleID) {
+    $sql = "SELECT log_date, contact_id, sort_name
+    FROM civirule_rule_log crl
+    LEFT JOIN civicrm_contact cc ON cc.id = crl.contact_id
+    WHERE rule_id = %1
+    ORDER BY log_date DESC LIMIT 1";
+    $queryParams = [1 => [$ruleID, 'Integer']];
+    $dao = CRM_Core_DAO::executeQuery($sql, $queryParams);
+    $dao->fetch();
+    return [
+      'last_trigger_date' => $dao->log_date ?? '',
+      'last_trigger_contactid' => $dao->contact_id ?? '',
+      'last_trigger_contactname' => $dao->sort_name ?? '',
+    ];
   }
 
   /**

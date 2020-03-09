@@ -47,6 +47,34 @@ class CRM_Civirules_Utils {
   }
 
   /**
+   * Helper function to generate a formatted contact link/name
+   *
+   * @param $contactId
+   * @param $contactName
+   *
+   * @return string
+   */
+  public static function formatContactLink($contactId, $contactName) {
+    if (empty($contactId)) {
+      return NULL;
+    }
+
+    if (empty($contactName)) {
+      return $contactId;
+    }
+
+    $hasViewContact = CRM_Contact_BAO_Contact_Permission::allow($contactId);
+
+    if ($hasViewContact) {
+      $contactViewUrl = CRM_Utils_System::url("civicrm/contact/view", "reset=1&cid={$contactId}");
+      return "<a href=\"{$contactViewUrl}\">" . $contactName . "</a>";
+    }
+    else {
+      return $contactName;
+    }
+  }
+
+  /**
    * Public function to generate name from label
    *
    * @param $label

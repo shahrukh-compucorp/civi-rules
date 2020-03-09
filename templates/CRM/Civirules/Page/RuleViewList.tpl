@@ -20,7 +20,7 @@
       <th id="sortable">{ts}Date created{/ts}</th>
       <th id="sortable">{ts}Created by{/ts}</th>
       <th id="sortable">{ts}Last triggered{/ts}</th>
-      <th id="sortable">{ts}Triggered by{/ts}</th>
+      <th id="sortable">{ts}Triggered for{/ts}</th>
       <th id="nosort"></th>
     </tr>
     </thead>

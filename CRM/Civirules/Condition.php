@@ -72,7 +72,7 @@ abstract class CRM_Civirules_Condition {
   /**
    * This function validates whether this condition works with the selected trigger.
    *
-   * This function could be overriden in child classes to provide additional validation
+   * This function could be overridden in child classes to provide additional validation
    * whether a condition is possible in the current setup. E.g. we could have a condition
    * which works on contribution or on contributionRecur then this function could do
    * this kind of validation and return false/true

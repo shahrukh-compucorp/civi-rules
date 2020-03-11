@@ -364,6 +364,29 @@ class CRM_Civirules_Utils {
   }
 
   /**
+   * Method to get the payment processors
+   * @param bool $onlyLive
+   *
+   * @return array
+   */
+  public static function getPaymentProcessors($onlyLive = TRUE) {
+    $return = array();
+    if ($onlyLive) {
+      $params = array('is_test' => 0);
+    } else {
+      $params = array();
+    }
+    $params['options'] = array('limit' => 0, 'sort' => "name ASC");
+    try {
+      $paymentProcessors = civicrm_api3("PaymentProcessor", "Get", $params);
+      foreach ($paymentProcessors['values'] as $paymentProcessor) {
+        $return[$paymentProcessor['id']] = $paymentProcessor['name'];
+      }
+    } catch (CiviCRM_API3_Exception $ex) {}
+    return $return;
+  }
+
+  /**
    * Method to check if the incoming date is later than today
    *
    * @param mixed $inDate

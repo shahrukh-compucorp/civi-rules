@@ -14,6 +14,22 @@ abstract class CRM_CivirulesConditions_Generic_FieldValueChangeComparison extend
   abstract protected function getOriginalFieldValue(CRM_Civirules_TriggerData_TriggerData $triggerData);
 
   /**
+   * This function validates whether this condition works with the selected trigger.
+   *
+   * This function could be overridden in child classes to provide additional validation
+   * whether a condition is possible in the current setup. E.g. we could have a condition
+   * which works on contribution or on contributionRecur then this function could do
+   * this kind of validation and return false/true
+   *
+   * @param CRM_Civirules_Trigger $trigger
+   * @param CRM_Civirules_BAO_Rule $rule
+   * @return bool
+   */
+  public function doesWorkWithTrigger(CRM_Civirules_Trigger $trigger, CRM_Civirules_BAO_Rule $rule) {
+    return $trigger->doesProvideEntity($this->getEntity());
+  }
+
+  /**
    * Returns the value for the data comparison
    *
    * @return mixed
@@ -182,7 +198,7 @@ abstract class CRM_CivirulesConditions_Generic_FieldValueChangeComparison extend
 			} elseif (isset($options[$originalComparisonValue])) {
 				$originalComparisonValue = $options[$originalComparisonValue];
 			}
-			
+
 			if (is_array($comparisonValue)) {
 				foreach($comparisonValue as $idx => $val) {
 					if (isset($options[$val])) {
@@ -193,8 +209,8 @@ abstract class CRM_CivirulesConditions_Generic_FieldValueChangeComparison extend
 				$comparisonValue = $options[$comparisonValue];
 			}
 		}
-		
-		
+
+
     if (is_array($originalComparisonValue)) {
       $originalComparisonValue = implode(", ", $originalComparisonValue);
     }

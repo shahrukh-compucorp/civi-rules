@@ -65,6 +65,12 @@ abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civir
    * @throws \CiviCRM_API3_Exception
    */
   protected function getComparisonValue() {
+    if (empty($conditionParams['entity'])) {
+      // The entity is required. It should always be set but may not be if the condition was not saved properly
+      //   and you can't edit the rule if it does not have the data.
+      return '';
+    }
+
     $entity = $this->conditionParams['entity'];
     $field = $this->conditionParams['field'];
 

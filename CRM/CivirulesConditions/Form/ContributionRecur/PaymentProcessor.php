@@ -6,6 +6,8 @@
  * @license AGPL-3.0
  */
 
+use CRM_Civirules_ExtensionUtil as E;
+
 class CRM_CivirulesConditions_Form_ContributionRecur_PaymentProcessor extends CRM_CivirulesConditions_Form_Form {
 
   /**
@@ -67,5 +69,13 @@ class CRM_CivirulesConditions_Form_ContributionRecur_PaymentProcessor extends CR
     $this->ruleCondition->condition_params = serialize($data);
     $this->ruleCondition->save();
     parent::postProcess();
+  }
+
+  protected function getHelpText() {
+    $help = E::ts('This condition works with Membership (checks the linked recur) and Recurring Contribution triggers.');
+    $help .= '<ul><li>' . E::ts('IS ONE OF will match a Membership/Recurring Contribution that has a payment processor in the list.');
+    $help .= '</li><li>' . E::ts('IS NOT ONE OF will match a Membership that does not have a linked recurring contribution OR a Membership/Recurring Contribution that: Has a recurring contribution with no payment processor; Has a recurring contribution that has a payment processor not in the list.');
+    $help .= '</ul>';
+    return $help;
   }
 }

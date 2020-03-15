@@ -6,10 +6,8 @@ class CRM_CivirulesConditions_FieldValueComparison extends CRM_CivirulesConditio
    * Returns the value of the field for the condition
    * For example: I want to check if age > 50, this function would return the 50
    *
-   * @param object CRM_Civirules_TriggerData_TriggerData $triggerData
-   * @return
-   * @access protected
-   * @abstract
+   * @param \CRM_Civirules_TriggerData_TriggerData $triggerData
+   * @return mixed
    */
   protected function getFieldValue(CRM_Civirules_TriggerData_TriggerData $triggerData) {
     $entity = $this->conditionParams['entity'];
@@ -55,9 +53,11 @@ class CRM_CivirulesConditions_FieldValueComparison extends CRM_CivirulesConditio
    * Returns an array of value when the custom field is a multi select
    * otherwise just return the value
    *
-   * @param $custom_field_id
-   * @param $value
-   * @return mixed
+   * @param int $custom_field_id
+   * @param string $value
+   *
+   * @return array|string
+   * @throws \CiviCRM_API3_Exception
    */
   protected function convertMultiselectCustomfieldToArray($custom_field_id, $value) {
     if (CRM_Civirules_Utils_CustomField::isCustomFieldMultiselect($custom_field_id) && !is_array($value)) {
@@ -70,8 +70,8 @@ class CRM_CivirulesConditions_FieldValueComparison extends CRM_CivirulesConditio
   /**
    * Returns the value for the data comparison
    *
-   * @return mixed
-   * @access protected
+   * @return mixed|null
+   * @throws \CiviCRM_API3_Exception
    */
   protected function getComparisonValue() {
     $value = parent::getComparisonValue();
@@ -84,6 +84,11 @@ class CRM_CivirulesConditions_FieldValueComparison extends CRM_CivirulesConditio
     }
   }
 
+  /**
+   * @param mixed $value
+   *
+   * @return mixed|null
+   */
   protected function normalizeValue($value) {
     if ($value === null) {
       return null;
@@ -100,7 +105,6 @@ class CRM_CivirulesConditions_FieldValueComparison extends CRM_CivirulesConditio
    *
    * @param int $ruleConditionId
    * @return bool|string
-   * @access public
    */
   public function getExtraDataInputUrl($ruleConditionId) {
     return CRM_Utils_System::url('civicrm/civirule/form/condition/fieldvaluecomparison/', 'rule_condition_id='.$ruleConditionId);
@@ -111,7 +115,7 @@ class CRM_CivirulesConditions_FieldValueComparison extends CRM_CivirulesConditio
    * e.g. 'Older than 65'
    *
    * @return string
-   * @access public
+   * @throws \CiviCRM_API3_Exception
    */
   public function userFriendlyConditionParams() {
     $value = $this->getComparisonValue();

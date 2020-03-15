@@ -8,17 +8,16 @@
 
 abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civirules_Condition {
 
-  protected $conditionParams = array();
+  protected $conditionParams = [];
 
   /**
    * Method to set the Rule Condition data
    *
    * @param array $ruleCondition
-   * @access public
    */
   public function setRuleConditionData($ruleCondition) {
     parent::setRuleConditionData($ruleCondition);
-    $this->conditionParams = array();
+    $this->conditionParams = [];
     if (!empty($this->ruleCondition['condition_params'])) {
       $this->conditionParams = unserialize($this->ruleCondition['condition_params']);
     }
@@ -29,7 +28,7 @@ abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civir
    * case the field is a select field, e.g. gender, or financial type
    * Return false when the field is a select field
    *
-   * This method could be overriden by child classes to return the option
+   * This method could be overridden by child classes to return the option
    *
    * The return is an array with the field option value as key and the option label as value
    *
@@ -53,10 +52,9 @@ abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civir
    * Returns the value of the field for the condition
    * For example: I want to check if age > 50, this function would return the 50
    *
-   * @param object CRM_Civirules_TriggerData_TriggerData $triggerData
-   * @return
-   * @access protected
-   * @abstract
+   * @param \CRM_Civirules_TriggerData_TriggerData $triggerData
+   *
+   * @return mixed
    */
   abstract protected function getFieldValue(CRM_Civirules_TriggerData_TriggerData $triggerData);
 
@@ -64,7 +62,7 @@ abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civir
    * Returns the value for the data comparison
    *
    * @return mixed
-   * @access protected
+   * @throws \CiviCRM_API3_Exception
    */
   protected function getComparisonValue() {
     $entity = $this->conditionParams['entity'];
@@ -105,11 +103,13 @@ abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civir
   }
 
   /**
-   * Helps to determine wether a field is a date.
+   * Helps to determine whether a field is a date.
    *
-   * @param string Entity
-   * @param string Field name
-   * @return boolean True if the field is a date.
+   * @param string $entity
+   * @param string $fieldname
+   *
+   * @return bool True if the field is a date.
+   * @throws \CiviCRM_API3_Exception
    */
   protected function isDateField($entity, $fieldname) {
     $isDate = false;
@@ -122,10 +122,10 @@ abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civir
     $fields = civicrm_api3(
       $entity,
       'getfields',
-      array(
+      [
         'sequential' => 1,
         'api_action' => 'get',
-      )
+      ]
     );
 
     foreach( $fields['values'] as $field ) {
@@ -159,7 +159,6 @@ abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civir
    * - lesser than or equal: <=
    *
    * @return string operator for comparison
-   * @access protected
    */
   protected function getOperator() {
     if (!empty($this->conditionParams['operator'])) {
@@ -172,11 +171,10 @@ abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civir
   /**
    * Mandatory method to return if the condition is valid
    *
-   * @param object CRM_Civirules_TriggerData_TriggerData $triggerData
+   * @param \CRM_Civirules_TriggerData_TriggerData $triggerData
+   *
    * @return bool
-   * @access public
    */
-
   public function isConditionValid(CRM_Civirules_TriggerData_TriggerData $triggerData) {
     $value = $this->getFieldValue($triggerData);
     $compareValue = $this->getComparisonValue();
@@ -190,8 +188,8 @@ abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civir
    * @param mixed $leftValue
    * @param mixed $rightValue
    * @param string $operator
+   *
    * @return bool
-   * @access protected
    */
   protected function compare($leftValue, $rightValue, $operator) {
     switch ($operator) {
@@ -321,6 +319,12 @@ abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civir
     return false;
   }
 
+  /**
+   * @param mixed $leftValues
+   * @param mixed $rightValues
+   *
+   * @return bool
+   */
   protected function containsOneOf($leftValues, $rightValues) {
     foreach($leftValues as $leftvalue) {
       if (in_array($leftvalue, $rightValues)) {
@@ -330,8 +334,14 @@ abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civir
     return false;
   }
 
+  /**
+   * @param mixed $leftValues
+   * @param mixed $rightValues
+   *
+   * @return bool
+   */
   protected function containsAllOf($leftValues, $rightValues) {
-    $foundValues = array();
+    $foundValues = [];
     foreach($leftValues as $leftVaue) {
       if (in_array($leftVaue, $rightValues)) {
         $foundValues[] = $leftVaue;
@@ -343,6 +353,12 @@ abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civir
     return false;
   }
 
+  /**
+   * @param mixed $leftValues
+   * @param mixed $rightValues
+   *
+   * @return bool
+   */
   protected function notContainsAllOf($leftValues, $rightValues) {
     foreach($rightValues as $rightValue) {
       if (in_array($rightValue, $leftValues)) {
@@ -353,12 +369,13 @@ abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civir
   }
 
   /**
-   * Converts a string to an array, the delimeter is the CRM_Core_DAO::VALUE_SEPERATOR
+   * Converts a string to an array, the delimiter is the CRM_Core_DAO::VALUE_SEPERATOR
    *
-   * This function could be overriden by child classes to define their own array
+   * This function could be overridden by child classes to define their own array
    * seperator
    *
-   * @param $value
+   * @param mixed $value
+   *
    * @return array
    */
   protected function convertValueToArray($value) {
@@ -375,8 +392,8 @@ abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civir
    * Return false if you do not need extra data input
    *
    * @param int $ruleConditionId
+   *
    * @return bool|string
-   * @access public
    */
   public function getExtraDataInputUrl($ruleConditionId) {
     return CRM_Utils_System::url('civicrm/civirule/form/condition/datacomparison/', 'rule_condition_id='.$ruleConditionId);
@@ -387,7 +404,6 @@ abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civir
    * e.g. 'Older than 65'
    *
    * @return string
-   * @access public
    */
   public function userFriendlyConditionParams() {
     return htmlentities(($this->getOperator())).' '.htmlentities($this->getComparisonValue());
@@ -399,7 +415,7 @@ abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civir
    * @return array
    */
   public function getOperators() {
-    return array(
+    return [
       '=' => ts('Is equal to'),
       '!=' => ts('Is not equal to'),
       '>' => ts('Is greater than'),
@@ -416,7 +432,7 @@ abstract class CRM_CivirulesConditions_Generic_ValueComparison extends CRM_Civir
       'not contains one of' => ts('Does not contain one of'),
       'contains all of' => ts('Does contain all of'),
       'not contains all of' => ts('Does not contain all of'),
-    );
+    ];
   }
 
 }

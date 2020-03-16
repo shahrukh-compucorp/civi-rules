@@ -71,6 +71,8 @@ class CRM_CivirulesConditions_Form_Form extends CRM_Core_Form
     parent::preProcess();
 
     $this->setFormTitle();
+    $this->assign('ruleConditionHelp', $this->getHelpText());
+    $this->assign('ruleName', $this->condition->name);
 
     //set user context
     $session = CRM_Core_Session::singleton();
@@ -113,6 +115,13 @@ class CRM_CivirulesConditions_Form_Form extends CRM_Core_Form
     $title = 'CiviRules Edit Condition parameters';
     $this->assign('ruleConditionHeader', 'Edit Condition '.$this->condition->label.' of CiviRule '.$this->rule->label);
     CRM_Utils_System::setTitle($title);
+  }
+
+  /**
+   * @return string
+   */
+  protected function getHelpText() {
+    return '';
   }
 
 }

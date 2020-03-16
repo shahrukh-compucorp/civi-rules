@@ -39,7 +39,7 @@ class CRM_CivirulesConditions_ContributionRecur_PaymentProcessor extends CRM_Civ
 
       case 'Membership':
         $whereClauses[] = "cm.id = %1";
-        $sql = "SELECT ccr.payment_processor_id FROM civicrm_membership cm
+        $sql = "SELECT cm.id FROM civicrm_membership cm
 LEFT JOIN civicrm_contribution_recur ccr ON ccr.id = cm.contribution_recur_id WHERE ";
         break;
     }
@@ -51,7 +51,9 @@ LEFT JOIN civicrm_contribution_recur ccr ON ccr.id = cm.contribution_recur_id WH
           $whereClauses[] = 'payment_processor_id IN ('.implode($this->conditionParams['payment_processor_id'], ','). ')';
           break;
         case 'not in':
-          $whereClauses[] = 'payment_processor_id NOT IN ('.implode($this->conditionParams['payment_processor_id'], ','). ')';
+          $whereClauses[] = '(payment_processor_id NOT IN ('
+            . implode($this->conditionParams['payment_processor_id'], ',')
+            . ') OR payment_processor_id IS NULL)';
           break;
       }
     }

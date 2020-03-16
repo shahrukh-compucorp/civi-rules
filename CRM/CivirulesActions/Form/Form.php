@@ -1,7 +1,8 @@
 <?php
 
-class CRM_CivirulesActions_Form_Form extends CRM_Core_Form
-{
+use CRM_Civirules_ExtensionUtil as E;
+
+class CRM_CivirulesActions_Form_Form extends CRM_Core_Form {
 
   protected $ruleActionId = false;
 
@@ -20,11 +21,8 @@ class CRM_CivirulesActions_Form_Form extends CRM_Core_Form
 
   /**
    * Overridden parent method to perform processing before form is build
-   *
-   * @access public
    */
-  public function preProcess()
-  {
+  public function preProcess() {
     $this->ruleActionId = CRM_Utils_Request::retrieve('rule_action_id', 'Integer');
 
     $this->ruleAction = new CRM_Civirules_BAO_RuleAction();
@@ -76,7 +74,6 @@ class CRM_CivirulesActions_Form_Form extends CRM_Core_Form
    * Overridden parent method to set default values
    *
    * @return array $defaultValues
-   * @access public
    */
   public function setDefaultValues() {
     $defaultValues = array();
@@ -86,7 +83,10 @@ class CRM_CivirulesActions_Form_Form extends CRM_Core_Form
 
   public function postProcess() {
     $session = CRM_Core_Session::singleton();
-    $session->setStatus('Action '.$this->action->label.' parameters updated to CiviRule '.$this->rule->label, 'Action parameters updated', 'success');
+    $session->setStatus(E::ts("Action '%1' parameters updated for CiviRule '%2'", [ 1 => $this->action->label, 2 => $this->rule->label]),
+      E::ts('Action parameters updated'),
+      'success'
+    );
 
     $redirectUrl = CRM_Utils_System::url('civicrm/civirule/form/rule', 'action=update&id='.$this->rule->id, TRUE);
     CRM_Utils_System::redirect($redirectUrl);
@@ -99,7 +99,11 @@ class CRM_CivirulesActions_Form_Form extends CRM_Core_Form
    */
   protected function setFormTitle() {
     $title = 'CiviRules Edit Action parameters';
-    $this->assign('ruleActionHeader', 'Edit Action '.$this->action->label.' of CiviRule '.$this->rule->label);
+    $this->assign('ruleActionHeader', E::ts("Edit Action '%1' for CiviRule '%2'", [
+      1 => $this->action->label,
+      2 => $this->rule->label,
+    ]));
+
     CRM_Utils_System::setTitle($title);
   }
 

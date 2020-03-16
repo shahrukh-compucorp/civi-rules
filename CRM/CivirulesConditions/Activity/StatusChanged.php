@@ -6,9 +6,8 @@ class CRM_CivirulesConditions_Activity_StatusChanged extends CRM_CivirulesCondit
    * Returns the value of the field for the condition
    * For example: I want to check if age > 50, this function would return the 50
    *
-   * @param object CRM_Civirules_TriggerData_TriggerData $triggerData
-   * @return mixed
-   * @access protected
+   * @param \CRM_Civirules_TriggerData_TriggerData $triggerData
+   * @return mixed|null
    */
   protected function getOriginalFieldValue(CRM_Civirules_TriggerData_TriggerData $triggerData) {
     $field = 'status_id';
@@ -25,9 +24,10 @@ class CRM_CivirulesConditions_Activity_StatusChanged extends CRM_CivirulesCondit
    * Returns the value of the field for the condition
    * For example: I want to check if age > 50, this function would return the 50
    *
-   * @param object CRM_Civirules_TriggerData_TriggerData $triggerData
-   * @return mixed
-   * @access protected
+   * @param \CRM_Civirules_TriggerData_TriggerData $triggerData
+   *
+   * @return mixed|null
+   * @throws \CiviCRM_API3_Exception
    */
   protected function getFieldValue(CRM_Civirules_TriggerData_TriggerData $triggerData) {
     $field = 'status_id';
@@ -54,6 +54,7 @@ class CRM_CivirulesConditions_Activity_StatusChanged extends CRM_CivirulesCondit
    *
    * @param CRM_Civirules_Trigger $trigger
    * @param CRM_Civirules_BAO_Rule $rule
+   *
    * @return bool
    */
   public function doesWorkWithTrigger(CRM_Civirules_Trigger $trigger, CRM_Civirules_BAO_Rule $rule) {

@@ -1,10 +1,11 @@
+{crmScope extensionKey='org.civicoop.civirules'}
 <div id="help">
-  {ts}The existing CiviRules are listed below. You can manage, delete, disable/enable or add a rule. You can filther the list of CiviRules with the Filter Criteria{/ts}
+  {ts}The existing CiviRules are listed below. You can manage, delete, disable/enable or add a rule. You can filter the list using the Filter Criteria{/ts}
 </div>
 <div class="crm-block crm-form-block crm-civirule-rule_view-block">
   {* dialog for rule help text *}
   <div class="crm-accordion-wrapper civirule-view-wrapper">
-    <div class="crm-accordion-header crm-master-accordion-header">Filter Criteria</div>
+    <div class="crm-accordion-header crm-master-accordion-header">{ts}Filter Criteria{/ts}</div>
     <div class="crm-accordion-body">
       <table class="form-layout-compressed civirule-view-table">
         <tr>
@@ -24,3 +25,4 @@
   </div>
   {include file="CRM/Civirules/Page/RuleViewList.tpl"}
 </div>
+{/crmScope}

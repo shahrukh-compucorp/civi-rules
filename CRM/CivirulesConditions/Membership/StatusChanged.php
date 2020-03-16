@@ -12,10 +12,8 @@ class CRM_CivirulesConditions_Membership_StatusChanged extends CRM_CivirulesCond
    * Returns the value of the field for the condition
    * For example: I want to check if age > 50, this function would return the 50
    *
-   * @param object CRM_Civirules_TriggerData_TriggerData $triggerData
+   * @param \CRM_Civirules_TriggerData_TriggerData $triggerData
    * @return
-   * @access protected
-   * @abstract
    */
   protected function getOriginalFieldValue(CRM_Civirules_TriggerData_TriggerData $triggerData) {
   	$entity = $this->getEntity();
@@ -35,10 +33,8 @@ class CRM_CivirulesConditions_Membership_StatusChanged extends CRM_CivirulesCond
    * Returns the value of the field for the condition
    * For example: I want to check if age > 50, this function would return the 50
    *
-   * @param object CRM_Civirules_TriggerData_TriggerData $triggerData
+   * @param \CRM_Civirules_TriggerData_TriggerData $triggerData
    * @return
-   * @access protected
-   * @abstract
    */
   protected function getFieldValue(CRM_Civirules_TriggerData_TriggerData $triggerData) {
   	$entity = $this->getEntity();

@@ -100,7 +100,7 @@ class CRM_CivirulesConditions_Form_Form extends CRM_Core_Form
 
   public function postProcess() {
     $session = CRM_Core_Session::singleton();
-    $session->setStatus('Condition '.$this->condition->label.' parameters updated to CiviRule '.$this->rule->label, 'Condition parameters updated', 'success');
+    $session->setStatus("Condition '{$this->condition->label}' parameters updated for CiviRule '{$this->rule->label}'", 'Condition parameters updated', 'success');
 
     $redirectUrl = CRM_Utils_System::url('civicrm/civirule/form/rule', 'action=update&id='.$this->rule->id, TRUE);
     CRM_Utils_System::redirect($redirectUrl);
@@ -113,7 +113,7 @@ class CRM_CivirulesConditions_Form_Form extends CRM_Core_Form
    */
   protected function setFormTitle() {
     $title = 'CiviRules Edit Condition parameters';
-    $this->assign('ruleConditionHeader', 'Edit Condition '.$this->condition->label.' of CiviRule '.$this->rule->label);
+    $this->assign('ruleConditionHeader', E::ts("Edit Condition '%1' for CiviRule '%2'", [ 1 => $this->condition->label, 2 => $this->rule->label]));
     CRM_Utils_System::setTitle($title);
   }
 

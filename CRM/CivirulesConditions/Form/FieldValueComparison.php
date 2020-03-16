@@ -6,6 +6,8 @@
  * @license AGPL-3.0
  */
 
+use CRM_Civirules_ExtensionUtil as E;
+
 class CRM_CivirulesConditions_Form_FieldValueComparison extends CRM_CivirulesConditions_Form_ValueComparison {
 
   protected function getEntityOptions() {
@@ -179,9 +181,10 @@ class CRM_CivirulesConditions_Form_FieldValueComparison extends CRM_CivirulesCon
     $this->ruleCondition->save();
 
     $session = CRM_Core_Session::singleton();
-    $session->setStatus('Condition '.$this->condition->label .'Parameters updated to CiviRule '
-      .$this->rule->label,
-      'Condition parameters updated', 'success');
+    $session->setStatus(E::ts("Condition '%1' parameters updated for CiviRule '%2'", [1 => $this->condition->label, 2 => $this->rule->label]),
+      'Condition parameters updated',
+      'success'
+    );
 
     $redirectUrl = CRM_Utils_System::url('civicrm/civirule/form/rule', 'action=update&id='.$this->rule->id, TRUE);
     CRM_Utils_System::redirect($redirectUrl);  }
@@ -193,7 +196,9 @@ class CRM_CivirulesConditions_Form_FieldValueComparison extends CRM_CivirulesCon
    */
   protected function setFormTitle() {
     $title = 'CiviRules Edit Condition parameters';
-    $this->assign('ruleConditionHeader', 'Edit Condition '.$this->condition->label.' of CiviRule '.$this->rule->label);
+    $this->assign('ruleConditionHeader',
+      E::ts("Edit Condition '%1' for CiviRule '%2'", [ 1 => $this->condition->label, 2 => $this->rule->label])
+    );
     CRM_Utils_System::setTitle($title);
   }
 }

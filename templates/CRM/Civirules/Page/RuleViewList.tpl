@@ -1,3 +1,4 @@
+{crmScope extensionKey='org.civicoop.civirules'}
 <div class="crm-content-block crm-block">
 </div>
 <div class="action-link">
@@ -110,5 +111,4 @@
     }
   </script>
 {/literal}
-
-
+{/crmScope}

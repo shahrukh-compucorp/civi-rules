@@ -23,8 +23,8 @@
       <th id="sortable">{ts}Tag(s){/ts}</th>
       <th id="nosort">{ts}Description{/ts}</th>
       <th id="sortable">{ts}Enabled?{/ts}</th>
-      <th id="sortable">{ts}Date created{/ts}</th>
-      <th id="sortable">{ts}Created by{/ts}</th>
+      <th id="sortable">{ts}Date modified{/ts}</th>
+      <th id="sortable">{ts}Modified by{/ts}</th>
       <th id="sortable">{ts}Last triggered{/ts}</th>
       <th id="sortable">{ts}Triggered for{/ts}</th>
       <th id="nosort"></th>
@@ -44,8 +44,8 @@
           {/if}
         </td>
         <td>{$row.is_active}</td>
-        <td>{$row.created_date}</td>
-        <td>{$row.created_by}</td>
+        <td>{$row.modified_date}</td>
+        <td>{$row.modified_by}</td>
         <td>{$row.last_trigger_date}</td>
         <td>{$row.last_trigger_contact}</td>
         <td>

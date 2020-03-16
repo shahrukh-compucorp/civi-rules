@@ -15,6 +15,7 @@
 * Add condition "Recurring payment processor" that checks which payment processor is linked to the recur 
 * Add condition "Compare old Membership Status to new Membership Status".
 * Add help to rule conditions and update ContributionRecur has payment processor condition
+* Fix crash on FieldValueComparison if not saved properly
 
 ## Version 2.11
 

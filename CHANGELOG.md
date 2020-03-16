@@ -14,6 +14,7 @@
 * Fixed issue #67 ("Event Type is" condition doesn't work)
 * Add condition "Recurring payment processor" that checks which payment processor is linked to the recur 
 * Add condition "Compare old Membership Status to new Membership Status".
+* Add help to rule conditions and update ContributionRecur has payment processor condition
 
 ## Version 2.11
 

@@ -125,7 +125,10 @@ class CRM_Civirules_Form_Rule extends CRM_Core_Form {
     $session = CRM_Core_Session::singleton();
     $userId = $session->get('userID');
 
-    if (isset($this->_submitValues['_qf_Rule_next_clone'])) {
+    if (isset($this->_submitValues['_qf_Rule_next_cancel'])) {
+      CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/civirules/form/rulesview', 'reset=1'));
+    }
+    elseif (isset($this->_submitValues['_qf_Rule_next_clone'])) {
       $result = civicrm_api3('CiviRuleRule', 'clone', [
         'id' => $this->ruleId,
       ]);
@@ -283,7 +286,7 @@ class CRM_Civirules_Form_Rule extends CRM_Core_Form {
           'subName' => 'done',
         ],
         array('type' => 'next', 'name' => ts('Clone'), 'subName' => 'clone', 'icon' => 'fa-creative-commons'),
-        array('type' => 'cancel', 'name' => ts('Cancel'))));
+        array('type' => 'next', 'name' => ts('Close'), 'subName' => 'cancel', 'icon' => 'fa-close')));
     }
   }
 

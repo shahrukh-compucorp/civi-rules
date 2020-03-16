@@ -118,6 +118,9 @@ class CRM_CivirulesConditions_Form_Form extends CRM_Core_Form
   }
 
   /**
+   * Returns a help text for this condition.
+   * The help text is shown to the administrator who is configuring the condition.
+   *
    * @return string
    */
   protected function getHelpText() {

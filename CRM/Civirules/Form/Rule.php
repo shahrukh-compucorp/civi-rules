@@ -134,7 +134,10 @@ class CRM_Civirules_Form_Rule extends CRM_Core_Form {
     } else {
       $this->saveRule($this->_submitValues, $userId);
       $this->saveRuleTrigger($this->_submitValues);
-      $session->setStatus('Rule with linked Trigger saved succesfully', 'CiviRule saved', 'success');
+      $session->setStatus("Rule: '{$this->_submitValues['rule_label']}' saved succesfully", 'CiviRule saved', 'success');
+      if (isset($this->_submitValues['_qf_Rule_upload_done'])) {
+        CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/civirules/form/rulesview', 'reset=1'));
+      }
     }
     /*
      * if add mode, set user context to form in edit mode to add conditions and actions
@@ -274,6 +277,11 @@ class CRM_Civirules_Form_Rule extends CRM_Core_Form {
     } else {
       $this->addButtons(array(
         array('type' => 'next', 'name' => ts('Save'), 'isDefault' => TRUE,),
+        [
+          'type' => 'upload',
+          'name' => ts('Save and Done'),
+          'subName' => 'done',
+        ],
         array('type' => 'next', 'name' => ts('Clone'), 'subName' => 'clone', 'icon' => 'fa-creative-commons'),
         array('type' => 'cancel', 'name' => ts('Cancel'))));
     }

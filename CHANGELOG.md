@@ -3,6 +3,7 @@
 ## Version 2.14 (not yet released)
 
 * Fix Field Value Comparision
+* Add trigger "Membership is Renewed" that is triggered after a membership is renewed (End date is increased by one term).
 
 ## Version 2.13
 

@@ -56,6 +56,7 @@
   {"name":"new_membership","label":"Membership is added","object_name":"Membership","op":"create","class_name":null,"cron":"0"},
   {"name":"changed_membership","label":"Membership is changed","object_name":"Membership","op":"edit","class_name":null,"cron":"0"},
   {"name":"deleted_membership","label":"Membership is deleted","object_name":"Membership","op":"delete","class_name":null,"cron":"0"},
+  {"name":"renewed_membership","label":"Membership is renewed","object_name":"Membership","op":"edit","class_name":"CRM_CivirulesPostTrigger_MembershipRenewed","cron":"0"},
   {"name":"new_membership_payment","label":"Membership Payment is added","object_name":"MembershipPayment","op":"create","class_name":null,"cron":"0"},
   {"name":"changed_membership_payment","label":"Membership Payment is changed","object_name":"MembershipPayment","op":"edit","class_name":null,"cron":"0"},
   {"name":"deleted_membership_payment","label":"Membership Payment is deleted","object_name":"MembershipPayment","op":"delete","class_name":null,"cron":"0"},

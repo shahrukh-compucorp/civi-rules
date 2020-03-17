@@ -8,7 +8,10 @@ use CRM_Civirules_ExtensionUtil as E;
 
 class CRM_CivirulesCronTrigger_MembershipEndDate extends CRM_Civirules_Trigger_Cron {
 
-  private $dao = false;
+  /**
+   * @var \CRM_Member_DAO_Membership $dao
+   */
+  private $dao = NULL;
 
   public static function intervals() {
     return [
@@ -37,9 +40,20 @@ class CRM_CivirulesCronTrigger_MembershipEndDate extends CRM_Civirules_Trigger_C
       $data = [];
       CRM_Core_DAO::storeValues($this->dao, $data);
       $triggerData = new CRM_Civirules_TriggerData_Cron($this->dao->contact_id, 'Membership', $data);
+
+      if ($this->dao->contribution_recur_id) {
+        $contributionRecur = new CRM_Contribute_BAO_ContributionRecur();
+        $contributionRecur->id = $this->dao->contribution_recur_id;
+        if ($contributionRecur->find(TRUE)) {
+          $data = array();
+          CRM_Core_DAO::storeValues($contributionRecur, $data);
+          $triggerData->setEntityData('ContributionRecur', $data);
+        }
+      }
+
       return $triggerData;
     }
-    return false;
+    return FALSE;
   }
 
   /**
@@ -155,6 +169,17 @@ class CRM_CivirulesCronTrigger_MembershipEndDate extends CRM_Civirules_Trigger_C
       2 => $this->triggerParams['interval'],
       3 => $intervalUnitLabel,
     ]);
+  }
+
+  /**
+   * Returns additional entities provided in this trigger.
+   *
+   * @return array of CRM_Civirules_TriggerData_EntityDefinition
+   */
+  protected function getAdditionalEntities() {
+    $entities = parent::getAdditionalEntities();
+    $entities[] = new CRM_Civirules_TriggerData_EntityDefinition('ContributionRecur', 'ContributionRecur', 'CRM_Contribute_DAO_ContributionRecur' , 'ContributionRecur');
+    return $entities;
   }
 
 }

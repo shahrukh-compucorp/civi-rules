@@ -50,6 +50,14 @@ LEFT JOIN civicrm_contribution_recur ccr ON ccr.id = cm.contribution_recur_id WH
         break;
     }
 
+    // We only select live payment processors, but trigger for the test payment processors too
+    $livePaymentProcessors = CRM_Civirules_Utils::getPaymentProcessors(TRUE);
+    $testPaymentProcessors = array_flip(CRM_Civirules_Utils::getPaymentProcessors(FALSE));
+    foreach ($this->conditionParams['payment_processor_id'] as $paymentProcessorID) {
+      $paymentProcessorName = $livePaymentProcessors[$paymentProcessorID];
+      $this->conditionParams['payment_processor_id'][] = $testPaymentProcessors[$paymentProcessorName];
+    }
+
     $sqlParams[1] = [$triggerData->getEntityData($triggerData->getEntity())['id'], 'Integer'];
     if (count($this->conditionParams['payment_processor_id'])) {
       switch ($this->conditionParams['payment_processor_id_operator']) {

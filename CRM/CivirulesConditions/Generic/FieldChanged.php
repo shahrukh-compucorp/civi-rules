@@ -149,8 +149,9 @@ abstract class CRM_CivirulesConditions_Generic_FieldChanged extends CRM_Civirule
    * @return bool
    */
   public function doesWorkWithTrigger(CRM_Civirules_Trigger $trigger, CRM_Civirules_BAO_Rule $rule) {
-    if ($trigger instanceof CRM_Civirules_TriggerData_Interface_OriginalData) {
-      return true;
+    $triggerDataClassName = $trigger->getTriggerDataClassName();
+    if (in_array('CRM_Civirules_TriggerData_Interface_OriginalData', class_implements($triggerDataClassName))) {
+      return $trigger->doesProvideEntity($this->getEntity());
     }
     return false;
   }

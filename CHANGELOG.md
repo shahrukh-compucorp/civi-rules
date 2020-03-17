@@ -12,10 +12,12 @@
 * Added action: "Update Numeric Value"
 * Also check smartgroups for 'Contact in group' condition
 * Fixed issue #67 ("Event Type is" condition doesn't work)
-* Add condition "Recurring payment processor" that checks which payment processor is linked to the recur 
+* Add condition "Recurring payment processor" that checks which payment processor is linked to the recur
 * Add condition "Compare old Membership Status to new Membership Status".
 * Add help to rule conditions and update ContributionRecur has payment processor condition
 * Fix crash on FieldValueComparison if not saved properly
+* Membership Type condition changed so we can check for multiple types
+* Added condition 'Membership End Date Changed'
 
 ## Version 2.11
 

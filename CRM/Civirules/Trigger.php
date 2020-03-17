@@ -51,6 +51,17 @@ abstract class CRM_Civirules_Trigger {
    */
   abstract protected function reactOnEntity();
 
+  /**
+   * Returns the name of the trigger data class.
+   *
+   * This function could be overridden in a child class.
+   *
+   * @return String
+   */
+  public function getTriggerDataClassName() {
+    return 'CRM_Civirules_TriggerData_TriggerData';
+  }
+
 
   public function getProvidedEntities() {
     $additionalEntities = $this->getAdditionalEntities();

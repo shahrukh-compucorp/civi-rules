@@ -18,7 +18,7 @@ class CRM_CivirulesConditions_Form_Participant_StatusChanged extends CRM_Civirul
    */
   public function buildQuickForm() {
     $this->add('hidden', 'rule_condition_id');
-    $statuses = CRM_CivirulesConditions_Participant_StatusChanged::getAllParticipantStatus();
+    $statuses = CRM_CivirulesConditions_Activity_Status::getEntityStatusList(TRUE, TRUE);
     asort($statuses);
     $this->add('select', 'original_status_id', E::ts('Participant Status(es)'), $statuses, TRUE,
       ['id' => 'original_status_ids', 'class' => 'crm-select2']);

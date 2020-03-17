@@ -8,7 +8,7 @@
 
 class CRM_CivirulesConditions_Contribution_StatusChanged extends CRM_CivirulesConditions_Generic_FieldValueChangeComparison {
 
-	/**
+  /**
    * Returns the value of the field for the condition
    * For example: I want to check if age > 50, this function would return the 50
    *
@@ -18,7 +18,7 @@ class CRM_CivirulesConditions_Contribution_StatusChanged extends CRM_CivirulesCo
    * @abstract
    */
   protected function getOriginalFieldValue(CRM_Civirules_TriggerData_TriggerData $triggerData) {
-  	$entity = $this->getEntity();
+    $entity = $this->getEntity();
     if ($triggerData->getOriginalEntity() != $entity) {
       return null;
     }
@@ -31,7 +31,7 @@ class CRM_CivirulesConditions_Contribution_StatusChanged extends CRM_CivirulesCo
     return null;
   }
 
-	/**
+  /**
    * Returns the value of the field for the condition
    * For example: I want to check if age > 50, this function would return the 50
    *
@@ -41,7 +41,7 @@ class CRM_CivirulesConditions_Contribution_StatusChanged extends CRM_CivirulesCo
    * @abstract
    */
   protected function getFieldValue(CRM_Civirules_TriggerData_TriggerData $triggerData) {
-  	$entity = $this->getEntity();
+    $entity = $this->getEntity();
     $data = $triggerData->getEntityData($entity);
     $field = $this->getField();
     if (isset($data[$field])) {
@@ -50,19 +50,19 @@ class CRM_CivirulesConditions_Contribution_StatusChanged extends CRM_CivirulesCo
     return null;
   }
 
-	/**
+  /**
    * Returns an array with all possible options for the field, in
    * case the field is a select field, e.g. gender, or financial type
    * Return false when the field is a select field
    *
-   * This method could be overriden by child classes to return the option
+   * This method could be overridden by child classes to return the option
    *
    * The return is an array with the field option value as key and the option label as value
    *
-   * @return bool
+   * @return array
    */
   public function getFieldOptions() {
-    return CRM_Core_BAO_OptionValue::getOptionValuesAssocArrayFromName('contribution_status');
+    return CRM_CivirulesConditions_Contribution_Status::getEntityStatusList(TRUE);
   }
 
   /**

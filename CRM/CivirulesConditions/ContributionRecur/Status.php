@@ -1,13 +1,13 @@
 <?php
 
-class CRM_CivirulesConditions_Membership_Status extends CRM_CivirulesConditions_Generic_Status {
+class CRM_CivirulesConditions_ContributionRecur_Status extends CRM_CivirulesConditions_Generic_Status {
 
   /**
    * The entity name (eg. Membership)
    * @return string
    */
   protected function getEntity() {
-    return 'Membership';
+    return 'ContributionRecur';
   }
 
   /**
@@ -15,7 +15,7 @@ class CRM_CivirulesConditions_Membership_Status extends CRM_CivirulesConditions_
    * @return string
    */
   public function getEntityStatusFieldName() {
-    return 'status_id';
+    return 'contribution_status_id';
   }
 
   /**
@@ -27,19 +27,22 @@ class CRM_CivirulesConditions_Membership_Status extends CRM_CivirulesConditions_
    */
   public static function getEntityStatusList($active = TRUE, $inactive = FALSE) {
     $return = [];
-    $params = [];
+    $params = [
+      'return' => ["label", "value"],
+      'option_group_id' => "contribution_recur_status",
+      'options' => ['limit' => 0, 'sort' => "label ASC"],
+    ];
     if ($active && !$inactive) {
-      $params = ['is_active' => 1];
+      $params['is_active'] = 1;
     }
     elseif ($inactive && !$active) {
-      $params = ['is_active' => 0];
+      $params['is_active'] = 0;
     }
-    $params['options'] = ['limit' => 0, 'sort' => "label ASC"];
 
     try {
-      $apiMembershipStatus = civicrm_api3("MembershipStatus", "Get", $params)['values'];
-      foreach ($apiMembershipStatus as $membershipStatus) {
-        $return[$membershipStatus['id']] = $membershipStatus['label'];
+      $options = civicrm_api3('OptionValue', 'get', $params)['values'];
+      foreach ($options as $option) {
+        $return[$option['value']] = $option['label'];
       }
     } catch (CiviCRM_API3_Exception $ex) {}
     return $return;

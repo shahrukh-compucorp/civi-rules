@@ -64,14 +64,14 @@ class CRM_CivirulesConditions_Case_StatusChanged extends CRM_CivirulesConditions
    * case the field is a select field, e.g. gender, or financial type
    * Return false when the field is a select field
    *
-   * This method could be overriden by child classes to return the option
+   * This method could be overridden by child classes to return the option
    *
    * The return is an array with the field option value as key and the option label as value
    *
-   * @return bool
+   * @return array
    */
   public function getFieldOptions() {
-    return CRM_Core_BAO_OptionValue::getOptionValuesAssocArrayFromName('case_status');
+    return CRM_CivirulesConditions_Case_CaseStatus::getEntityStatusList(TRUE);
   }
 
   /**

@@ -55,10 +55,10 @@ class CRM_CivirulesConditions_Membership_StatusChanged extends CRM_CivirulesCond
    *
    * The return is an array with the field option value as key and the option label as value
    *
-   * @return bool
+   * @return array
    */
   public function getFieldOptions() {
-    return CRM_Member_PseudoConstant::membershipStatus(NULL, NULL, 'label');
+    return CRM_CivirulesConditions_Membership_Status::getEntityStatusList(TRUE);
   }
 
   /**

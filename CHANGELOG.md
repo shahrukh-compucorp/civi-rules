@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Version 2.12 (not yet released)
+## Version 2.12
 
 * Added operator 'Does not contain string' to Field Value condition.
 * Make sure we trigger rules after transaction has completed (see also issue #21)

@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## Version 2.13 (not yet released)
+
+
 ## Version 2.12
 
 * Added operator 'Does not contain string' to Field Value condition.

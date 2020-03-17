@@ -9,45 +9,21 @@
 class CRM_CivirulesConditions_Contribution_StatusChanged extends CRM_CivirulesConditions_Generic_FieldValueChangeComparison {
 
   /**
-   * Returns the value of the field for the condition
-   * For example: I want to check if age > 50, this function would return the 50
+   * Returns name of entity
    *
-   * @param object CRM_Civirules_TriggerData_TriggerData $triggerData
-   * @return
-   * @access protected
-   * @abstract
+   * @return string
    */
-  protected function getOriginalFieldValue(CRM_Civirules_TriggerData_TriggerData $triggerData) {
-    $entity = $this->getEntity();
-    if ($triggerData->getOriginalEntity() != $entity) {
-      return null;
-    }
-
-    $data = $triggerData->getOriginalData();
-    $field = $this->getField();
-    if (isset($data[$field])) {
-      return $data[$field];
-    }
-    return null;
+  protected function getEntity() {
+    return 'Contribution';
   }
 
   /**
-   * Returns the value of the field for the condition
-   * For example: I want to check if age > 50, this function would return the 50
+   * Returns name of the field
    *
-   * @param object CRM_Civirules_TriggerData_TriggerData $triggerData
-   * @return
-   * @access protected
-   * @abstract
+   * @return string
    */
-  protected function getFieldValue(CRM_Civirules_TriggerData_TriggerData $triggerData) {
-    $entity = $this->getEntity();
-    $data = $triggerData->getEntityData($entity);
-    $field = $this->getField();
-    if (isset($data[$field])) {
-      return $data[$field];
-    }
-    return null;
+  protected function getEntityStatusFieldName() {
+    return 'contribution_status_id';
   }
 
   /**
@@ -63,26 +39,6 @@ class CRM_CivirulesConditions_Contribution_StatusChanged extends CRM_CivirulesCo
    */
   public function getFieldOptions() {
     return CRM_CivirulesConditions_Contribution_Status::getEntityStatusList(TRUE);
-  }
-
-  /**
-   * Returns name of entity
-   *
-   * @return string
-   * @access protected
-   */
-  protected function getEntity() {
-    return 'Contribution';
-  }
-
-  /**
-   * Returns name of the field
-   *
-   * @return string
-   * @access protected
-   */
-  protected function getField() {
-    return 'contribution_status_id';
   }
 
 }

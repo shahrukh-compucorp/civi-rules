@@ -3,21 +3,21 @@
 class CRM_CivirulesConditions_Activity_StatusChanged extends CRM_CivirulesConditions_Generic_FieldValueChangeComparison {
 
   /**
-   * Returns the value of the field for the condition
-   * For example: I want to check if age > 50, this function would return the 50
+   * Returns name of entity
    *
-   * @param \CRM_Civirules_TriggerData_TriggerData $triggerData
-   * @return mixed|null
+   * @return string
    */
-  protected function getOriginalFieldValue(CRM_Civirules_TriggerData_TriggerData $triggerData) {
-    $field = 'status_id';
+  protected function getEntity() {
+    return 'Activity';
+  }
 
-    $data = $triggerData->getOriginalData();
-    if (isset($data[$field])) {
-      return $data[$field];
-    }
-
-    return null;
+  /**
+   * Returns name of the field
+   *
+   * @return string
+   */
+  protected function getEntityStatusFieldName() {
+    return 'status_id';
   }
 
   /**
@@ -30,38 +30,19 @@ class CRM_CivirulesConditions_Activity_StatusChanged extends CRM_CivirulesCondit
    * @throws \CiviCRM_API3_Exception
    */
   protected function getFieldValue(CRM_Civirules_TriggerData_TriggerData $triggerData) {
-    $field = 'status_id';
+    $field = $this->getEntityStatusFieldName();
 
-    $activityData = $triggerData->getEntityData('Activity');
-    $data = civicrm_api3('Activity', 'getsingle', array(
-      'return' => array($field),
+    $activityData = $triggerData->getEntityData($this->getEntity());
+    // @todo why do we do this lookup? Otherwise we could use the generic function
+    $data = civicrm_api3($this->getEntity(), 'getsingle', [
+      'return' => [$field],
       'id' => $activityData['id'],
-    ));
+    ]);
     if (isset($data[$field])) {
       return $data[$field];
     }
 
     return null;
-  }
-
-  /**
-   * This function validates whether this condition works with the selected trigger.
-   *
-   * This function could be overriden in child classes to provide additional validation
-   * whether a condition is possible in the current setup. E.g. we could have a condition
-   * which works on contribution or on contributionRecur then this function could do
-   * this kind of validation and return false/true
-   *
-   * @param CRM_Civirules_Trigger $trigger
-   * @param CRM_Civirules_BAO_Rule $rule
-   *
-   * @return bool
-   */
-  public function doesWorkWithTrigger(CRM_Civirules_Trigger $trigger, CRM_Civirules_BAO_Rule $rule) {
-    if ($trigger instanceof CRM_Civirules_TriggerData_Interface_OriginalData) {
-      return $trigger->doesProvideEntity('Activity');
-    }
-    return false;
   }
 
   /**

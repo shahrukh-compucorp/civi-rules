@@ -1,12 +1,12 @@
 <?php
 /**
- * Class for CiviRules Membership status changed
+ * Class for CiviRules ContributionRecur status changed
  *
  * @author Jaap Jansma (CiviCooP) <jaap.jansma@civicoop.org>
  * @license AGPL-3.0
  */
 
-class CRM_CivirulesConditions_Membership_StatusChanged extends CRM_CivirulesConditions_Generic_FieldValueChangeComparison {
+class CRM_CivirulesConditions_ContributionRecur_StatusChanged extends CRM_CivirulesConditions_Generic_FieldValueChangeComparison {
 
   /**
    * Returns name of entity
@@ -14,7 +14,7 @@ class CRM_CivirulesConditions_Membership_StatusChanged extends CRM_CivirulesCond
    * @return string
    */
   protected function getEntity() {
-    return 'Membership';
+    return 'ContributionRecur';
   }
 
   /**
@@ -23,7 +23,7 @@ class CRM_CivirulesConditions_Membership_StatusChanged extends CRM_CivirulesCond
    * @return string
    */
   protected function getEntityStatusFieldName() {
-    return 'status_id';
+    return 'contribution_status_id';
   }
 
   /**
@@ -38,7 +38,7 @@ class CRM_CivirulesConditions_Membership_StatusChanged extends CRM_CivirulesCond
    * @return array
    */
   public function getFieldOptions() {
-    return CRM_CivirulesConditions_Membership_Status::getEntityStatusList(TRUE);
+    return CRM_CivirulesConditions_ContributionRecur_Status::getEntityStatusList(TRUE);
   }
 
 }

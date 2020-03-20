@@ -472,6 +472,21 @@ class CRM_Civirules_Utils {
   }
 
   /**
+   * Function to return scheduled reminder list
+   *
+   * @return array $scheduledReminderList
+   * @access public
+   */
+  public static function getScheduledReminderList() {
+    $scheduledReminderList = [];
+    $reminders = CRM_Core_BAO_ActionSchedule::getList();
+    foreach ($reminders as $reminder) {
+      $scheduledReminderList[$reminder['id']] = $reminder['title'];
+    }
+    return $scheduledReminderList;
+  }
+
+  /**
    * Method to set the date operator options
    *
    * @return array

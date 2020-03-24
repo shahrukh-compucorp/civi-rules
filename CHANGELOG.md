@@ -2,6 +2,8 @@
 
 ## Version 2.14 (not yet released)
 
+* Fix Field Value Comparision
+
 ## Version 2.13
 
 * Fixed #58: added locking mechanism to cron triggers to prevent that a rule gets fired again whilst it is running.

@@ -83,27 +83,6 @@ class CRM_CivirulesConditions_Participant_StatusChanged extends CRM_Civirules_Co
   }
 
   /**
-   * Method to get all the participant status types
-   *
-   * @return array
-   */
-  public static function getAllParticipantStatus() {
-    $result = [];
-    try {
-      $api = civicrm_api3('ParticipantStatusType', 'get', [
-        'return' => ["label"],
-        'options' => ['limit' => 0],
-        ]);
-      foreach ($api['values'] as $statusId => $status) {
-        $result[$statusId] = $status['label'];
-      }
-    }
-    catch (CiviCRM_API3_Exception $ex) {
-    }
-    return $result;
-  }
-
-  /**
    * Returns a redirect url to extra data input from the user after adding a condition
    *
    * Return false if you do not need extra data input
@@ -126,7 +105,7 @@ class CRM_CivirulesConditions_Participant_StatusChanged extends CRM_Civirules_Co
    * @throws Exception
    */
   public function userFriendlyConditionParams() {
-    $participantStatusList = CRM_CivirulesConditions_Participant_StatusChanged::getAllParticipantStatus();
+    $participantStatusList = CRM_CivirulesConditions_Activity_Status::getEntityStatusList(TRUE, TRUE);
     $friendlyText = "Original participant status ";
     if ($this->_conditionParams['original_operator'] == 1) {
       $friendlyText .= " is NOT equal " . $participantStatusList[$this->_conditionParams['original_status_id']];

@@ -91,13 +91,6 @@
     <access_arguments>access CiviCRM</access_arguments>
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
-  <item>
-    <path>civicrm/civirule/form/condition/contributionstatus</path>
-    <page_callback>CRM_CivirulesConditions_Form_Contribution_Status</page_callback>
-    <title>contribution status</title>
-    <access_arguments>access CiviCRM</access_arguments>
-    <access_arguments>administer CiviCRM</access_arguments>
-  </item>
  <item>
     <path>civicrm/civirule/form/condition/contribution/is_recurring</path>
     <page_callback>CRM_CivirulesConditions_Form_Contribution_IsRecurring</page_callback>
@@ -122,13 +115,6 @@
     <path>civicrm/civirule/form/condition/relationship/relationshiptype</path>
     <page_callback>CRM_CivirulesConditions_Form_Relationship_RelationshipType</page_callback>
     <title>relationship type</title>
-    <access_arguments>access CiviCRM</access_arguments>
-    <access_arguments>administer CiviCRM</access_arguments>
-  </item>
-  <item>
-    <path>civicrm/civirule/form/condition/case/casestatus</path>
-    <page_callback>CRM_CivirulesConditions_Form_Case_CaseStatus</page_callback>
-    <title>case status</title>
     <access_arguments>access CiviCRM</access_arguments>
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
@@ -161,9 +147,9 @@
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
   <item>
-    <path>civicrm/civirule/form/condition/membershipstatus</path>
-    <page_callback>CRM_CivirulesConditions_Form_Membership_Status</page_callback>
-    <title>membership status</title>
+    <path>civicrm/civirule/form/condition/status</path>
+    <page_callback>CRM_CivirulesConditions_Form_Status</page_callback>
+    <title>Status</title>
     <access_arguments>access CiviCRM</access_arguments>
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
@@ -177,7 +163,7 @@
   <item>
     <path>civicrm/civirule/form/condition/recurringpaymentprocessor</path>
     <page_callback>CRM_CivirulesConditions_Form_ContributionRecur_PaymentProcessor</page_callback>
-    <title>Recurring Payment Processor</title>
+    <title>Recurring Contribution Payment Processor is</title>
     <access_arguments>access CiviCRM</access_arguments>
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
@@ -405,23 +391,9 @@
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
   <item>
-    <path>civicrm/civirule/form/condition/campaign_status</path>
-    <page_callback>CRM_CivirulesConditions_Form_Campaign_Status</page_callback>
-    <title>Campaign Status</title>
-    <access_arguments>access CiviCRM</access_arguments>
-    <access_arguments>administer CiviCRM</access_arguments>
-  </item>
-  <item>
     <path>civicrm/civirule/form/condition/activity_details</path>
     <page_callback>CRM_CivirulesConditions_Form_Activity_Details</page_callback>
     <title>Activity Details</title>
-    <access_arguments>access CiviCRM</access_arguments>
-    <access_arguments>administer CiviCRM</access_arguments>
-  </item>
-  <item>
-    <path>civicrm/civirule/form/condition/activity_status</path>
-    <page_callback>CRM_CivirulesConditions_Form_Activity_Status</page_callback>
-    <title>Activity Status</title>
     <access_arguments>access CiviCRM</access_arguments>
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
@@ -477,13 +449,6 @@
     <path>civicrm/civirule/form/condition/participant_role</path>
     <page_callback>CRM_CivirulesConditions_Form_Participant_ParticipantRole</page_callback>
     <title>Participant Role</title>
-    <access_arguments>access CiviCRM</access_arguments>
-    <access_arguments>administer CiviCRM</access_arguments>
-  </item>
-  <item>
-    <path>civicrm/civirule/form/condition/participant_status</path>
-    <page_callback>CRM_CivirulesConditions_Form_Participant_ParticipantStatus</page_callback>
-    <title>Participant Status</title>
     <access_arguments>access CiviCRM</access_arguments>
     <access_arguments>administer CiviCRM</access_arguments>
   </item>

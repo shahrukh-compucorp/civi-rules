@@ -113,6 +113,4 @@ abstract class CRM_Civirules_Condition {
     CRM_Civirules_Utils_LoggerFactory::log($msg, $context, $level);
   }
 
-
-
 }

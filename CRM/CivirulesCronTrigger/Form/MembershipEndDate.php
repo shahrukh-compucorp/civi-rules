@@ -3,34 +3,64 @@
  * @author Jaap Jansma (CiviCooP) <jaap.jansma@civicoop.org>
  * @license http://www.gnu.org/licenses/agpl-3.0.html
  */
+
+use CRM_Civirules_ExtensionUtil as E;
+
 class CRM_CivirulesCronTrigger_Form_MembershipEndDate extends CRM_CivirulesTrigger_Form_Form {
-
-
 
   /**
    * Overridden parent method to build form
-   *
-   * @access public
    */
   public function buildQuickForm() {
     $this->add('hidden', 'rule_id');
 
-    $this->add('select', 'membership_type_id', ts('Activity Type'),CRM_Civirules_Utils::getMembershipTypes(), true);
-    $this->add('select', 'interval_unit', ts('Interval'),CRM_CivirulesCronTrigger_MembershipEndDate::intervals(), true);
-    $this->add('text', 'interval', ts('Interval'), true);
+    $this->add('select', 'membership_type_id', ts('Membership Type'),
+      $this->getMembershipTypesWithIntervals(), TRUE, [
+        'multiple' => TRUE,
+        'class' => 'crm-select2'
+      ]
+    );
+    $this->add('select', 'interval_unit', ts('Interval'), CRM_CivirulesCronTrigger_MembershipEndDate::intervals(), TRUE);
+    $this->add('text', 'interval', ts('Interval'), TRUE);
     $this->addRule('interval', ts('Interval should be a numeric value'), 'numeric');
 
+    $this->addButtons([
+      ['type' => 'next', 'name' => ts('Save'), 'isDefault' => TRUE,],
+      ['type' => 'cancel', 'name' => ts('Cancel')]
+    ]);
+  }
 
-    $this->addButtons(array(
-      array('type' => 'next', 'name' => ts('Save'), 'isDefault' => TRUE,),
-      array('type' => 'cancel', 'name' => ts('Cancel'))));
+  /**
+   * Method to get the membership types
+   * @param bool $onlyActive
+   * @return array
+   */
+  public function getMembershipTypesWithIntervals($onlyActive = TRUE) {
+    $return = [];
+    if ($onlyActive) {
+      $params = ['is_active' => 1];
+    } else {
+      $params = [];
+    }
+    $params['options'] = ['limit' => 0, 'sort' => "name ASC"];
+    try {
+      $membershipTypes = civicrm_api3("MembershipType", "Get", $params);
+      foreach ($membershipTypes['values'] as $membershipType) {
+        $return[$membershipType['id']] = E::ts('%1 (every %2 %3)', [
+          1 => $membershipType['name'],
+          2 => $membershipType['duration_interval'],
+          3 => $membershipType['duration_unit'],
+        ]);
+      }
+    }
+    catch (CiviCRM_API3_Exception $ex) {}
+    return $return;
   }
 
   /**
    * Overridden parent method to set default values
    *
    * @return array $defaultValues
-   * @access public
    */
   public function setDefaultValues() {
     $defaultValues = parent::setDefaultValues();
@@ -49,9 +79,6 @@ class CRM_CivirulesCronTrigger_Form_MembershipEndDate extends CRM_CivirulesTrigg
 
   /**
    * Overridden parent method to process form data after submission
-   *
-   * @throws Exception when rule condition not found
-   * @access public
    */
   public function postProcess() {
     $data['membership_type_id'] = $this->_submitValues['membership_type_id'];

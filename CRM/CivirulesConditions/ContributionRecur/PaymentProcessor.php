@@ -37,11 +37,25 @@ class CRM_CivirulesConditions_ContributionRecur_PaymentProcessor extends CRM_Civ
         $sql = "SELECT ccr.id FROM civicrm_contribution_recur ccr WHERE ";
         break;
 
+      case 'Contribution':
+        $whereClauses[] = "cc.id = %1";
+        $sql = "SELECT cc.id FROM civicrm_contribution cc
+LEFT JOIN civicrm_contribution_recur ccr ON ccr.id = cc.contribution_recur_id WHERE ";
+        break;
+
       case 'Membership':
         $whereClauses[] = "cm.id = %1";
         $sql = "SELECT cm.id FROM civicrm_membership cm
 LEFT JOIN civicrm_contribution_recur ccr ON ccr.id = cm.contribution_recur_id WHERE ";
         break;
+    }
+
+    // We only select live payment processors, but trigger for the test payment processors too
+    $livePaymentProcessors = CRM_Civirules_Utils::getPaymentProcessors(TRUE);
+    $testPaymentProcessors = array_flip(CRM_Civirules_Utils::getPaymentProcessors(FALSE));
+    foreach ($this->conditionParams['payment_processor_id'] as $paymentProcessorID) {
+      $paymentProcessorName = $livePaymentProcessors[$paymentProcessorID];
+      $this->conditionParams['payment_processor_id'][] = $testPaymentProcessors[$paymentProcessorName];
     }
 
     $sqlParams[1] = [$triggerData->getEntityData($triggerData->getEntity())['id'], 'Integer'];
@@ -130,6 +144,31 @@ LEFT JOIN civicrm_contribution_recur ccr ON ccr.id = cm.contribution_recur_id WH
       'in' => ts('Is one of'),
       'not in' => ts('Is not one of'),
     ];
+  }
+
+  /**
+   * This function validates whether this condition works with the selected trigger.
+   *
+   * This function could be overridden in child classes to provide additional validation
+   * whether a condition is possible in the current setup. E.g. we could have a condition
+   * which works on contribution or on contributionRecur then this function could do
+   * this kind of validation and return false/true
+   *
+   * @param CRM_Civirules_Trigger $trigger
+   * @param CRM_Civirules_BAO_Rule $rule
+   * @return bool
+   */
+  public function doesWorkWithTrigger(CRM_Civirules_Trigger $trigger, CRM_Civirules_BAO_Rule $rule) {
+    if ($trigger->doesProvideEntity('ContributionRecur')) {
+      return TRUE;
+    }
+    elseif ($trigger->doesProvideEntity('Contribution')) {
+      return TRUE;
+    }
+    elseif ($trigger->doesProvideEntity('Membership')) {
+      return TRUE;
+    }
+    return FALSE;
   }
 
 }

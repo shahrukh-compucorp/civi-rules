@@ -1,5 +1,6 @@
 <h3>{$ruleConditionHeader}</h3>
-<div class="crm-block crm-form-block crm-civirule-rule_condition-block-value-comparison">
+<div class="crm-block crm-form-block crm-civirule-rule_condition-block-{$ruleName}">
+  <div class="help">{$ruleConditionHelp}</div>
     <div class="crm-section">
         <div class="label"></div>
         <div class="content"><h2>{ts}Original value{/ts}</h2></div>

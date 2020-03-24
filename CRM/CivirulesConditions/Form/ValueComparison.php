@@ -6,12 +6,12 @@
  * @license AGPL-3.0
  */
 
+use CRM_Civirules_ExtensionUtil as E;
+
 class CRM_CivirulesConditions_Form_ValueComparison extends CRM_CivirulesConditions_Form_Form {
 
   /**
    * Overridden parent method to perform processing before form is build
-   *
-   * @access public
    */
   public function preProcess() {
     parent::preProcess();
@@ -23,11 +23,8 @@ class CRM_CivirulesConditions_Form_ValueComparison extends CRM_CivirulesConditio
 
   /**
    * Function to add validation condition rules (overrides parent function)
-   *
-   * @access public
    */
-  public function addRules()
-  {
+  public function addRules() {
     $this->addFormRule(array('CRM_CivirulesConditions_Form_ValueComparison', 'validateOperatorAndComparisonValue'));
   }
 
@@ -41,7 +38,7 @@ class CRM_CivirulesConditions_Form_ValueComparison extends CRM_CivirulesConditio
       case '<':
       case '<=':
       case 'contains string':
-      case 'not contains string':      
+      case 'not contains string':
         if (!isset($fields['value']) || strlen($fields['value']) === 0) {
           return array('value' => ts('Compare value is required'));
         }
@@ -62,8 +59,6 @@ class CRM_CivirulesConditions_Form_ValueComparison extends CRM_CivirulesConditio
 
   /**
    * Overridden parent method to build form
-   *
-   * @access public
    */
   public function buildQuickForm() {
     $this->setFormTitle();
@@ -86,7 +81,6 @@ class CRM_CivirulesConditions_Form_ValueComparison extends CRM_CivirulesConditio
    * Overridden parent method to set default values
    *
    * @return array $defaultValues
-   * @access public
    */
   public function setDefaultValues() {
     $data = array();
@@ -113,7 +107,6 @@ class CRM_CivirulesConditions_Form_ValueComparison extends CRM_CivirulesConditio
    * Overridden parent method to process form data after submission
    *
    * @throws Exception when rule condition not found
-   * @access public
    */
   public function postProcess() {
     $data = unserialize($this->ruleCondition->condition_params);
@@ -136,8 +129,6 @@ class CRM_CivirulesConditions_Form_ValueComparison extends CRM_CivirulesConditio
 
   /**
    * Method to set the form title
-   *
-   * @access protected
    */
   protected function setFormTitle() {
     $conditionLabel = '';
@@ -152,8 +143,12 @@ class CRM_CivirulesConditions_Form_ValueComparison extends CRM_CivirulesConditio
     }
 
     $title = 'CiviRules Edit Condition parameters';
-    $this->assign('ruleConditionHeader', 'Edit Condition '.$conditionLabel.' of CiviRule '
-      .CRM_Civirules_BAO_Rule::getRuleLabelWithId($ruleCondition->rule_id));
+    $this->assign('ruleConditionHeader', E::ts("Edit Condition '%1' for CiviRule '%2'", [
+        1 => $conditionLabel,
+        2 => CRM_Civirules_BAO_Rule::getRuleLabelWithId($ruleCondition->rule_id)
+      ])
+    );
     CRM_Utils_System::setTitle($title);
   }
+
 }

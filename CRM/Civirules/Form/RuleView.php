@@ -77,13 +77,17 @@ class CRM_Civirules_Form_RuleView extends CRM_Core_Form {
     while ($dao->fetch()) {
       $row = [];
       $elements = ['rule_id', 'label', 'trigger_label', 'description', 'is_active',
-        'help_text', 'created_date', 'created_by_name', 'last_trigger_date', 'last_trigger_contactname'];
+        'help_text', 'created_date', 'created_by_name', 'modified_date', 'modified_by_name', 'last_trigger_date', 'last_trigger_contactname'];
       $triggerDetail = $this->getRuleLogLatestTriggerDetail($dao->rule_id);
 
       foreach ($elements as $element) {
         switch ($element) {
           case 'created_by_name':
             $row['created_by'] = CRM_Civirules_Utils::formatContactLink($dao->created_by_id, $dao->created_by_name);
+            break;
+
+          case 'modified_by_name':
+            $row['modified_by'] = CRM_Civirules_Utils::formatContactLink($dao->modified_by_id, $dao->modified_by_name);
             break;
 
           case 'last_trigger_contactname':
@@ -115,9 +119,11 @@ class CRM_Civirules_Form_RuleView extends CRM_Core_Form {
    */
   private function generateRuleQuery() {
     $select = "SELECT DISTINCT(cr.id) AS rule_id, cr.label, ct.label AS trigger_label, cr.is_active, cr.description, cr.help_text,
-cr.created_date, cr.created_user_id AS created_by_id, cc.sort_name AS created_by_name";
+cr.created_date, cr.created_user_id AS created_by_id, cc.sort_name AS created_by_name,
+cr.modified_date, cr.modified_user_id AS modified_by_id, cc2.sort_name AS modified_by_name";
     $from = "FROM civirule_rule AS cr JOIN civirule_trigger AS ct ON cr.trigger_id = ct.id
 LEFT JOIN civicrm_contact AS cc ON cr.created_user_id = cc.id
+LEFT JOIN civicrm_contact AS cc2 ON cr.modified_user_id = cc2.id
 LEFT JOIN civirule_rule_tag AS crt ON cr.id = crt.rule_id";
     $whereClauses = [];
     $index = 0;

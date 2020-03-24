@@ -1,5 +1,7 @@
 <?php
 
+use CRM_Civirules_ExtensionUtil as E;
+
 class CRM_CivirulesConditions_Form_FieldValueChangeComparison extends CRM_CivirulesConditions_Form_Form {
 
   /**
@@ -176,6 +178,17 @@ class CRM_CivirulesConditions_Form_FieldValueChangeComparison extends CRM_Civiru
 
     $redirectUrl = CRM_Utils_System::url('civicrm/civirule/form/rule', 'action=update&id='.$this->ruleCondition->rule_id, TRUE);
     CRM_Utils_System::redirect($redirectUrl);
+  }
+
+  /**
+   * Returns a help text for this condition.
+   * The help text is shown to the administrator who is configuring the condition.
+   *
+   * @return string
+   */
+  protected function getHelpText() {
+    return E::ts('This condition checks the before and after value of a field. It also works with delayed actions that
+      re-check conditions because the original values are saved when it is triggered.');
   }
 
 }

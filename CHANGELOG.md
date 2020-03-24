@@ -3,6 +3,20 @@
 ## Version 2.14 (not yet released)
 
 * Fix Field Value Comparision
+* Add trigger "Membership is Renewed" that is triggered after a membership is renewed (End date is increased by one term).
+* Add 'Save and Done' button to a rule.
+* Display Modified date/by instead of Created date/by in list of rules (you can still see Created when editing the rule).
+* Change cancel button to close and always redirect to rules list.
+* Membership End Date trigger:
+  * Allows you to select multiple membership types.
+  * Provide ContributionRecur entity so conditions based on the linked recurring contribution can be used.
+* Make status condition generic, support matching multiple statuses and add support for the ContributionRecur entity.
+* Add ContributionRecur status changed condition and make the parent class more generic to support more entities.
+* 'Recurring Payment Processor is' changes:
+  * Now works with Contribution entity.
+  * Now works for test payment processors too.
+
+
 
 ## Version 2.13
 
@@ -21,7 +35,7 @@
 * Added action: "Update Numeric Value"
 * Also check smartgroups for 'Contact in group' condition
 * Fixed issue #67 ("Event Type is" condition doesn't work)
-* Add condition "Recurring payment processor" that checks which payment processor is linked to the recur
+* Add condition "Recurring Contribution Payment Processor is" that checks which payment processor is linked to the recur
 * Add condition "Compare old Membership Status to new Membership Status".
 * Add help to rule conditions and update ContributionRecur has payment processor condition
 * Fix crash on FieldValueComparison if not saved properly

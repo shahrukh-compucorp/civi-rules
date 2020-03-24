@@ -365,18 +365,18 @@ class CRM_Civirules_Utils {
 
   /**
    * Method to get the payment processors
-   * @param bool $onlyLive
+   * @param bool $live
    *
    * @return array
    */
-  public static function getPaymentProcessors($onlyLive = TRUE) {
-    $return = array();
-    if ($onlyLive) {
-      $params = array('is_test' => 0);
+  public static function getPaymentProcessors($live = TRUE) {
+    $return = [];
+    if ($live) {
+      $params = ['is_test' => 0];
     } else {
-      $params = array();
+      $params = ['is_test' => 1];
     }
-    $params['options'] = array('limit' => 0, 'sort' => "name ASC");
+    $params['options'] = ['limit' => 0, 'sort' => "name ASC"];
     try {
       $paymentProcessors = civicrm_api3("PaymentProcessor", "Get", $params);
       foreach ($paymentProcessors['values'] as $paymentProcessor) {

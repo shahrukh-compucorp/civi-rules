@@ -87,7 +87,7 @@ abstract class CRM_Civirules_Trigger_Cron extends CRM_Civirules_Trigger {
    * @return int
    */
   protected function getLockTimeout() {
-    return 900; //900 seconds = 15 minutes
+    return 1800; //1800 seconds = 30 minutes
   }
 
   /*

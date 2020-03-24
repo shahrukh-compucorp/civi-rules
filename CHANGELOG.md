@@ -2,6 +2,8 @@
 
 ## Version 2.13 (not yet released)
 
+* Fixed #58: added locking mechanism to cron triggers to prevent that a rule gets fired again whilst it is running.
+
 
 ## Version 2.12
 

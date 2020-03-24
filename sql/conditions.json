@@ -48,6 +48,7 @@
   {"name":"contribution_recur_payment_processor","label":"Recurring payment processor","class_name":"CRM_CivirulesConditions_ContributionRecur_PaymentProcessor"},
   {"name":"membership_status","label":"Membership Status is (not) one of","class_name":"CRM_CivirulesConditions_Membership_Status"},
   {"name":"membership_status_changed","label":"Compare old Membership Status to new Membership Status","class_name":"CRM_CivirulesConditions_Membership_StatusChanged"},
+  {"name":"membership_end_date_changed","label":"Membership End Date is changed","class_name":"CRM_CivirulesConditions_Membership_EndDateChanged"},
   {"name":"membership_type","label":"Membership is (not) one of Type(s)","class_name":"CRM_CivirulesConditions_Membership_Type"},
   {"name":"relationship_is_contact_a","label":"Relationship is Contact A","class_name":"CRM_CivirulesConditions_Relationship_IsContactA"},
   {"name":"relationship_is_contact_b","label":"Relationship is Contact B","class_name":"CRM_CivirulesConditions_Relationship_IsContactB"},

@@ -168,6 +168,13 @@
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
   <item>
+    <path>civicrm/civirule/form/condition/membershipenddatechanged</path>
+    <page_callback>CRM_CivirulesConditions_Form_Membership_EndDateChanged</page_callback>
+    <title>membership end date chnaged</title>
+    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
     <path>civicrm/civirule/form/condition/recurringpaymentprocessor</path>
     <page_callback>CRM_CivirulesConditions_Form_ContributionRecur_PaymentProcessor</page_callback>
     <title>Recurring Payment Processor</title>

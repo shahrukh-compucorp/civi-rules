@@ -38,6 +38,11 @@ class CRM_CivirulesConditions_Membership_Type extends CRM_Civirules_Condition {
           $isConditionValid = TRUE;
         }
       break;
+      case 2:
+        if (in_array($membership['membership_type_id'], $this->conditionParams['membership_type_ids'])) {
+          $isConditionValid = TRUE;
+        }
+        break;
     }
     return $isConditionValid;
   }
@@ -78,11 +83,20 @@ class CRM_CivirulesConditions_Membership_Type extends CRM_Civirules_Condition {
       if ($this->conditionParams['operator'] == 1) {
         $operator = 'is not equal to';
       }
+      if ($this->conditionParams['operator'] == 2) {
+        $operator = 'one of';
+      }
+      $membershipTypeLabels = [];
       foreach ($membershipTypes['values'] as $membershipType) {
-        if ($membershipType['id'] == $this->conditionParams['membership_type_id']) {
-          return "Membership Type ".$operator." ".$membershipType['name'];
+        if ($this->conditionParams['operator'] == 2) {
+          if (in_array($membershipType['id'], $this->conditionParams['membership_type_ids'])) {
+            $membershipTypeLabels[] = $membershipType['name'];
+          }
+        } elseif ($membershipType['id'] == $this->conditionParams['membership_type_id']) {
+          $membershipTypeLabels[] = $membershipType['name'];
         }
       }
+      return 'Membership type '.$operator.' '.implode(', ', $membershipTypeLabels);
     } catch (CiviCRM_API3_Exception $ex) {}
     return '';
   }

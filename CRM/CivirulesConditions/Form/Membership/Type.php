@@ -20,7 +20,13 @@ class CRM_CivirulesConditions_Form_Membership_Type extends CRM_CivirulesConditio
     $membershipTypes[0] = ts('- select -');
     asort($membershipTypes);
     $this->add('select', 'membership_type_id', ts('Membership Type'), $membershipTypes, true);
-    $this->add('select', 'operator', ts('Operator'), array('equals', 'is not equal to'), true);
+    $this->add('select', 'operator', ts('Operator'), array('equals', 'is not equal to', 'one of'), true);
+    $this->add('select', 'membership_type_ids', ts('Membership Types'), $membershipTypes, true, array(
+      'style' => 'min-width:250px',
+      'class' => 'crm-select2 huge',
+      'placeholder' => ts('- Select membership type -'),
+      'multiple' => true,
+    ));
 
     $this->addButtons(array(
       array('type' => 'next', 'name' => ts('Save'), 'isDefault' => TRUE,),
@@ -39,6 +45,9 @@ class CRM_CivirulesConditions_Form_Membership_Type extends CRM_CivirulesConditio
     if (!empty($data['membership_type_id'])) {
       $defaultValues['membership_type_id'] = $data['membership_type_id'];
     }
+    if (!empty($data['membership_type_ids'])) {
+      $defaultValues['membership_type_ids'] = $data['membership_type_ids'];
+    }
     if (!empty($data['operator'])) {
       $defaultValues['operator'] = $data['operator'];
     }
@@ -53,6 +62,7 @@ class CRM_CivirulesConditions_Form_Membership_Type extends CRM_CivirulesConditio
    */
   public function postProcess() {
     $data['membership_type_id'] = $this->_submitValues['membership_type_id'];
+    $data['membership_type_ids'] = $this->_submitValues['membership_type_ids'];
     $data['operator'] = $this->_submitValues['operator'];
     $this->ruleCondition->condition_params = serialize($data);
     $this->ruleCondition->save();

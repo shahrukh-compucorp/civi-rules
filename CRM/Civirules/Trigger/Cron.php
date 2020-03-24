@@ -90,5 +90,16 @@ abstract class CRM_Civirules_Trigger_Cron extends CRM_Civirules_Trigger {
     return 900; //900 seconds = 15 minutes
   }
 
+  /*
+   * Returns the name of the trigger data class.
+   *
+   * This function could be overridden in a child class.
+   *
+   * @return String
+   */
+  public function getTriggerDataClassName() {
+    return 'CRM_Civirules_TriggerData_Cron';
+  }
+
 
 }

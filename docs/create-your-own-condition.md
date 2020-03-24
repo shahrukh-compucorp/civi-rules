@@ -75,7 +75,7 @@ The advantage of this alternative way is that it also checks whether the conditi
 
 ### Step 2 - Add a Class That Extends CRM_CiviRule_Condition
 
-I create a PHP class called  <whatever namespace I like>, so in this example that will be CRM_CivirulesConditions_Contribution_FirstDonation. You can include the class file in the Civirules extension if you want, but you can also include it in your own extension. This class should extend `CRM_Civirules_Condition` to be able to add your condition to the CiviRules Engine (or a generic class, see note after the code).
+I create a PHP class called `<whatever namespace I like>`, so in this example that will be CRM_CivirulesConditions_Contribution_FirstDonation. You can include the class file in the Civirules extension if you want, but you can also include it in your own extension. This class should extend `CRM_Civirules_Condition` to be able to add your condition to the CiviRules Engine (or a generic class, see note after the code).
 
 If you are using an IDE (I use PhpStorm) you might get errors telling you class must be defined abstract or implement methods `isConditionValid` and `getExtraDataInputUrl`. If that is the case, you will get the answers in step 3.    
 
@@ -92,7 +92,7 @@ class CRM_CivirulesConditions_Contribution_FirstDonation extends CRM_Civirules_C
 
 There are 2 mandatory methods that you need to implement in your class: `getExtraDataInputUrl` and `isConditionValid`.
 
-Method `getExtraDataInputUrl` is used if you have additional forms for your condition, as is the case now. In this method you pass the url of the form you have created. The CiviRules Engine will pass control to this form when appropriate and make sure that the userContext to return to is in CiviRules. You will have to pass the rule_condition_id to the form url.
+Method `getExtraDataInputUrl` is used if you have additional forms for your condition, but in this example, we do not so the function simply returns `FALSE`.
 
 ```php
 /**
@@ -106,10 +106,10 @@ Method `getExtraDataInputUrl` is used if you have additional forms for your cond
  * @abstract
  */
 public function getExtraDataInputUrl($ruleConditionId) {
-  return CRM_Utils_System::url('civicrm/civirule/form/condition/membershiptype', 'rule_condition_id='
-    .$ruleConditionId);
+  return FALSE;
 }
 ```
+
 Method `isConditionValid` is called in the CiviRules engine to determine if the condition is met. It needs to receive a parameter triggerData that will be passed in with the object of the class `CRM_Civirules_TriggerData_TriggerData`. This object will hold methods that give me the contact_id and the data from the CiviCRM entity that is being processed.
 
 The method should return `TRUE` or `FALSE`

@@ -7,6 +7,12 @@ class CRM_CivirulesConditions_Form_Form extends CRM_Core_Form
 
   protected $ruleConditionId = false;
 
+  /**
+   * The (internal) name of the rule condition
+   * @var string
+   */
+  protected $ruleConditionName = '';
+
   protected $ruleCondition;
 
   protected $condition;
@@ -30,9 +36,9 @@ class CRM_CivirulesConditions_Form_Form extends CRM_Core_Form
    *
    * @access public
    */
-  public function preProcess()
-  {
+  public function preProcess() {
     $this->ruleConditionId = CRM_Utils_Request::retrieve('rule_condition_id', 'Integer');
+    $this->ruleConditionName = CRM_Utils_Request::retrieve('condition_name', 'String');
 
     $this->ruleCondition = new CRM_Civirules_BAO_RuleCondition();
     $this->ruleCondition->id = $this->ruleConditionId;

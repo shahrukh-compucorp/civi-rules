@@ -1,4 +1,6 @@
 <?php
+
+use CRM_Civirules_ExtensionUtil as E;
 /**
  * Class for CiviRule Condition DonorIsRecurring
  *
@@ -7,10 +9,17 @@
  * @author Erik Hommel (CiviCooP) <erik.hommel@civicoop.org>
  * @license http://www.gnu.org/licenses/agpl-3.0.html
  */
-
 class CRM_CivirulesConditions_ContributionRecur_DonorIsRecurring extends CRM_Civirules_Condition {
 
   private $conditionParams = array();
+
+  /**
+   * The (internal) name of the condition
+   * @return string
+   */
+  protected function getConditionName() {
+    return 'donor_has_recurring';
+  }
 
   /**
    * Method to set the Rule Condition data
@@ -78,7 +87,12 @@ class CRM_CivirulesConditions_ContributionRecur_DonorIsRecurring extends CRM_Civ
    * @access public
    */
   public function getExtraDataInputUrl($ruleConditionId) {
-    return CRM_Utils_System::url('civicrm/civirule/form/condition/contribution_recur_donorisrecurring/', 'rule_condition_id='.$ruleConditionId);
+    return CRM_Utils_System::url('civicrm/civirule/form/condition/contribution_recur_donorisrecurring/',
+      [
+        'rule_condition_id' => $ruleConditionId,
+        'condition_name' => $this->getConditionName(),
+      ]
+    );
   }
 
   /**
@@ -102,7 +116,7 @@ class CRM_CivirulesConditions_ContributionRecur_DonorIsRecurring extends CRM_Civ
   /**
    * This function validates whether this condition works with the selected trigger.
    *
-   * This function could be overriden in child classes to provide additional validation
+   * This function could be overridden in child classes to provide additional validation
    * whether a condition is possible in the current setup. E.g. we could have a condition
    * which works on contribution or on contributionRecur then this function could do
    * this kind of validation and return false/true

@@ -122,6 +122,11 @@ class CRM_CivirulesConditions_Form_Status extends CRM_CivirulesConditions_Form_F
    * @return string
    */
   protected function getHelpText() {
+    switch ($this->ruleConditionName) {
+      case 'contact_has_recurring':
+        return E::ts('This condition checks if the contact has any recurring contributions that are (not) in one of the statuses selected.');
+
+    }
     return E::ts('This condition checks the status of the entity is (not) one of the selected status values.');
   }
 

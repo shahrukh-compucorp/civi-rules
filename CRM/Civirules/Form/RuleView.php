@@ -100,6 +100,7 @@ class CRM_Civirules_Form_RuleView extends CRM_Core_Form {
 
           case 'is_active':
             $row['is_active'] = CRM_Civirules_Utils::formatIsActive($dao->is_active);
+            $row['enabled'] = $dao->is_active;
             break;
 
           default:

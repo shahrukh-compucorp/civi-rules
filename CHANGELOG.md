@@ -15,6 +15,7 @@
 * 'Recurring Payment Processor is' changes:
   * Now works with Contribution entity.
   * Now works for test payment processors too.
+* Fixed issue with setting original data on the edit field value comparison screen.
 
 
 

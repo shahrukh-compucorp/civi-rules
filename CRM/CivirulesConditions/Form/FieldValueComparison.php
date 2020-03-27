@@ -155,6 +155,7 @@ class CRM_CivirulesConditions_Form_FieldValueComparison extends CRM_CivirulesCon
     if (!empty($data['entity']) && !empty($data['field'])) {
       $defaultValues['field'] = $data['entity'].'_'.$data['field'];
     }
+    $defaultValues['original_data'] = $data['original_data'] ?? 0;
     return $defaultValues;
   }
 

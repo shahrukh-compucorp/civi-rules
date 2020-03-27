@@ -34,7 +34,7 @@
     <tbody>
     {assign var="row_class" value="odd-row"}
     {foreach from=$rules key=rule_id item=row}
-      <tr id="row_{$rule_id}" class="crm-entity {cycle values="odd-row,even-row"}{if NOT $row.is_active} disabled{/if}">
+      <tr id="row_{$rule_id}" class="crm-entity {cycle values="odd-row,even-row"}{if !$row.enabled} disabled{/if}">
         <td>{$rule_id}</td>
         <td>{$row.label}</td>
         <td>{$row.trigger_label}</td>

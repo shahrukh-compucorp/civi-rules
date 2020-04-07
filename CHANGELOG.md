@@ -17,7 +17,7 @@
   * Now works for test payment processors too.
 * Fixed issue with setting original data on the edit field value comparison screen.
 * Add condition "Contact has recurring contribution(s) with status" which checks if the contact has any recurring contributions with a specific status.
-
+* Added logging of the triggered entity
 
 
 ## Version 2.13

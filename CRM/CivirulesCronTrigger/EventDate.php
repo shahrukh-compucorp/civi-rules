@@ -73,12 +73,14 @@ class CRM_CivirulesCronTrigger_EventDate extends CRM_Civirules_Trigger_Cron {
     $sql = "SELECT `p`.*
             FROM `civicrm_participant` `p`
             INNER JOIN `civicrm_event` `e` ON `e`.`id` = `p`.`event_id`
-            WHERE {$dateExpression} = CURDATE() 
+            LEFT JOIN `civirule_rule_log` `rule_log` ON `rule_log`.entity_table = 'civicrm_participant' AND `rule_log`.entity_id = p.id AND `rule_log`.`contact_id` = `p`.`contact_id` AND DATE(`rule_log`.`log_date`) = DATE(NOW())
+            WHERE {$dateExpression} = CURDATE()
+            AND `rule_log`.`id` IS NULL
             AND `e`.`event_type_id` = %1
             AND `p`.`contact_id` NOT IN (
-              SELECT `rule_log`.`contact_id`
-              FROM `civirule_rule_log` `rule_log`
-              WHERE `rule_log`.`rule_id` = %2 AND DATE(`rule_log`.`log_date`) = DATE(NOW())
+              SELECT `rule_log2`.`contact_id`
+              FROM `civirule_rule_log` `rule_log2`
+              WHERE `rule_log2`.`rule_id` = %3 AND DATE(`rule_log2`.`log_date`) = DATE(NOW()) and `rule_log2`.`entity_table` IS NULL AND `rule_log2`.`entity_id` IS NULL
             )";
     $params[1] = array($this->triggerParams['event_type_id'], 'Integer');
     $params[2] = array($this->ruleId, 'Integer');

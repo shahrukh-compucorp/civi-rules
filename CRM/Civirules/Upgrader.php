@@ -706,5 +706,13 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     return TRUE;
   }
 
+  public function upgrade_2045() {
+    \CRM_Core_DAO::executeQuery("
+    ALTER TABLE civirule_rule_log
+    ADD COLUMN entity_table VARCHAR (255) NULL,
+    ADD COLUMN entity_id INT UNSIGNED NULL");
+    return TRUE;
+  }
+
 }
 

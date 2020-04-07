@@ -16,6 +16,13 @@ abstract class CRM_Civirules_TriggerData_TriggerData {
   private $entity_data = array();
 
   /**
+   * Entity ID of the primary trigger data e.g. the activity id
+   *
+   * @var Int
+   */
+  protected $entity_id;
+
+  /**
    * Contains data of custom fields.
    *
    * Takes the format of
@@ -35,6 +42,20 @@ abstract class CRM_Civirules_TriggerData_TriggerData {
 
   public function __construct() {
 
+  }
+
+  /**
+   * @param $entity_id
+   */
+  public function setEntityId($entity_id) {
+    $this->entity_id = $entity_id;
+  }
+
+  /**
+   * @return Int
+   */
+  public function getEntityId() {
+    return $this->entity_id;
   }
 
   /**

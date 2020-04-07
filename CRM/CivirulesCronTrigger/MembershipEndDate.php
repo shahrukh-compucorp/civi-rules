@@ -111,12 +111,14 @@ class CRM_CivirulesCronTrigger_MembershipEndDate extends CRM_Civirules_Trigger_C
 
     $sql = "SELECT m.*
             FROM `civicrm_membership` `m`
+            LEFT JOIN `civirule_rule_log` `rule_log` ON `rule_log`.entity_table = 'civicrm_membership' AND `rule_log`.entity_id = m.id AND `rule_log`.`contact_id` = `m`.`contact_id` AND DATE(`rule_log`.`log_date`) = DATE(NOW())
             WHERE `m`.`membership_type_id` IN (%1)
+            AND `rule_log`.`id` IS NULL
             {$end_date_statement}
             AND `m`.`contact_id` NOT IN (
-              SELECT `rule_log`.`contact_id`
-              FROM `civirule_rule_log` `rule_log`
-              WHERE `rule_log`.`rule_id` = %3 AND DATE(`rule_log`.`log_date`) = DATE(NOW())
+              SELECT `rule_log2`.`contact_id`
+              FROM `civirule_rule_log` `rule_log2`
+              WHERE `rule_log2`.`rule_id` = %3 AND DATE(`rule_log2`.`log_date`) = DATE(NOW()) and `rule_log2`.`entity_table` IS NULL AND `rule_log2`.`entity_id` IS NULL
             )";
     $params[3] = [$this->ruleId, 'Integer'];
     $this->dao = CRM_Core_DAO::executeQuery($sql, $params, true, 'CRM_Member_DAO_Membership');

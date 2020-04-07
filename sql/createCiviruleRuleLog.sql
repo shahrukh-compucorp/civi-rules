@@ -2,6 +2,8 @@ CREATE TABLE IF NOT EXISTS civirule_rule_log (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   rule_id INT UNSIGNED NULL,
   contact_id INT UNSIGNED NULL,
+  entity_table VARCHAR (255) NULL,
+  entity_id INT UNSIGNED NULL,
   log_date DATETIME NOT NULL,
   PRIMARY KEY (id),
   INDEX rule_idx (rule_id ASC),

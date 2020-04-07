@@ -76,6 +76,13 @@ abstract class CRM_Civirules_Trigger {
   }
 
   /**
+   * @return \CRM_Civirules_TriggerData_EntityDefinition
+   */
+  public function getReactOnEntity() {
+    return $this->reactOnEntity();
+  }
+
+  /**
    * Checks whether the trigger provides a certain entity.
    *
    * @param string $entity

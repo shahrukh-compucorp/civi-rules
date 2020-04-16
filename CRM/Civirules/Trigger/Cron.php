@@ -39,7 +39,7 @@ abstract class CRM_Civirules_Trigger_Cron extends CRM_Civirules_Trigger {
       $count ++;
     }
 
-    $this->acquireLock();
+    $this->releaseLock();
 
     return array(
       'count' => $count,

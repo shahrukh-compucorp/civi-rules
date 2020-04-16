@@ -2,6 +2,10 @@
 
 ## Version 2.15 (not yet released)
 
+## Version 2.14.1
+
+* Fixed regression bug in cron triggers.
+
 ## Version 2.14
 
 * Fix Field Value Comparision

@@ -2,6 +2,8 @@
 
 ## Version 2.15 (not yet released)
 
+* Fixed issue with participant status comparison.
+
 ## Version 2.14.1
 
 * Fixed regression bug in cron triggers.

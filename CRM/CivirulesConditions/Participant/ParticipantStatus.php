@@ -26,7 +26,19 @@ class CRM_CivirulesConditions_Participant_ParticipantStatus extends CRM_Civirule
    * @return array
    */
   public static function getEntityStatusList($active = TRUE, $inactive = FALSE) {
-    return parent::getEntityStatusListFromOptionGroup('participant_status', $active, $inactive);
+    $params['options']['limit'] = 0;
+    if ($active && !$inactive) {
+      $params['is_active'] = 1;
+    }
+    elseif ($inactive && !$active) {
+      $params['is_active'] = 0;
+    }
+    $participantStatusList = civicrm_api3('ParticipantStatusType', 'get', $params);
+    $statuses = array();
+    foreach($participantStatusList['values'] as $status) {
+      $statuses[$status['id']] = $status['label'];
+    }
+    return $statuses;
   }
 
 }

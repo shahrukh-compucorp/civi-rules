@@ -7,33 +7,104 @@
  * @license http://www.gnu.org/licenses/agpl-3.0.html
  */
 
-class CRM_CivirulesConditions_Campaign_Status extends CRM_CivirulesConditions_Generic_Status {
+class CRM_CivirulesConditions_Campaign_Status extends CRM_Civirules_Condition {
+
+  private $_conditionParams = array();
 
   /**
-   * The entity name (eg. Membership)
-   * @return string
+   * @param int $ruleConditionId
+   * @return bool|string
    */
-  protected function getEntity() {
-    return 'Campaign';
+  public function getExtraDataInputUrl($ruleConditionId) {
+    return CRM_Utils_System::url('civicrm/civirule/form/condition/campaign_status/',
+      'rule_condition_id=' . $ruleConditionId);
   }
 
   /**
-   * The entity status field (eg. membership_status_id)
-   * @return string
-   */
-  public function getEntityStatusFieldName() {
-    return 'status_id';
-  }
-
-  /**
-   * Returns an array of statuses as [ id => label ]
-   * @param bool $active
-   * @param bool $inactive
+   * Method to set the Rule Condition data
    *
-   * @return array
+   * @param array $ruleCondition
+   * @access public
    */
-  public static function getEntityStatusList($active = TRUE, $inactive = FALSE) {
-    return parent::getEntityStatusListFromOptionGroup('campaign_status', $active, $inactive);
+  public function setRuleConditionData($ruleCondition) {
+    parent::setRuleConditionData($ruleCondition);
+    $this->_conditionParams = [];
+    if (!empty($this->ruleCondition['condition_params'])) {
+      $this->_conditionParams = unserialize($this->ruleCondition['condition_params']);
+    }
   }
 
+  /**
+   * Method to check if the condition is valid, will check if the campaign status is (not) in the
+   * selected ones
+   *
+   * @param object CRM_Civirules_TriggerData_TriggerData $triggerData
+   * @return bool
+   * @access public
+   */
+  public function isConditionValid(CRM_Civirules_TriggerData_TriggerData $triggerData) {
+    $isConditionValid = FALSE;
+    $campaignData = $triggerData->getEntityData('campaign');
+    switch ($this->_conditionParams['operator']) {
+      case '0':
+        if (in_array($campaignData['status_id'], $this->_conditionParams['campaign_status_id'])) {
+          $isConditionValid = TRUE;
+        }
+        break;
+      case '1':
+        if (!in_array($campaignData['status_id'], $this->_conditionParams['campaign_status_id'])) {
+          $isConditionValid = TRUE;
+        }
+        break;
+    }
+    return $isConditionValid;
+  }
+  /**
+   * Returns a user friendly text explaining the condition params
+   * e.g. 'Older than 65'
+   *
+   * @return string
+   * @access public
+   */
+  public function userFriendlyConditionParams() {
+    $friendlyText = "";
+    if ($this->_conditionParams['operator'] == 0) {
+      $friendlyText = 'Campaign Status is one of: ';
+    }
+    if ($this->_conditionParams['operator'] == 1) {
+      $friendlyText = 'Campaign Status is NOT one of: ';
+    }
+    $campaignText = [];
+    foreach ($this->_conditionParams['campaign_status_id'] as $campaignStatusId) {
+      try {
+        $campaignText[] = civicrm_api3('OptionValue', 'getvalue', [
+          'option_group_id' => 'campaign_status',
+          'value' => $campaignStatusId,
+          'return' => 'label'
+        ]);
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+      }
+    }
+    if (!empty($campaignText)) {
+      $friendlyText .= implode(", ", $campaignText);
+    }
+    return $friendlyText;
+  }
+
+  /**
+   * This function validates whether this condition works with the selected trigger.
+   *
+   * This function could be overriden in child classes to provide additional validation
+   * whether a condition is possible in the current setup. E.g. we could have a condition
+   * which works on contribution or on contributionRecur then this function could do
+   * this kind of validation and return false/true
+   *
+   * @param CRM_Civirules_Trigger $trigger
+   * @param CRM_Civirules_BAO_Rule $rule
+   * @return bool
+   */
+  public function doesWorkWithTrigger(CRM_Civirules_Trigger $trigger, CRM_Civirules_BAO_Rule $rule) {
+    return $trigger->doesProvideEntity('Campaign');
+  }
 }

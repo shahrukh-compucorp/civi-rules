@@ -3,6 +3,7 @@
 ## Version 2.15 (not yet released)
 
 * Fixed issue with participant status comparison.
+* Fixed issue with campaign status comparison. (issue 79)
 
 ## Version 2.14.1
 

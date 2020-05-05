@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## Version 2.16 (not yet released)
+
 ## Version 2.15
 
 * Fixed issue with participant status comparison.

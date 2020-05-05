@@ -1,9 +1,10 @@
 # CHANGELOG
 
-## Version 2.15 (not yet released)
+## Version 2.15
 
 * Fixed issue with participant status comparison.
 * Fixed issue with campaign status comparison. (issue 79)
+* Fixed issue with Field Value Comparison and comparing custom fields.
 
 ## Version 2.14.1
 

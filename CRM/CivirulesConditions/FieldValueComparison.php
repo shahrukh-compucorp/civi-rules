@@ -12,18 +12,21 @@ class CRM_CivirulesConditions_FieldValueComparison extends CRM_CivirulesConditio
   protected function getFieldValue(CRM_Civirules_TriggerData_TriggerData $triggerData) {
     $entity = $this->conditionParams['entity'];
     $field = $this->conditionParams['field'];
+    $dataIsOriginalData = false;
 
     if ($triggerData instanceof CRM_Civirules_TriggerData_Interface_OriginalData &&
         !empty($this->conditionParams['original_data'])) {
       $data = $triggerData->getOriginalData($entity);
+      $dataIsOriginalData = true;
     } else {
       $data = $triggerData->getEntityData($entity);
     }
-    if (isset($data[$field])) {
-      return $this->normalizeValue($data[$field]);
-    }
 
-    if (strpos($field, 'custom_')===0) {
+    // Check whether the field is custom field and whether the data is not original data.
+    // When it is original data, the custom data should be present in the $data array.
+    // If it is not original data then we have to retrieve the custom field from the database.
+    // This is because the custom data is not available in the trigger data.
+    if (strpos($field, 'custom_')===0 && !$dataIsOriginalData) {
       $custom_field_id = str_replace("custom_", "", $field);
       try {
         $params['entityID'] = (isset($data['id']) ? $data['id'] : null);
@@ -44,6 +47,8 @@ class CRM_CivirulesConditions_FieldValueComparison extends CRM_CivirulesConditio
       } catch (Exception $e) {
         //do nothing
       }
+    } elseif (isset($data[$field])) {
+      return $this->normalizeValue($data[$field]);
     }
 
     return null;

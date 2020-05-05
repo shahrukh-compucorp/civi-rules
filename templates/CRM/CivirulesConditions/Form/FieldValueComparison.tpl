@@ -19,7 +19,7 @@
         <div class="label">{$form.value.label}</div>
         <div class="content">
             {$form.value.html}
-            <select id="value_options" class="hiddenElement">
+            <select id="value_options" class="hiddenElement crm-form-select huge">
 
             </select>
         </div>

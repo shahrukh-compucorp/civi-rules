@@ -79,7 +79,12 @@ class CRM_Civirules_Engine {
     } else {
       //there is no delay so process action immediatly
       $triggerData->isDelayedExecution = FALSE;
-      $actionEngine->execute();
+      try {
+        $actionEngine->execute();
+      }
+      catch (Exception $e) {
+        CRM_Civirules_Utils_LoggerFactory::logError("Failed to execute action",  $e->getMessage(), $triggerData);
+      }
     }
   }
 

@@ -15,7 +15,9 @@ class CRM_CivirulesConditions_Form_Contact_HasSubtype extends CRM_CivirulesCondi
    * @access protected
    */
   protected function getSubtypes($contactType = null) {
-    $contactType = ('Contact' == $contactType ? null : $contactType);
+    if ($contactType != "Individual" && $contactType != "Household" || $contactType != "Individual") {
+      $contactType = NULL;
+    }
     $all = empty($contactType);
     return CRM_Contact_BAO_ContactType::subTypePairs($contactType, $all, null);
   }

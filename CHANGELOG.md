@@ -4,6 +4,7 @@
 
 * Fixed issue with participant status comparison.
 * Fixed issue with campaign status comparison. (issue 79)
+* Fixed issue with contact subtype in combination with other triggers than contact related (issue 80)
 
 ## Version 2.14.1
 

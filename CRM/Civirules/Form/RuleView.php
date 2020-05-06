@@ -107,6 +107,15 @@ class CRM_Civirules_Form_RuleView extends CRM_Core_Form {
             $row[$element] = $dao->$element;
         }
       }
+
+      // If the rule has not been modified use the created by/date for the list of rules
+      if (empty($row['modified_by'])) {
+        $row['modified_by'] = $row['created_by'];
+      }
+      if (empty($row['modified_date'])) {
+        $row['modified_date'] = $row['created_date'];
+      }
+
       // add civirule tags
       $row['tags'] = implode(', ', CRM_Civirules_BAO_RuleTag::getTagLabelsForRule($dao->rule_id));
       $row['actions'] = $this->setRowActions($dao->rule_id, $dao->is_active);

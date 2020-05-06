@@ -110,8 +110,8 @@ class CRM_CivirulesConditions_Form_FieldValueComparison extends CRM_CivirulesCon
     parent::buildQuickForm();
 
     $this->add('hidden', 'rule_condition_id');
-    $this->add('select', 'entity', ts('Entity'), $this->getEntityOptions(), true);
-    $this->add('select', 'field', ts('Field'), $this->getFields(), true, array('class' => 'crm-select2'));
+    $this->add('select', 'entity', ts('Entity'), $this->getEntityOptions(), true, array('class' => 'crm-select2 huge'));
+    $this->add('select', 'field', ts('Field'), $this->getFields(), true, array('class' => 'crm-select2 huge'));
     $this->add('checkbox', 'original_data', ts('Compare with original value (before the change)?'));
     $this->assign('entities', $this->getEntities());
     $this->assign('custom_field_multi_select_html_types', CRM_Civirules_Utils_CustomField::getMultiselectTypes());

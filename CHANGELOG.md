@@ -1,10 +1,15 @@
 # CHANGELOG
 
-## Version 2.15 (not yet released)
+## Version 2.16 (not yet released)
+
+* Show createdby/date in the list if rule has not been modified since it was created
+
+## Version 2.15
 
 * Fixed issue with participant status comparison.
 * Fixed issue with campaign status comparison. (issue 79)
 * Fixed issue with contact subtype in combination with other triggers than contact related (issue 80)
+* Fixed issue with Field Value Comparison and comparing custom fields.
 
 ## Version 2.14.1
 

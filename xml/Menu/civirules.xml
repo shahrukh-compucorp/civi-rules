@@ -391,13 +391,6 @@
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
   <item>
-    <path>civicrm/civirule/form/condition/campaign_status</path>
-    <page_callback>CRM_CivirulesConditions_Form_Campaign_Status</page_callback>
-    <title>Campaign Status</title>
-    <access_arguments>access CiviCRM</access_arguments>
-    <access_arguments>administer CiviCRM</access_arguments>
-  </item>
-  <item>
     <path>civicrm/civirule/form/condition/activity_details</path>
     <page_callback>CRM_CivirulesConditions_Form_Activity_Details</page_callback>
     <title>Activity Details</title>

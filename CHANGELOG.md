@@ -2,6 +2,8 @@
 
 ## Version 2.16 (not yet released)
 
+* Show createdby/date in the list if rule has not been modified since it was created 
+
 ## Version 2.15
 
 * Fixed issue with participant status comparison.

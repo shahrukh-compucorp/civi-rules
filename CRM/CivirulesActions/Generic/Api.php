@@ -73,7 +73,7 @@ abstract class CRM_CivirulesActions_Generic_Api extends CRM_Civirules_Action {
         $formattedParams .= "{$key}=\"$param\"";
       }
       $message = "Civirules api action exception: {$e->getMessage()}. API call: {$entity}.{$action} with params: {$formattedParams}";
-      CRM_Core_Error::debug_log_message($message);
+      \Civi::log()->error($message);
       throw new Exception($message);
     }
   }

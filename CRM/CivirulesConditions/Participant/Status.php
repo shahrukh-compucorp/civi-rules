@@ -1,6 +1,6 @@
 <?php
 
-class CRM_CivirulesConditions_Participant_ParticipantStatus extends CRM_CivirulesConditions_Generic_Status {
+class CRM_CivirulesConditions_Participant_Status extends CRM_CivirulesConditions_Generic_Status {
 
   /**
    * The entity name (eg. Membership)

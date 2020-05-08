@@ -60,6 +60,11 @@ class CRM_CivirulesConditions_Form_Status extends CRM_CivirulesConditions_Form_F
         $label = ts('Contribution Status');
         $options = CRM_CivirulesConditions_Contribution_Status::getEntityStatusList(TRUE);
         break;
+
+    case 'Participant':
+        $label = ts('Participant status');
+        $options = CRM_CivirulesConditions_Participant_Status::getEntityStatusList(TRUE);
+        break;
     }
 
     $this->add('select', 'status_id', $label, $options, TRUE, [

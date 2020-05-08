@@ -312,7 +312,7 @@ class CRM_Civirules_Utils_Upgrader {
         'label' => 'Participant has (not) one of Role(s)',
         'name' => 'participant_role',
       ),
-      'CRM_CivirulesConditions_Participant_ParticipantStatus' => array(
+      'CRM_CivirulesConditions_Participant_Status' => array(
         'label' => 'Participant Status is (not) one of',
         'name' => 'participant_status',
       ),

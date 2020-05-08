@@ -105,7 +105,7 @@ class CRM_CivirulesConditions_Participant_StatusChanged extends CRM_Civirules_Co
    * @throws Exception
    */
   public function userFriendlyConditionParams() {
-    $participantStatusList = CRM_CivirulesConditions_Participant_ParticipantStatus::getEntityStatusList(TRUE, TRUE);
+    $participantStatusList = CRM_CivirulesConditions_Participant_Status::getEntityStatusList(TRUE, TRUE);
     $friendlyText = "Original participant status ";
     if ($this->_conditionParams['original_operator'] == 1) {
       $friendlyText .= " is NOT equal " . $participantStatusList[$this->_conditionParams['original_status_id']];

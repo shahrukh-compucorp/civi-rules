@@ -4,6 +4,7 @@
 
 * Show createdby/date in the list if rule has not been modified since it was created
 * Improved error handling. 
+* Fixed #82 - Participant Role condition saves now the value instead of the id
 
 ## Version 2.15
 

@@ -45,21 +45,13 @@ class CRM_CivirulesConditions_Form_Status extends CRM_CivirulesConditions_Form_F
     $this->add('hidden', 'rule_condition_id');
     $this->add('hidden', 'entity');
 
-    switch ($this->ruleConditionEntity) {
-      case 'Membership':
-        $options = CRM_CivirulesConditions_Membership_Status::getEntityStatusList(TRUE);
-        $label = ts('Membership Status');
-        break;
-
-      case 'ContributionRecur':
-        $label = ts('Recurring Contribution Status');
-        $options = CRM_CivirulesConditions_ContributionRecur_Status::getEntityStatusList(TRUE);
-        break;
-
-      case 'Contribution':
-        $label = ts('Contribution Status');
-        $options = CRM_CivirulesConditions_Contribution_Status::getEntityStatusList(TRUE);
-        break;
+    $className = "CRM_CivirulesConditions_{$this->ruleConditionEntity}_Status";
+    if (class_exists($className)) {
+      $label = "{$this->ruleConditionEntity} status";
+      $options = $className::getEntityStatusList(TRUE);
+    }
+    else {
+      \Civi::log()->error("CiviRules CRM_CivirulesConditions_Form_Status called but entity {$this->ruleConditionEntity} is not supported");
     }
 
     $this->add('select', 'status_id', $label, $options, TRUE, [

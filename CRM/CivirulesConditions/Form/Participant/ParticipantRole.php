@@ -12,7 +12,7 @@ class CRM_CivirulesConditions_Form_Participant_ParticipantRole extends CRM_Civir
     $participantRoleList = civicrm_api3('OptionValue', 'get', array('option_group_id' => "participant_role", 'options' => ['limit' => 0]));
     $roles = array();
     foreach($participantRoleList['values'] as $role) {
-      $roles[$role['id']] = $role['label'];
+      $roles[$role['value']] = $role['label'];
     }
     return $roles;
   }

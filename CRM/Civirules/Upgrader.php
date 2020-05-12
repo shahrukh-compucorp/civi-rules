@@ -715,17 +715,8 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
   }
 
   public function upgrade_2046(){
-      $condition_id = civicrm_api3('CiviRuleCondition', 'getValue', [
-          'return' => 'id',
-          'class_name' => 'CRM_CivirulesConditions_Participant_ParticipantStatus'
-      ]);
-
-      $res = civicrm_api3('CiviRuleCondition', 'create',[
-          'id' => $condition_id,
-          'class_name' => 'CRM_CivirulesConditions_Participant_Status'
-      ]);
-
-      return !$res['is_error'];
+      CRM_Civirules_Utils_Upgrader::insertActionsFromJson($this->extensionDir.DIRECTORY_SEPARATOR.'sql/conditions.json');
+      return TRUE;
   }
 
 }

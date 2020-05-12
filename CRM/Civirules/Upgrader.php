@@ -714,5 +714,10 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     return TRUE;
   }
 
+  public function upgrade_2046(){
+      CRM_Civirules_Utils_Upgrader::insertActionsFromJson($this->extensionDir.DIRECTORY_SEPARATOR.'sql/conditions.json');
+      return TRUE;
+  }
+
 }
 

@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Version 2.16 (not yet released)
+## Version 2.16
 
 * Show createdby/date in the list if rule has not been modified since it was created
 * Improved error handling. 

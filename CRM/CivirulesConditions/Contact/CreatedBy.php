@@ -1,4 +1,4 @@
-    <?php
+<?php
 
 class CRM_CivirulesConditions_Contact_CreatedBy extends CRM_Civirules_Condition {
 

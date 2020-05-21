@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 2.17 (not yet released)
+
+* Add Scheduled Reminder log trigger and conditions (!61)
+
 ## Version 2.16
 
 * Show createdby/date in the list if rule has not been modified since it was created

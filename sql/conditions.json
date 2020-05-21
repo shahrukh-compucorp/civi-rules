@@ -70,5 +70,7 @@
   {"name":"campaign_type", "label":"Campaign Type is (not) one of", "class_name":"CRM_CivirulesConditions_Campaign_Type"},
   {"name":"campaign_status", "label":"Campaign Status is (not) one of", "class_name":"CRM_CivirulesConditions_Campaign_Status"},
   {"name":"soft_credit_type", "label":"Soft Credit Type is (not) one of", "class_name":"CRM_CivirulesConditions_ContributionSoft_SoftCreditType"},
-  {"name":"contact_createdby", "label":"Contact added by Contact (not) in Group(s)", "class_name":"CRM_CivirulesConditions_Contact_CreatedBy"}
+  {"name":"contact_createdby", "label":"Contact added by Contact (not) in Group(s)", "class_name":"CRM_CivirulesConditions_Contact_CreatedBy"},
+  {"name":"actionlog_email_error", "label":"Scheduled Reminder has error", "class_name":"CRM_CivirulesConditions_ActionLog_Error"},
+  {"name":"actionlog_scheduledreminder", "label":"Scheduled Reminder is (not) one of", "class_name":"CRM_CivirulesConditions_ActionLog_ScheduledReminder"}
 ]

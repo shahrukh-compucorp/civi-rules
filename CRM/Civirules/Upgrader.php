@@ -719,5 +719,12 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
       return TRUE;
   }
 
+  // Scheduled Reminders
+  public function upgrade_2047() {
+    CRM_Civirules_Utils_Upgrader::insertTriggersFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/triggers.json');
+    CRM_Civirules_Utils_Upgrader::insertConditionsFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/conditions.json');
+    return TRUE;
+  }
+
 }
 

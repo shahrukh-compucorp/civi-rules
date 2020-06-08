@@ -79,5 +79,15 @@ class CRM_CivirulesConditions_Contribution_LastContribution extends CRM_Civirule
       '<=' => ts('Last contribution is less than n days ago or is n days ago'),
     );
   }
+  
+  /**
+   * Returns the value for the data comparison
+   *
+   * @return mixed
+   * @access protected
+   */
+  protected function getComparisonValue() {
+    return $this->conditionParams['value'];
+  }
 
 }

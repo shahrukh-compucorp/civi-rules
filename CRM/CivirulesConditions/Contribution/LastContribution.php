@@ -16,7 +16,11 @@ class CRM_CivirulesConditions_Contribution_LastContribution extends CRM_Civirule
    * @access protected
    */
   protected function getFieldValue(CRM_Civirules_TriggerData_TriggerData $triggerData) {
-    $completed_status_id = CRM_Core_OptionGroup::getValue('contribution_status', 'completed', 'name');
+    $completed_status_id = civicrm_api3('OptionValue', 'getsingle', [
+      'option_group_id' => 'contribution_status',
+      'name' => 'completed',
+      'is_active' => 1
+    ])['value'];
     $contact_id = $triggerData->getContactId();
 
     $params[1] = array($completed_status_id, 'Integer');

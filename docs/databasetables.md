@@ -1,4 +1,3 @@
-
 There are a couple of tables in the CiviRules extension. Their names will all start with civirule to have a clear distinction from the civicrm tables. The tables are:
 
 | Table | Description|
@@ -12,4 +11,4 @@ There are a couple of tables in the CiviRules extension. Their names will all st
 
 ## Database diagram
 
-<a href='../img/CiviRules_ERD.png'><img src='../img/CiviRules_ERD.png'/></a>
+![CiviRules Entity Relationship Diagram](./img/CiviRules_ERD.png)

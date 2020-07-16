@@ -194,7 +194,7 @@ In case of an error the following extra context parameters are available:
 
 If you want to add contents to the rule form. E.g. enable logging for that particular rule you could use the hook_civicrm_buildForm and hook_civicrm_postProcess. We have added two functions to the form to set content in the form in the Rule Details Block.
 
-<a href='../img/screenshot_civirules_civirule_form.png'><img alt='my group setup' src='../img/screenshot_civirules_civirule_form.png'/></a>
+![my group setup](./img/screenshot_civirules_civirule_form.png)
 
 ```php
 function examplecivirulelogger_civicrm_buildForm($formName, &$form) {

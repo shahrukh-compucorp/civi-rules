@@ -13,7 +13,7 @@ In the example I will use the following set of functional rules to classify the 
 
 My group setup in CiviCRM:
 
-<a href='../img/CiviRules_cookbook_print18.png'><img src='../img/CiviRules_cookbook_print18.png'/></a>
+![](./img/CiviRules_cookbook_print18.png)
 
 ## New Donation to Main Donors
 
@@ -28,7 +28,7 @@ We also need to check if the total amount that this donor has donated in the las
 1. the second condition (linked with AND) is 'Total Amount Contributed This Year is Greater Than or Equal to 5000'
 1. the action with a delay of 5 minutes is 'Add contact to group Main Donors'
 
-<a href='../img/CiviRules_cookbook_print19.png'><img src='../img/CiviRules_cookbook_print19.png'/></a>
+![](./img/CiviRules_cookbook_print19.png)
 
 ## First Donation to Regular Donors
 
@@ -44,7 +44,7 @@ So the CiviRule needs to have:
 1. the third condition is 'Contribution is First Contribution of Contact'
 1. the action with a delay of 7 minutes is 'Add contact to group Regular Donors'
 
-<a href='../img/CiviRules_cookbook_print20.png'><img src='../img/CiviRules_cookbook_print20.png'/></a>
+![](./img/CiviRules_cookbook_print20.png)
 
 ##  Downgrade Main Donors
 
@@ -57,7 +57,7 @@ So for example if a contact donated 7500 on 3 March 2015, the contact will be ad
 1. the first action 'Remove from Group Main Donors'
 1. the second action is 'Add contact to group Regular Donors'
 
-<a href='../img/CiviRules_cookbook_print21.png'><img src='../img/CiviRules_cookbook_print21.png'/></a>
+![](./img/CiviRules_cookbook_print21.png)
 
 ## Downgrade Regular Donors
 
@@ -70,7 +70,7 @@ So for example if a contact donated 7500 on 3 March 2015, the contact will be ad
 1. the first action 'Remove from Group Regular Donors'
 1. the second action is 'Add contact to group Incidental Donors'
 
-<a href='../img/CiviRules_cookbook_print22.png'><img src='../img/CiviRules_cookbook_print22.png'/></a>
+![](./img/CiviRules_cookbook_print22.png)
 
 ## Upgrade Incidental Donors
 
@@ -85,7 +85,7 @@ The CiviRule has to contain:
 1. the first action with a delay of 10 minutes is 'Remove from Group Incidental Donors'
 1. the second action with a delay of 10 minutes is 'Add to Group Regular Donors'
 
-<a href='../img/CiviRules_cookbook_print23.png'><img alt='The overall picture' src='../img/CiviRules_cookbook_print23.png'/></a>
+![](./img/CiviRules_cookbook_print23.png)
 
 ## Conclusion
 
@@ -93,4 +93,4 @@ With the set of CiviRules defined in this example I have now automated the donor
 
 The overall picture is now:
 
-<a href='../img/CiviRules_cookbook_print24.png'><img alt='The overall picture' src='../img/CiviRules_cookbook_print24.png'/></a>
+![](./img/CiviRules_cookbook_print24.png)

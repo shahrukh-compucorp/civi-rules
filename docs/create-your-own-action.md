@@ -257,7 +257,7 @@ public function processAction(CRM_Civirules_TriggerData_TriggerData $triggerData
 
 To show the action paramaters in a reasonably nice format as shown in this screenshot:
 
-<a href='../img/CiviRules_linked_action.png'><img src='../img/CiviRules_linked_action.png'/></a>
+![](./img/CiviRules_linked_action.png)
 
 I use the method `userFriendlyCondtionParams`:
 

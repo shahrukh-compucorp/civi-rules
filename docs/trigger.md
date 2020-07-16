@@ -10,7 +10,7 @@ Trigger can also be 'cron' type which is processed in a separate cron job. In th
 
  The cron type triggers are executed in a scheduled job that is added when you install the CiviRules extension:
 
-<a href='../img/Civirules_cronjob.png'><img alt='Enable CiviRules CronJob' src='../img/Civirules_cronjob.png'/></a>
+![Enable CiviRules CronJob](./img/Civirules_cronjob.png)
 
 ## TriggerData
 

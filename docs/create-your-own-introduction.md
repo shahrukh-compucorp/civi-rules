@@ -22,9 +22,9 @@ an <strong>action</strong> that will be executed if the trigger is triggered and
 
 Find more detailed information in the tutorials:
 
-- [A Little More About Trigger](trigger)
-- [Database Tables](databasetables)
-- [Create your own delay](create-your-own-delay)
-- [Create your own condition](create-your-own-condition)
-- [Create your own action](create-your-own-action)
-- [Add logging](add-logging)
+- [A Little More About Trigger](./trigger.md)
+- [Database Tables](./databasetables.md)
+- [Create your own delay](./create-your-own-delay.md)
+- [Create your own condition](./create-your-own-condition.md)
+- [Create your own action](./create-your-own-action.md)
+- [Add logging](./add-logging.md)

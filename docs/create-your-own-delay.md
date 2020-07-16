@@ -1,4 +1,3 @@
-
 You can delay the execution of an action in CiviRules. This can be used for a number of things:
 
 - something like sending a email with a next ask for a donation 30 days after adding the current donation
@@ -9,9 +8,9 @@ A delayed action means that:
 
 - all conditions are checked as they are when there is no delay
 - the action is not executed immediately, but a queue item is created in the table civicrm_queue_item. This is done in the static method `CRM_CiviRules_Engine::delayAction`.
-<a href='../img/Civirules_delay_print01.png'><img alt='The overall picture' src='../img/CiviRules_delay_print01.png'/></a>
+![The overall picture](./img/CiviRules_delay_print01.png)
 - the delayed actions will be picked up for execution by a scheduled job that will be added to your installation when you install CiviRules:
-<a href='../img/CiviRules_delay_print02.png'><img alt='The overall picture' src='../img/CiviRules_delay_print02.png'/></a>
+![The overall picture](./img/CiviRules_delay_print02.png)
 
 !!! Note 
 
@@ -19,7 +18,7 @@ A delayed action means that:
 
     - __both__ at the time when the rule is triggered (and the action is queued) __and__ when the action is executed (which could be days or even weeks later). This is the default behaviour, you leave the tick box __unticked__.
     - __only__ at the time when the rule is triggered (and the action is queued). To get this behaviour tick the box.
-    <a href='../img/CiviRules_delay_print03.png'><img alt='The overall picture' src='../img/CiviRules_delay_print03.png'/></a>
+    ![The overall picture](./img/CiviRules_delay_print03.png)
 
 ## Adding Delays
 

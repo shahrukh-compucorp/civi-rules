@@ -57,7 +57,7 @@ In the example above of responding to a new Phone call Activity, we selected the
 
 This powerful conditiion lets you check the value of a field in the entities related to the trigger, including the custom data.  For example, (using the standard dummy data) this condition can be used to check that the custom field 'Most important issue' is set to 'Education'
 
-If there is no specific condition for your situation, Field Value Comparison may provide what you need.  See the more detailed explanation [here](basic-example-field-value-comparison-condition.md).
+If there is no specific condition for your situation, Field Value Comparison may provide what you need.  See the more detailed explanation [here](./basic-example-field-value-comparison-condition.md).
 
 ## Actions
 

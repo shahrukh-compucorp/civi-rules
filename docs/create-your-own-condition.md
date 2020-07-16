@@ -389,7 +389,7 @@ public function setRuleConditionData($ruleCondition) {
 
 To show the condition paramaters in a reasonably nice format as shown in this screenshot:
 
-<a href='../img/CiviRules_createcondition_print01.png'><img alt='The overall picture' src='../img/CiviRules_createcondition_print01.png'/></a>
+![The overall picture](./img/CiviRules_createcondition_print01.png)
 
 I use the method userFriendlyConditionParams:
 

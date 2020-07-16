@@ -11,6 +11,7 @@ nav:
   - Scheduled Processing: basic-example-scheduled-processing.md
   - Donor Classification: basic-example-donor-classification.md
   - Field Value Comparison Condition: basic-example-field-value-comparison-condition.md
+  - Hints: basic-example-hints.md
 - How to make your own:
   - Introduction: create-your-own-introduction.md
   - A Little More About Trigger: trigger.md

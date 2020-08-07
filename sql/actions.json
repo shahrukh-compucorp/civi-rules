@@ -1,5 +1,6 @@
 [
   {"name":"activity_add","label":"Add activity to contact","class_name":"CRM_CivirulesActions_Activity_Add"},
+  {"name":"activity_assign_email","label":"Assign activity & email","class_name":"CRM_CivirulesActions_Activity_AssignNemail"},
   {"name":"activity_update_status","label":"Update activity status","class_name":"CRM_CivirulesActions_Activity_UpdateStatus"},
   {"name":"set_date_field_on_case","label":"Set a Date Field on a Case","class_name":"CRM_CivirulesActions_Case_SetDateFieldOnCase"},
   {"name":"case_add_role","label":"Set role on case","class_name":"CRM_CivirulesActions_Case_AddRole"},

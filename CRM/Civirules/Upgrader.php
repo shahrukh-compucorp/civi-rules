@@ -726,5 +726,12 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     return TRUE;
   }
 
+  public function upgrade_2048()
+  {
+    // Add the action: update date value
+    CRM_Civirules_Utils_Upgrader::insertActionsFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/actions.json');
+    return true;
+  }
+
 }
 

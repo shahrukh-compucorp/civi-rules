@@ -5,6 +5,7 @@
 * Add Scheduled Reminder log trigger and conditions (!61)
 * Added action to set a sepcific custom field. (!64)
 * Added action to assign activity and send an e-mail (!72)
+* Added action to update/set a date value (!73)
 * Fixed condition Last Contribution (#86)
 
 ## Version 2.16

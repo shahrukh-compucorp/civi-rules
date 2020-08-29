@@ -2,7 +2,7 @@
 /**
  * Class for CiviRules Group Contact Action Form
  *
- * @author Björn Endres (SYSTOPIA) <endres@systopia.de>
+ * @author David Hayes (Black Brick Software) <david@blackbrick.software>
  * @license AGPL-3.0
  */
 

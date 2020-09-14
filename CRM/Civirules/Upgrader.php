@@ -714,7 +714,7 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     return TRUE;
   }
 
-  public function upgrade_2046(){
+  public function upgrade_2046() {
       CRM_Civirules_Utils_Upgrader::insertActionsFromJson($this->extensionDir.DIRECTORY_SEPARATOR.'sql/conditions.json');
       return TRUE;
   }
@@ -726,11 +726,16 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     return TRUE;
   }
 
-  public function upgrade_2048()
-  {
+  public function upgrade_2048() {
     // Add the action: update date value
     CRM_Civirules_Utils_Upgrader::insertActionsFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/actions.json');
     return true;
+  }
+
+  public function upgrade_2049() {
+    $this->ctx->log->info('Applying update 2049 - Add Activity Scheduled Date Cron trigger.');
+    CRM_Civirules_Utils_Upgrader::insertTriggersFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/triggers.json');
+    return TRUE;
   }
 
 }

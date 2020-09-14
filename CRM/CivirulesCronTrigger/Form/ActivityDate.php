@@ -3,47 +3,24 @@
  * @author Jaap Jansma (CiviCooP) <jaap.jansma@civicoop.org>
  * @license http://www.gnu.org/licenses/agpl-3.0.html
  */
-class CRM_CivirulesCronTrigger_Form_ActivityDate extends CRM_CivirulesTrigger_Form_Form {
 
-  protected function getActivityType() {
-    return CRM_Civirules_Utils::getActivityTypeList();
-  }
+use CRM_Civirules_ExtensionUtil as E;
 
-  protected function getActivityStatus() {
-    $activityStatusList = array();
-    $activityStatusOptionGroupId = CRM_Civirules_Utils::getOptionGroupIdWithName('activity_status');
-    $params = array(
-      'option_group_id' => $activityStatusOptionGroupId,
-      'is_active' => 1,
-      'options' => array('limit' => 0));
-    $activityStatuses = civicrm_api3('OptionValue', 'Get', $params);
-    foreach ($activityStatuses['values'] as $optionValue) {
-      $activityStatusList[$optionValue['value']] = $optionValue['label'];
-    }
-    return $activityStatusList;
-  }
+class CRM_CivirulesCronTrigger_Form_ActivityDate extends CRM_CivirulesCronTrigger_Form_Activity {
 
   /**
    * Overridden parent method to build form
-   *
-   * @access public
    */
   public function buildQuickForm() {
-    $this->add('hidden', 'rule_id');
-
-    $this->add('select', 'activity_type_id', ts('Activity Type'), $this->getActivityType(), true);
-    $this->add('select', 'activity_status_id', ts('Activity Status'), $this->getActivityStatus(), true);
-
-    $this->addButtons(array(
-      array('type' => 'next', 'name' => ts('Save'), 'isDefault' => TRUE,),
-      array('type' => 'cancel', 'name' => ts('Cancel'))));
+    parent::buildQuickForm();
+    $this->add('select', 'activity_type_id', ts('Activity Type'), $this->getActivityType(), TRUE);
+    $this->add('select', 'activity_status_id', ts('Activity Status'), $this->getActivityStatus(), TRUE);
   }
 
   /**
    * Overridden parent method to set default values
    *
    * @return array $defaultValues
-   * @access public
    */
   public function setDefaultValues() {
     $defaultValues = parent::setDefaultValues();
@@ -61,7 +38,6 @@ class CRM_CivirulesCronTrigger_Form_ActivityDate extends CRM_CivirulesTrigger_Fo
    * Overridden parent method to process form data after submission
    *
    * @throws Exception when rule condition not found
-   * @access public
    */
   public function postProcess() {
     $data['activity_type_id'] = $this->_submitValues['activity_type_id'];
@@ -71,4 +47,15 @@ class CRM_CivirulesCronTrigger_Form_ActivityDate extends CRM_CivirulesTrigger_Fo
 
     parent::postProcess();
   }
+
+  /**
+   * Returns a help text for this trigger.
+   * The help text is shown to the administrator who is configuring the condition.
+   *
+   * @return string
+   */
+  protected function getHelpText() {
+    return E::ts('Trigger rule when scheduled date for activity with status and type is reached.');
+  }
+
 }

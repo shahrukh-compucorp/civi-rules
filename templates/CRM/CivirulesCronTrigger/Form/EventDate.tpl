@@ -1,5 +1,5 @@
 <h3>{$ruleTriggerHeader}</h3>
-<div class="crm-block crm-form-block crm-civirule-cron_trigger-block-activity_date">
+<div class="crm-block crm-form-block crm-civirule-cron_trigger-block-event_date">
     <div class="crm-section">
         <div class="label">{$form.event_type_id.label}</div>
         <div class="content">{$form.event_type_id.html}</div>

@@ -1,6 +1,7 @@
 <h3>{$ruleTriggerHeader}</h3>
-<div class="crm-block crm-form-block crm-civirule-cron_trigger-block-activity_date">
-    <div class="crm-section">
+<div class="crm-block crm-form-block crm-civirule-cron_trigger-block-membership_end_date">
+  <div class="help">{$ruleTriggerHelp}</div>
+  <div class="crm-section">
         <div class="label">{$form.membership_type_id.label}</div>
         <div class="content">{$form.membership_type_id.html}</div>
         <div class="clear"></div>

@@ -1,12 +1,20 @@
 <?php
 
-class CRM_CivirulesTrigger_Form_Form extends CRM_Core_Form
-{
+class CRM_CivirulesTrigger_Form_Form extends CRM_Core_Form {
 
+  /**
+   * @var bool
+   */
   protected $ruleId = false;
 
+  /**
+   * @var \CRM_Civirules_BAO_Rule
+   */
   protected $rule;
 
+  /**
+   * @var \CRM_Civirules_BAO_Trigger
+   */
   protected $trigger;
 
   /**
@@ -16,11 +24,8 @@ class CRM_CivirulesTrigger_Form_Form extends CRM_Core_Form
 
   /**
    * Overridden parent method to perform processing before form is build
-   *
-   * @access public
    */
-  public function preProcess()
-  {
+  public function preProcess() {
     $this->ruleId = CRM_Utils_Request::retrieve('rule_id', 'Integer');
 
     $this->rule = new CRM_Civirules_BAO_Rule();
@@ -44,6 +49,7 @@ class CRM_CivirulesTrigger_Form_Form extends CRM_Core_Form
     parent::preProcess();
 
     $this->setFormTitle();
+    $this->assign('ruleTriggerHelp', $this->getHelpText());
 
     //set user context
     $session = CRM_Core_Session::singleton();
@@ -55,10 +61,9 @@ class CRM_CivirulesTrigger_Form_Form extends CRM_Core_Form
    * Overridden parent method to set default values
    *
    * @return array $defaultValues
-   * @access public
    */
   public function setDefaultValues() {
-    $defaultValues = array();
+    $defaultValues = [];
     $defaultValues['rule_id'] = $this->ruleId;
     return $defaultValues;
   }
@@ -73,13 +78,21 @@ class CRM_CivirulesTrigger_Form_Form extends CRM_Core_Form
 
   /**
    * Method to set the form title
-   *
-   * @access protected
    */
   protected function setFormTitle() {
     $title = 'CiviRules Edit trigger parameters';
     $this->assign('ruleTriggerHeader', 'Edit rule '.$this->rule->label);
     CRM_Utils_System::setTitle($title);
+  }
+
+  /**
+   * Returns a help text for this trigger.
+   * The help text is shown to the administrator who is configuring the condition.
+   *
+   * @return string
+   */
+  protected function getHelpText() {
+    return '';
   }
 
 }

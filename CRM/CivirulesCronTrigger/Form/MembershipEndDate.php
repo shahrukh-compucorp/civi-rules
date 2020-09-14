@@ -89,4 +89,15 @@ class CRM_CivirulesCronTrigger_Form_MembershipEndDate extends CRM_CivirulesTrigg
 
     parent::postProcess();
   }
+
+  /**
+   * Returns a help text for this trigger.
+   * The help text is shown to the administrator who is configuring the condition.
+   *
+   * @return string
+   */
+  protected function getHelpText() {
+    return E::ts('The rule will be triggered for memberships of selected membership types when the end date is X days/weeks/months before or after.');
+  }
+
 }

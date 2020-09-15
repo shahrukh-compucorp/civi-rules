@@ -314,6 +314,13 @@
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
   <item>
+    <path>civicrm/civirule/form/trigger/activityscheduleddate</path>
+    <page_callback>CRM_CivirulesCronTrigger_Form_ActivityScheduledDate</page_callback>
+    <title>Activity Scheduled Date</title>
+    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
     <path>civicrm/civirule/form/trigger/membershipenddate</path>
     <page_callback>CRM_CivirulesCronTrigger_Form_MembershipEndDate</page_callback>
     <title>Activity date reached</title>

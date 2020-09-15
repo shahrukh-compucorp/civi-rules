@@ -6,15 +6,22 @@
 
 use CRM_Civirules_ExtensionUtil as E;
 
-class CRM_CivirulesCronTrigger_Form_ActivityDate extends CRM_CivirulesCronTrigger_Form_Activity {
+class CRM_CivirulesCronTrigger_Form_ActivityScheduledDate extends CRM_CivirulesCronTrigger_Form_Activity {
 
-  /**
-   * Overridden parent method to build form
-   */
   public function buildQuickForm() {
     parent::buildQuickForm();
-    $this->add('select', 'activity_type_id', ts('Activity Type'), $this->getActivityType(), TRUE);
-    $this->add('select', 'activity_status_id', ts('Activity Status'), $this->getActivityStatus(), TRUE);
+    $this->add('select', 'activity_type_id', ts('Activity Type'), $this->getActivityType(), TRUE, [
+      'multiple' => TRUE,
+      'class' => 'crm-select2'
+    ]);
+    $this->add('select', 'activity_status_id', ts('Activity Status'), $this->getActivityStatus(), TRUE, [
+      'multiple' => TRUE,
+      'class' => 'crm-select2'
+    ]);
+
+    $this->add('select', 'interval_unit', ts('Interval'), CRM_CivirulesCronTrigger_ActivityScheduledDate::intervals(), TRUE);
+    $this->add('text', 'interval', ts('Interval'), TRUE);
+    $this->addRule('interval', ts('Interval should be a numeric value'), 'numeric');
   }
 
   /**
@@ -31,6 +38,12 @@ class CRM_CivirulesCronTrigger_Form_ActivityDate extends CRM_CivirulesCronTrigge
     if (!empty($data['activity_status_id'])) {
       $defaultValues['activity_status_id'] = $data['activity_status_id'];
     }
+    if (!empty($data['interval_unit'])) {
+      $defaultValues['interval_unit'] = $data['interval_unit'];
+    }
+    if (!empty($data['interval'])) {
+      $defaultValues['interval'] = $data['interval'];
+    }
     return $defaultValues;
   }
 
@@ -42,6 +55,8 @@ class CRM_CivirulesCronTrigger_Form_ActivityDate extends CRM_CivirulesCronTrigge
   public function postProcess() {
     $data['activity_type_id'] = $this->_submitValues['activity_type_id'];
     $data['activity_status_id'] = $this->_submitValues['activity_status_id'];
+    $data['interval_unit'] = $this->_submitValues['interval_unit'];
+    $data['interval'] = $this->_submitValues['interval'];
     $this->rule->trigger_params = serialize($data);
     $this->rule->save();
 
@@ -55,7 +70,7 @@ class CRM_CivirulesCronTrigger_Form_ActivityDate extends CRM_CivirulesCronTrigge
    * @return string
    */
   protected function getHelpText() {
-    return E::ts('Trigger rule when scheduled date for activity with status and type is reached.');
+    return E::ts('The rule will be triggered for activities of selected types when the scheduled date is X days/weeks/months before or after.');
   }
 
 }

@@ -12,6 +12,16 @@
     <div class="clear"></div>
   </div>
   <div class="crm-section">
+    <div class="label">{$form.record_type.label}</div>
+    <div class="content">{$form.record_type.html}</div>
+    <div class="clear"></div>
+  </div>
+  <div class="crm-section">
+    <div class="label">{$form.case_activity.label}</div>
+    <div class="content">{$form.case_activity.html}</div>
+    <div class="clear"></div>
+  </div>
+  <div class="crm-section">
     <div class="label">{$form.interval.label}</div>
     <div class="content">{$form.interval.html} {$form.interval_unit.html}</div>
     <div class="clear"></div>

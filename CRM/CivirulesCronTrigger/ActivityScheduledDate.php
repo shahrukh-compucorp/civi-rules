@@ -56,14 +56,28 @@ class CRM_CivirulesCronTrigger_ActivityScheduledDate extends CRM_CivirulesCronTr
         break;
     }
 
-    $sql = "SELECT a.*, ac.contact_id as contact_id, ac.record_type_id as record_type_id, ac.id as activity_contact_id
+    $activityContactWhereClause = '';
+    if (!empty($this->triggerParams['record_type'])) {
+      $activityContactWhereClause = "AND `ac`.`record_type_id` = %5";
+      $params[5] = [$this->triggerParams['record_type'], 'Integer'];
+    }
+
+    $activityCaseWhereClause = 'AND `ca`.`case_id` IS NULL';
+    if (!empty($this->triggerParams['case_activity'])) {
+      $activityCaseWhereClause = 'AND `ca`.`case_id` IS NOT NULL';
+    }
+
+    $sql = "SELECT a.*, ac.contact_id as contact_id, ac.record_type_id as record_type_id, ac.id as activity_contact_id, ca.case_id as case_id
             FROM `civicrm_activity` `a`
             INNER JOIN `civicrm_activity_contact` ac ON a.id = ac.activity_id
+            LEFT JOIN `civicrm_case_activity` ca ON a.id = ca.activity_id
             LEFT JOIN `civirule_rule_log` `rule_log` ON `rule_log`.entity_table = 'civicrm_activity' AND `rule_log`.entity_id = a.id AND `rule_log`.`contact_id` = `ac`.`contact_id` AND DATE(`rule_log`.`log_date`) = DATE(NOW()) AND `rule_log`.`rule_id` = %1
             WHERE `a`.`activity_type_id` IN (%3)
             AND `a`.`status_id` IN (%4)
             AND `rule_log`.`id` IS NULL
             {$activity_date_time_statement}
+            {$activityContactWhereClause}
+            {$activityCaseWhereClause}
             AND `ac`.`contact_id` NOT IN (
               SELECT `rule_log2`.`contact_id`
               FROM `civirule_rule_log` `rule_log2`
@@ -111,14 +125,27 @@ class CRM_CivirulesCronTrigger_ActivityScheduledDate extends CRM_CivirulesCronTr
     }
     $activityStatusLabel = implode(',', $activityStatusLabels);
 
+    $caseActivity = 'Not case activity';
+    if (!empty($this->triggerParams['case_activity'])) {
+      $caseActivity = 'Case activity';
+    }
+
     $intervalUnits = CRM_CivirulesCronTrigger_ActivityScheduledDate::intervals();
     $intervalUnitLabel = $intervalUnits[$this->triggerParams['interval_unit']];
 
-    return E::ts('Activity Types %1 and status %2 - %3 %4', [
+    $result = civicrm_api3('ActivityContact', 'getoptions', [
+      'field' => "record_type_id",
+    ]);
+    $options[0] = E::ts('All contacts');
+    $options = array_merge($options, $result['values']);
+
+    return E::ts('%6 Types %1 and status %2 - %3 %4. Trigger for %5', [
       1 => $activityTypeLabel,
       2 => $activityStatusLabel,
       3 => $this->triggerParams['interval'],
       4 => $intervalUnitLabel,
+      5 => $options[$this->triggerParams['record_type']],
+      6 => $caseActivity,
     ]);
   }
 

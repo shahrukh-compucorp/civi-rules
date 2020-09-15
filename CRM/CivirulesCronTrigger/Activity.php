@@ -37,6 +37,17 @@ abstract class CRM_CivirulesCronTrigger_Activity extends CRM_Civirules_Trigger_C
       $activityContact['contact_id'] = $this->activityDAO->contact_id;
       $activityContact['record_type_id'] = $this->activityDAO->record_type_id;
       $triggerData->setEntityData('ActivityContact', $activityContact);
+
+      if (!empty($this->triggerParams['case_activity'])) {
+        $case = new CRM_Case_BAO_Case();
+        $case->id = $this->activityDAO->case_id;
+        if ($case->id && $case->find(TRUE)) {
+          $data = [];
+          CRM_Core_DAO::storeValues($case, $data);
+          $triggerData->setEntityData('Case', $data);
+        }
+      }
+
       return $triggerData;
     }
     return FALSE;
@@ -63,6 +74,8 @@ abstract class CRM_CivirulesCronTrigger_Activity extends CRM_Civirules_Trigger_C
   protected function getAdditionalEntities() {
     $entities = parent::getAdditionalEntities();
     $entities[] = new CRM_Civirules_TriggerData_EntityDefinition('ActivityContact', 'ActivityContact', 'CRM_Activity_DAO_ActivityContact' , 'ActivityContact');
+    $entities[] = new CRM_Civirules_TriggerData_EntityDefinition('Case', 'Case', 'CRM_Case_DAO_Case' , 'Case');
+    $entities[] = new CRM_Civirules_TriggerData_EntityDefinition('CaseActivity', 'CaseActivity', 'CRM_Case_DAO_CaseActivity' , 'CaseActivity');
     return $entities;
   }
 

@@ -76,7 +76,7 @@ class CRM_CivirulesPostTrigger_Form_Activity extends CRM_CivirulesTrigger_Form_F
       . '<br/>'
       . E::ts('When you don\'t want that select the record type for which you want to fire the trigger.')
       . '<br/>'
-      . E::ts('The select record type also defines which conact is available in the conditions and actions.');
+      . E::ts('The select record type also defines which contact is available in the conditions and actions.');
   }
 
 }

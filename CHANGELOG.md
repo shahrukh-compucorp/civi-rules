@@ -7,6 +7,7 @@
 * Added action to assign activity and send an e-mail (!72)
 * Added action to update/set a date value (!73)
 * Fixed condition Last Contribution (#86)
+* Add Activity Scheduled Date Cron trigger (!77)
 
 ## Version 2.16
 

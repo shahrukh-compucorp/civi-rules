@@ -8,6 +8,7 @@
 * Added action to update/set a date value (!73)
 * Fixed condition Last Contribution (#86)
 * Add Activity Scheduled Date Cron trigger (!77)
+* Allow to trigger on case activities or non-case activities and filter by record type (!80)
 
 ## Version 2.16
 

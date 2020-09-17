@@ -11,6 +11,16 @@
     <div class="content">{$form.activity_status_id.html}</div>
     <div class="clear"></div>
   </div>
+  <div class="crm-section">
+    <div class="label">{$form.record_type.label}</div>
+    <div class="content">{$form.record_type.html}</div>
+    <div class="clear"></div>
+  </div>
+  <div class="crm-section">
+    <div class="label">{$form.case_activity.label}</div>
+    <div class="content">{$form.case_activity.html}</div>
+    <div class="clear"></div>
+  </div>
   <div class="crm-submit-buttons">
     {include file="CRM/common/formButtons.tpl" location="bottom"}
   </div>

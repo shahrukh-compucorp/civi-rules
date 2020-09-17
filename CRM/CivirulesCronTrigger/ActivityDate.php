@@ -4,6 +4,8 @@
  * @license http://www.gnu.org/licenses/agpl-3.0.html
  */
 
+use CRM_Civirules_ExtensionUtil as E;
+
 class CRM_CivirulesCronTrigger_ActivityDate extends CRM_CivirulesCronTrigger_Activity {
 
   /**
@@ -17,12 +19,26 @@ class CRM_CivirulesCronTrigger_ActivityDate extends CRM_CivirulesCronTrigger_Act
       return false;
     }
 
-    $sql = "SELECT a.*, ac.contact_id as contact_id, ac.record_type_id as record_type_id, ac.id as activity_contact_id
+    $activityContactWhereClause = '';
+    if (!empty($this->triggerParams['record_type'])) {
+      $activityContactWhereClause = "AND `ac`.`record_type_id` = %5";
+      $params[5] = [$this->triggerParams['record_type'], 'Integer'];
+    }
+
+    $activityCaseWhereClause = 'AND `ca`.`case_id` IS NULL';
+    if (!empty($this->triggerParams['case_activity'])) {
+      $activityCaseWhereClause = 'AND `ca`.`case_id` IS NOT NULL';
+    }
+
+    $sql = "SELECT a.*, ac.contact_id as contact_id, ac.record_type_id as record_type_id, ac.id as activity_contact_id, ca.case_id as case_id
             FROM `civicrm_activity` `a`
             INNER JOIN `civicrm_activity_contact` ac ON a.id = ac.activity_id
+            LEFT JOIN `civicrm_case_activity` ca ON a.id = ca.activity_id
             LEFT JOIN `civirule_rule_log` `rule_log` ON `rule_log`.entity_table = 'civicrm_activity' AND `rule_log`.entity_id = a.id AND `rule_log`.`contact_id` = `ac`.`contact_id` AND DATE(`rule_log`.`log_date`) = DATE(NOW())  AND `rule_log`.`rule_id` = %3
             WHERE `a`.`activity_type_id` = %1 AND a.status_id = %2 AND a.activity_date_time <= NOW()
             AND `rule_log`.`id` IS NULL
+            {$activityContactWhereClause}
+            {$activityCaseWhereClause}
             AND `ac`.`contact_id` NOT IN (
               SELECT `rule_log2`.`contact_id`
               FROM `civirule_rule_log` `rule_log2`
@@ -58,7 +74,23 @@ class CRM_CivirulesCronTrigger_ActivityDate extends CRM_CivirulesCronTrigger_Act
     $activityTypeLabel = CRM_Civirules_Utils::getOptionLabelWithValue(CRM_Civirules_Utils::getOptionGroupIdWithName('activity_type'),  $this->triggerParams['activity_type_id']);
     $activityStatusLabel = CRM_Civirules_Utils::getOptionLabelWithValue(CRM_Civirules_Utils::getOptionGroupIdWithName('activity_status'),  $this->triggerParams['activity_status_id']);
 
-    return ts('Activity with type %1 and status %2 date reached', array(1 => $activityTypeLabel, 2 => $activityStatusLabel));
+    $result = civicrm_api3('ActivityContact', 'getoptions', [
+      'field' => "record_type_id",
+    ]);
+    $options[0] = E::ts('All contacts');
+    $options = array_merge($options, $result['values']);
+
+    $caseActivity = 'Not case activity';
+    if (!empty($this->triggerParams['case_activity'])) {
+      $caseActivity = 'Case activity';
+    }
+
+    return ts('%4 with type %1 and status %2 date reached. Trigger for %3', [
+      1 => $activityTypeLabel,
+      2 => $activityStatusLabel,
+      3 => $options[$this->triggerParams['record_type']],
+      4 => $caseActivity,
+    ]);
   }
 
 }

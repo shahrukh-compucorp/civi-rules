@@ -33,6 +33,15 @@ abstract class CRM_CivirulesCronTrigger_Form_Activity extends CRM_CivirulesTrigg
   public function buildQuickForm() {
     $this->add('hidden', 'rule_id');
 
+    $result = civicrm_api3('ActivityContact', 'getoptions', [
+      'field' => "record_type_id",
+    ]);
+    $options[0] = E::ts('All contacts');
+    $options = array_merge($options, $result['values']);
+
+    $this->add('select', 'record_type', E::ts('Trigger for'), $options, TRUE, ['class' => 'crm-select2 huge']);
+    $this->addYesNo('case_activity', ts('Trigger for case activities?'), FALSE, TRUE);
+
     $this->addButtons([
       ['type' => 'next', 'name' => ts('Save'), 'isDefault' => TRUE,],
       ['type' => 'cancel', 'name' => ts('Cancel')]

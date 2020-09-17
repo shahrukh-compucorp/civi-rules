@@ -31,6 +31,15 @@ class CRM_CivirulesCronTrigger_Form_ActivityDate extends CRM_CivirulesCronTrigge
     if (!empty($data['activity_status_id'])) {
       $defaultValues['activity_status_id'] = $data['activity_status_id'];
     }
+
+    if (!empty($data['record_type'])) {
+      $defaultValues['record_type'] = $data['record_type'];
+    } else {
+      $defaultValues['record_type'] = 3; // Default to only targets
+    }
+
+    $defaultValues['case_activity'] = $data['case_activity'] ?? FALSE;
+
     return $defaultValues;
   }
 
@@ -42,6 +51,8 @@ class CRM_CivirulesCronTrigger_Form_ActivityDate extends CRM_CivirulesCronTrigge
   public function postProcess() {
     $data['activity_type_id'] = $this->_submitValues['activity_type_id'];
     $data['activity_status_id'] = $this->_submitValues['activity_status_id'];
+    $data['record_type'] = $this->_submitValues['record_type'];
+    $data['case_activity'] = $this->_submitValues['case_activity'];
     $this->rule->trigger_params = serialize($data);
     $this->rule->save();
 
@@ -55,7 +66,9 @@ class CRM_CivirulesCronTrigger_Form_ActivityDate extends CRM_CivirulesCronTrigge
    * @return string
    */
   protected function getHelpText() {
-    return E::ts('Trigger rule when scheduled date for activity with status and type is reached.');
+    return E::ts('Trigger rule when scheduled date for activity with status and type is reached.')
+      . '<br/>'
+      . E::ts('If "Trigger for case activities" is "Yes" then this will only trigger for case activities. If it is "No" then it will only trigger for activities that are not linked to a case.');
   }
 
 }

@@ -38,6 +38,15 @@ class CRM_CivirulesCronTrigger_Form_ActivityScheduledDate extends CRM_CivirulesC
     if (!empty($data['activity_status_id'])) {
       $defaultValues['activity_status_id'] = $data['activity_status_id'];
     }
+
+    if (!empty($data['record_type'])) {
+      $defaultValues['record_type'] = $data['record_type'];
+    } else {
+      $defaultValues['record_type'] = 3; // Default to only targets
+    }
+
+    $defaultValues['case_activity'] = $data['case_activity'] ?? FALSE;
+
     if (!empty($data['interval_unit'])) {
       $defaultValues['interval_unit'] = $data['interval_unit'];
     }
@@ -55,6 +64,8 @@ class CRM_CivirulesCronTrigger_Form_ActivityScheduledDate extends CRM_CivirulesC
   public function postProcess() {
     $data['activity_type_id'] = $this->_submitValues['activity_type_id'];
     $data['activity_status_id'] = $this->_submitValues['activity_status_id'];
+    $data['record_type'] = $this->_submitValues['record_type'];
+    $data['case_activity'] = $this->_submitValues['case_activity'];
     $data['interval_unit'] = $this->_submitValues['interval_unit'];
     $data['interval'] = $this->_submitValues['interval'];
     $this->rule->trigger_params = serialize($data);
@@ -70,7 +81,9 @@ class CRM_CivirulesCronTrigger_Form_ActivityScheduledDate extends CRM_CivirulesC
    * @return string
    */
   protected function getHelpText() {
-    return E::ts('The rule will be triggered for activities of selected types when the scheduled date is X days/weeks/months before or after.');
+    return E::ts('The rule will be triggered for activities of selected types when the scheduled date is X days/weeks/months before or after.')
+      . '<br/>'
+      . E::ts('If "Trigger for case activities" is "Yes" then this will only trigger for case activities. If it is "No" then it will only trigger for activities that are not linked to a case.');
   }
 
 }

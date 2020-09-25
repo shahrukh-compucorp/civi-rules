@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Version 2.17 (not yet released)
+## Version 2.17
 
 * Add Scheduled Reminder log trigger and conditions (!61)
 * Added action to set a sepcific custom field. (!64)

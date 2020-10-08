@@ -36,6 +36,11 @@
         <div class="content">{$form.activity_date_time.html}</div>
         <div class="clear"></div>
     </div>
+    <div class="crm-section">
+        <div class="label">{$form.send_email.label}</div>
+        <div class="content">{$form.send_email.html}</div>
+        <div class="clear"></div>
+    </div>
     {foreach from=$delayClasses item=delayClass}
         <div class="crm-section crm-activity_date_time-class" id="{$delayClass->getName()}">
             <div class="label"></div>

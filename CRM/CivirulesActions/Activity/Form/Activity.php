@@ -54,6 +54,8 @@ class CRM_CivirulesActions_Activity_Form_Activity extends CRM_CivirulesActions_F
       $this->addEntityRef('assignee_contact_id', ts('Assigned to'), $attributes, false);
     }
 
+    $this->addYesNo('send_email', 'Send Email to Assigned Contacts', false, true);
+
     $delayList = array('' => ts(' - Use system date (default) - ')) + CRM_Civirules_Delay_Factory::getOptionList();
     $this->add('select', 'activity_date_time', ts('Set activity date'), $delayList);
     foreach(CRM_Civirules_Delay_Factory::getAllDelayClasses() as $delay_class) {
@@ -97,7 +99,9 @@ class CRM_CivirulesActions_Activity_Form_Activity extends CRM_CivirulesActions_F
         }
       }
     }
-
+    if (!empty($data['send_email'])) {
+      $defaultValues['send_email'] = $data['send_email'];
+    }
     foreach(CRM_Civirules_Delay_Factory::getAllDelayClasses() as $delay_class) {
       $delay_class->setDefaultValues($defaultValues, 'activity_date_time', $this->rule);
     }
@@ -182,6 +186,8 @@ class CRM_CivirulesActions_Activity_Form_Activity extends CRM_CivirulesActions_F
       $scheduledDateClass->setValues($this->_submitValues, 'activity_date_time', $this->rule);
       $data['activity_date_time'] = serialize($scheduledDateClass);
     }
+
+    $data['send_email'] = $this->_submitValues['send_email'];
 
     $this->ruleAction->action_params = serialize($data);
     $this->ruleAction->save();

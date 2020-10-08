@@ -114,13 +114,13 @@ class CRM_CivirulesActions_Contact_UpdateNumericValue extends CRM_Civirules_Acti
   protected function getValue($field_id, $mode, $contact_id) {
     if ($mode == 'value') {
       if (is_numeric($field_id)) {
-        return (float) civicrm_api('Contact', 'getvalue', ['id' => $contact_id, 'return' => "custom_{$field_id}"]);
+        return (float) civicrm_api3('Contact', 'getvalue', ['id' => $contact_id, 'return' => "custom_{$field_id}"]);
 
       } elseif ($field_id == 'contact_id') {
         return (float) $contact_id;
 
       } elseif ($field_id == 'contact_external_id') {
-        return (int)  civicrm_api('Contact', 'getvalue', ['id' => $contact_id, 'return' => 'external_identifier']);
+        return (int)  civicrm_api3('Contact', 'getvalue', ['id' => $contact_id, 'return' => 'external_identifier']);
 
       } else {
         // this should not happen

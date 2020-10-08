@@ -18,39 +18,58 @@ class CRM_CivirulesActions_Activity_Edit extends CRM_CivirulesActions_Activity_A
    */
   protected function alterApiParameters($params, CRM_Civirules_TriggerData_TriggerData $triggerData) {
 
-    $action_params = $this->getActionParameters();
+    // Retrieve triggering activity, Check if it has an id
+    $triggeringActivity = $triggerData->getEntityData('Activity');
+    if (empty($triggeringActivity['id'])) {
+      $message = "Civirules activity edit action has no id.";
+      \Civi::log()->error($message);
+      throw new Exception($message);
+    }
 
-    $params['id'] = ($triggerData->getEntityData('Activity'))['id'];
+    // load activity from api
+    try {
+      $activity = civicrm_api3('Activity', 'getsingle', [
+        'id' => $triggeringActivity['id'],
+        'return' => [
+          'activity_type_id',
+          'status_id',
+          'subject',
+          'assignee_contact_id',
+          'activity_date_time',
+        ],
+      ]);
+    } catch (Exception $e) {
+      $message = "Civirules activity edit action exception: {$e->getMessage()}.";
+      \Civi::log()->error($message);
+      throw new Exception($message);
+    }
     
-    if (!empty($params['activity_type_id']))
-      $params['activity_type_id'] = $action_params['activity_type_id'];
-
-    if (!empty($params['status_id']))
-      $params['status_id'] = $action_params['status_id'];
-
-    if (!empty($params['subject']))
-      $params['subject'] = $action_params['subject'];
+    $updateParams = [ 'id' => $activity['id'] ];
     
-    if (!empty($action_params['assignee_contact_id'])) {
-      $assignee = array();
-      if (is_array($action_params['assignee_contact_id'])) {
-        foreach($action_params['assignee_contact_id'] as $contact_id) {
-          if($contact_id) {
-            $assignee[] = $contact_id;
-          }
-        }
-      } else {
-        $assignee[] = $action_params['assignee_contact_id'];
-      }
-      if (count($assignee)) {
-        $params['assignee_contact_id'] = $action_params['assignee_contact_id'];
-      } else {
-        $params['assignee_contact_id'] = '';
+    if (!empty($params['activity_type_id']) && $params['activity_type_id']!=$activity['activity_type_id'])
+      $updateParams['activity_type_id'] = $params['activity_type_id'];
+
+    if (!empty($params['status_id']) && $params['status_id']!=$activity['status_id'])
+      $updateParams['status_id'] = $params['status_id'];
+
+    if (!empty($params['subject']) && $params['subject']!=$activity['subject'])
+      $updateParams['subject'] = $params['subject'];
+
+
+    if (!empty($params['assignee_contact_id'])) {
+
+      $existingAssignees = (array)$activity['assignee_contact_id'];
+      $newAssignees = (array)$params['assignee_contact_id'];
+
+      // Is there anyone new is the params list
+      $newlyAssignedContacts = array_diff($newAssignees,$existingAssignees);
+      if (count($newlyAssignedContacts)>0){
+        $updateParams['assignee_contact_id'] = array_merge($existingAssignees, $newlyAssignedContacts);
       }
     }
 
     // issue #127: no activity date time if set to null
-    if ($action_params['activity_date_time'] == 'null') {
+    if ($params['activity_date_time'] == 'null') {
       unset($params['activity_date_time']);
     } else {
       if (!empty($action_params['activity_date_time'])) {
@@ -58,22 +77,13 @@ class CRM_CivirulesActions_Activity_Edit extends CRM_CivirulesActions_Activity_A
         if ($delayClass instanceof CRM_Civirules_Delay_Delay) {
           $activityDate = $delayClass->delayTo(new DateTime(), $triggerData);
           if ($activityDate instanceof DateTime) {
-            $params['activity_date_time'] = $activityDate->format('Ymd His');
+            $updateParams['activity_date_time'] = $activityDate->format('Ymd His');
           }
         }
       }
     }
 
-    // Issue #152: when a rule is trigger from a public page then source contact id
-    // is empty and that in turn creates a fatal error.
-    // So the solution is to check whether we have a logged in user and if not use
-    // the contact from the trigger as the source contact.
-    if (CRM_Core_Session::getLoggedInContactID()) {
-      $params['source_contact_id'] = CRM_Core_Session::getLoggedInContactID();
-    } else {
-      $params['source_contact_id'] = $triggerData->getContactId();
-    }
-    return $params;
+    return $updateParams;
   }
 
   /**

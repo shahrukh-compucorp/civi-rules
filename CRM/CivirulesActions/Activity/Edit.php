@@ -88,4 +88,22 @@ class CRM_CivirulesActions_Activity_Edit extends CRM_CivirulesActions_Activity_A
   public function getExtraDataInputUrl($ruleActionId) {
     return CRM_Utils_System::url('civicrm/civirule/form/action/activity/edit', 'rule_action_id='.$ruleActionId);
   }
+
+  /**
+   * This function validates whether this action works with the selected trigger.
+   *
+   * This function could be overriden in child classes to provide additional validation
+   * whether an action is possible in the current setup.
+   *
+   * @param CRM_Civirules_Trigger $trigger
+   * @param CRM_Civirules_BAO_Rule $rule
+   * @return bool
+   */
+  public function doesWorkWithTrigger(CRM_Civirules_Trigger $trigger, CRM_Civirules_BAO_Rule $rule) {
+    $entities = $trigger->getProvidedEntities();
+    if (isset($entities['Activity'])) {
+      return true;
+    }
+    return false;
+  }
 }

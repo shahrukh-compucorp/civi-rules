@@ -71,17 +71,23 @@ class CRM_CivirulesCronTrigger_ActivityScheduledDate extends CRM_CivirulesCronTr
             FROM `civicrm_activity` `a`
             INNER JOIN `civicrm_activity_contact` ac ON a.id = ac.activity_id
             LEFT JOIN `civicrm_case_activity` ca ON a.id = ca.activity_id
-            LEFT JOIN `civirule_rule_log` `rule_log` ON `rule_log`.entity_table = 'civicrm_activity' AND `rule_log`.entity_id = a.id AND `rule_log`.`contact_id` = `ac`.`contact_id` AND DATE(`rule_log`.`log_date`) = DATE(NOW()) AND `rule_log`.`rule_id` = %1
+            LEFT JOIN `civirule_rule_log` `rule_log` ON `rule_log`.entity_table = 'civicrm_activity'
+              AND `rule_log`.entity_id = a.id
+              AND `rule_log`.`contact_id` = `ac`.`contact_id`
+              AND `rule_log`.`rule_id` = %1
             WHERE `a`.`activity_type_id` IN (%3)
-            AND `a`.`status_id` IN (%4)
-            AND `rule_log`.`id` IS NULL
-            {$activity_date_time_statement}
-            {$activityContactWhereClause}
-            {$activityCaseWhereClause}
-            AND `ac`.`contact_id` NOT IN (
-              SELECT `rule_log2`.`contact_id`
-              FROM `civirule_rule_log` `rule_log2`
-              WHERE `rule_log2`.`rule_id` = %1 AND DATE(`rule_log2`.`log_date`) = DATE(NOW()) and `rule_log2`.`entity_table` IS NULL AND `rule_log2`.`entity_id` IS NULL
+              AND `a`.`status_id` IN (%4)
+              AND `rule_log`.`id` IS NULL
+              {$activity_date_time_statement}
+              {$activityContactWhereClause}
+              {$activityCaseWhereClause}
+              AND `ac`.`contact_id` NOT IN (
+                SELECT `rule_log2`.`contact_id`
+                FROM `civirule_rule_log` `rule_log2`
+                WHERE `rule_log2`.`rule_id` = %1
+                  AND DATE(`rule_log2`.`log_date`) = DATE(NOW())
+                  AND `rule_log2`.`entity_table` IS NULL
+                  AND `rule_log2`.`entity_id` IS NULL
             )";
     $params[1] = [$this->ruleId, 'Integer'];
     $params[3] = [implode(',', $this->triggerParams['activity_type_id']), 'CommaSeparatedIntegers'];

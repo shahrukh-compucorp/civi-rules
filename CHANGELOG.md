@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 2.18 (not yet released)
+
+* Fix calls to wrong API function in "UpdateNumericValue.php" 
+
 ## Version 2.17
 
 * Add Scheduled Reminder log trigger and conditions (!61)

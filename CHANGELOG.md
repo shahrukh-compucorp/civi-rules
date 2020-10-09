@@ -2,7 +2,8 @@
 
 ## Version 2.18 (not yet released)
 
-* Fix calls to wrong API function in "UpdateNumericValue.php" 
+* Fix calls to wrong API function in "UpdateNumericValue.php" (!84)
+* Fix activityScheduledDate trigger so it does not re-trigger every day (!83)
 
 ## Version 2.17
 

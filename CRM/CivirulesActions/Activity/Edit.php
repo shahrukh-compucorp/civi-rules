@@ -120,10 +120,6 @@ class CRM_CivirulesActions_Activity_Edit extends CRM_CivirulesActions_Activity_A
    * @return bool
    */
   public function doesWorkWithTrigger(CRM_Civirules_Trigger $trigger, CRM_Civirules_BAO_Rule $rule) {
-    $entities = $trigger->getProvidedEntities();
-    if (isset($entities['Activity'])) {
-      return true;
-    }
-    return false;
+    return $trigger->doesProvideEntity('Activity');
   }
 }

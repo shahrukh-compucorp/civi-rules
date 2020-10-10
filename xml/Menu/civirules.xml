@@ -391,6 +391,13 @@
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
   <item>
+    <path>civicrm/civirule/form/action/activity/edit</path>
+    <page_callback>CRM_CivirulesActions_Activity_Form_ActivityEdit</page_callback>
+    <title>Activity Edit</title>
+    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
     <path>civicrm/civirule/form/action/activity_update_status</path>
     <page_callback>CRM_CivirulesActions_Activity_Form_UpdateStatus</page_callback>
     <title>Update activity status</title>

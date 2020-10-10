@@ -92,17 +92,21 @@ class CRM_CivirulesActions_Activity_Add extends CRM_CivirulesActions_Generic_Api
   public function userFriendlyConditionParams() {
     $return = '';
     $params = $this->getActionParameters();
-    $type = civicrm_api3('OptionValue', 'getvalue', array(
-      'return' => 'label',
-      'option_group_id' => 'activity_type',
-      'value' => $params['activity_type_id']));
-    $return .= ts("Type: %1", array(1 => $type));
-    $status = civicrm_api3('OptionValue', 'getvalue', array(
-      'return' => 'label',
-      'option_group_id' => 'activity_status',
-      'value' => $params['status_id']));
-    $return .= "<br>";
-    $return .= ts("Status: %1", array(1 => $status));
+    if (!empty($params['activity_type_id'])) {
+      $type = civicrm_api3('OptionValue', 'getvalue', array(
+        'return' => 'label',
+        'option_group_id' => 'activity_type',
+        'value' => $params['activity_type_id']));
+      $return .= ts("Type: %1", array(1 => $type));
+    }
+    if (!empty($params['status_id'])) {
+      $status = civicrm_api3('OptionValue', 'getvalue', array(
+        'return' => 'label',
+        'option_group_id' => 'activity_status',
+        'value' => $params['status_id']));
+      $return .= "<br>";
+      $return .= ts("Status: %1", array(1 => $status));
+    }
     $subject = $params['subject'];
     if (!empty($subject)) {
       $return .= "<br>";

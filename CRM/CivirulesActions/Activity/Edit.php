@@ -18,6 +18,9 @@ class CRM_CivirulesActions_Activity_Edit extends CRM_CivirulesActions_Activity_A
    */
   protected function alterApiParameters($params, CRM_Civirules_TriggerData_TriggerData $triggerData) {
 
+    // Store params
+    $this->apiParams = $params;
+
     // Retrieve triggering activity, Check if it has an id
     $triggeringActivity = $triggerData->getEntityData('Activity');
     if (empty($triggeringActivity['id'])) {
@@ -44,6 +47,10 @@ class CRM_CivirulesActions_Activity_Edit extends CRM_CivirulesActions_Activity_A
       throw new Exception($message);
     }
     
+    // Store Triggering activity id to use when sending a notification email
+    $this->activityId = $activity['id'];
+
+    // New list of params to return containing only what has changed
     $updateParams = [ 'id' => $activity['id'] ];
     
     if (!empty($params['activity_type_id']) && $params['activity_type_id']!=$activity['activity_type_id'])
@@ -64,7 +71,10 @@ class CRM_CivirulesActions_Activity_Edit extends CRM_CivirulesActions_Activity_A
       // Is there anyone new is the params list
       $newlyAssignedContacts = array_diff($newAssignees,$existingAssignees);
       if (count($newlyAssignedContacts)>0){
+        // Create a unique list of assigned contacts
         $updateParams['assignee_contact_id'] = array_merge($existingAssignees, $newlyAssignedContacts);
+        // Store only newly assigned contacts to send a notification email
+        $this->asignedContacts = $updateParams['assignee_contact_id'];
       }
     }
 

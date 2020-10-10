@@ -8,6 +8,15 @@
 
 class CRM_CivirulesActions_Activity_Add extends CRM_CivirulesActions_Generic_Api {
 
+  // Store a list of api params passed to action
+  protected $apiParams = [];
+
+  // Store the triggering activity id
+  protected $activityId;
+
+  // Store a list of new assigned contacts
+  protected $asignedContacts = [];
+
   /**
    * Returns an array with parameters used for processing an action
    *
@@ -17,12 +26,18 @@ class CRM_CivirulesActions_Activity_Add extends CRM_CivirulesActions_Generic_Api
    * @access protected
    */
   protected function alterApiParameters($params, CRM_Civirules_TriggerData_TriggerData $triggerData) {
+    
+    // Store params
+    $this->apiParams = $params;
+
     $action_params = $this->getActionParameters();
+    
     //this function could be overridden in subclasses to alter parameters to meet certain criteraia
     $params['target_contact_id'] = $triggerData->getContactId();
     $params['activity_type_id'] = $action_params['activity_type_id'];
     $params['status_id'] = $action_params['status_id'];
     $params['subject'] = $action_params['subject'];
+
     if (!empty($action_params['assignee_contact_id'])) {
       $assignee = array();
       if (is_array($action_params['assignee_contact_id'])) {
@@ -38,6 +53,11 @@ class CRM_CivirulesActions_Activity_Add extends CRM_CivirulesActions_Generic_Api
         $params['assignee_contact_id'] = $action_params['assignee_contact_id'];
       } else {
         $params['assignee_contact_id'] = '';
+      }
+
+      // Store the assigned contacts to send a notification email
+      if (!empty($params['assignee_contact_id'])) {
+        $this->asignedContacts = (array)$params['assignee_contact_id'];
       }
     }
 
@@ -66,6 +86,62 @@ class CRM_CivirulesActions_Activity_Add extends CRM_CivirulesActions_Generic_Api
       $params['source_contact_id'] = $triggerData->getContactId();
     }
     return $params;
+  }
+
+  /**
+   * Process the action
+   *
+   * @param CRM_Civirules_TriggerData_TriggerData $triggerData
+   * @access public
+   */
+  public function processAction(CRM_Civirules_TriggerData_TriggerData $triggerData) {
+    
+    // Process the action, may throw Exceptions
+    parent::processAction($triggerData);
+
+    // Check if we need to send any emails
+    if (!empty($this->apiParams['send_email']) && !empty($this->activityId) && !empty($this->asignedContacts)) {
+      foreach ($this->asignedContacts as $contactId) {
+        
+        $contact = civicrm_api3('Contact', 'getsingle', ['id' => $contactId]);
+        
+        // check contact has an email
+        if (empty($contact['email']))
+          continue;
+        
+        CRM_Case_BAO_Case::sendActivityCopy(NULL, $this->activityId, [$contact['email'] => $contact], NULL, NULL);
+      }
+    }
+  }
+
+  /**
+   * Executes the action
+   * Overrided to save new activity id
+   *
+   * This method could be overridden if needed
+   *
+   * @param $entity
+   * @param $action
+   * @param $parameters
+   * @access protected
+   * @throws Exception on api error
+   */
+  protected function executeApiAction($entity, $action, $parameters) {
+    try {
+      $activity = civicrm_api3($entity, $action, $parameters);
+      $this->activityId = $activity['id'];
+    } catch (Exception $e) {
+      $formattedParams = '';
+      foreach($parameters as $key => $param) {
+        if (strlen($formattedParams)) {
+          $formattedParams .= ', ';
+        }
+        $formattedParams .= "{$key}=\"$param\"";
+      }
+      $message = "Civirules api action exception: {$e->getMessage()}. API call: {$entity}.{$action} with params: {$formattedParams}";
+      \Civi::log()->error($message);
+      throw new Exception($message);
+    }
   }
 
   /**
@@ -133,6 +209,7 @@ class CRM_CivirulesActions_Activity_Add extends CRM_CivirulesActions_Generic_Api
 
       $return .= '<br>';
       $return .= ts("Assignee(s): %1", array(1 => $assignees));
+      
     }
 
     if (!empty($params['activity_date_time'])) {
@@ -143,6 +220,11 @@ class CRM_CivirulesActions_Activity_Add extends CRM_CivirulesActions_Generic_Api
         }
       }
     }
+
+    if (!empty($params['send_email'])) {
+      $return .= '<br>'.ts('Send notification');
+    }
+
     return $return;
   }
 

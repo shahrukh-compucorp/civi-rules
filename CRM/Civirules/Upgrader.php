@@ -743,14 +743,3 @@ class CRM_Civirules_Upgrader extends CRM_Civirules_Upgrader_Base {
     CRM_Civirules_Utils_Upgrader::insertActionsFromJson($this->extensionDir . DIRECTORY_SEPARATOR . 'sql/actions.json');
     return TRUE;
   }
-
-  public function upgrade_2051() {
-    CRM_Core_DAO::executeQuery("
-        INSERT INTO civirule_trigger (name, label, object_name, op, cron, class_name, created_date, created_user_id)
-        VALUES
-        ('relationship_activated', 'Relationship start date reached', 'Relationship', 'edit', 1, 'CRM_CivirulesCronTrigger_RelationshipStartDate',  CURDATE(), 1);
-    ");
-    return TRUE;
-  }
-}
-
